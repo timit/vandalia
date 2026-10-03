@@ -15,6 +15,9 @@ have:
 - bluesea8027-instructions.pdf, plus bluesea8027-exterior-photo.heic and bluesea8027-interior-photo.heic
 - 5026.pdf (spec sheet) and Wiring-Diagram-5026_5031.pdf, plus bluesea5026-interior-photo.heic and bluesea5026-exterior-photo.heic
 - 140558-Ekrano_GX__Venus_GX__Cerbo_GX__Cerbo-S_GX_Manual-pdf-en.pdf (cerbo GX MK2, PN BPP900450110), plus BPP900450110-photo.heic and BPP900450110-support.heic
+- Typhur_CV03SyncOven.pdf (kitchen oven user manual — 1750W, 120VAC, confirms the manufacturer's rated power used in README's load budget)
+- EMPV-12EC07_Manual.pdf (kitchen cooktop use and care guide — 1800W total, 120VAC, and the source of the "minimum circuit breaker amperage: 20" requirement that drove the 2026-10-02 kitchen circuit redesign)
+- DEAPRULL_ D31A.png (kitchen fridge spec-sheet screenshot — flagged as partly unreliable, see electrical/verify.md; the dual-voltage/35-45W figures actually used came from a web search, not this file)
 
 note: the BAOMAIN transfer-switch terminal wiring (jumper 2-4 and 6-8, common vs position legs) isn't spelled out in the real manual either, but it's consistent with that manual's own truth table (page 3). the specific transfer-switch application came from a web search — a wiring tutorial and RV/van forum threads for this switch family. it's in wiring.md, not here, since it's not a PDF to file.
 
@@ -23,3 +26,9 @@ wanted (electrical):
 - egis powerbar 6600-404 and 6600-804 spec sheets
 
 wanted (plumbing): none yet.
+
+## helpful links
+
+external tutorials and resources worth revisiting, not tied to a specific part or verify item.
+
+- [DIY Sprinter Camper Van Electrical Install - Full Tutorial](https://www.youtube.com/watch?v=01F4QDVJUq0) — nate at explorist.life, a start-to-finish electrical install for a 2021 sprinter. explorist.life is also where the victron lynx distribution-center question came from (2026-10-03, see electrical/verify.md) — this build stuck with generic marine busbars/ANL blocks instead, already owned and functionally equivalent.

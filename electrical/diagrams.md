@@ -1,10 +1,10 @@
 # diagrams
 
-last updated: 2026-09-21
+last updated: 2026-10-03 (resolved stale items)
 
 mermaid diagrams of the electrical plan. they render on github and in most markdown previewers, and claude code can read and edit them as text. solid lines are wiring in the plan. dashed lines are later options.
 
-switch position convention (2026-09-21, see wiring.md): position 1 is always the DJI leg, position 2 is always the victron leg, on every switch that splits between the two systems — matches the physical layout (DJI driver side/left, victron passenger side/right) to the switch throw direction.
+switch position convention (2026-09-21, see wiring.md): position 1 is always the DJI leg, position 2 is always the victron leg, on every switch that splits between the two systems — matches the physical layout (DJI driver side/left, victron passenger side/right) to the switch throw direction. exception: BAOMAIN 4 - oven/cooktop AC destination switch (added 2026-10-02) selects between two loads (oven/cooktop), not two sources, so this convention doesn't apply to it.
 
 ## dc positive and alternator
 
@@ -19,7 +19,7 @@ flowchart LR
   ct -->|"2/0"| pbar
   pbar -->|"2/0"| mp["multiplus-ii +"]
   pbar -->|"supplied cable, inline 3.15A fuse, M8 ring (verify fits 3/8in bar stud)"| cerbo["cerbo V+"]
-  pbar -->|"pos 2, terminal 2, 6 AWG, 40A ANL (verify part number)"| s2["battery selector 2<br/>(2026-09-21: velit source)"]
+  pbar -->|"pos 2, terminal 2, 6 AWG, 40A ANL, blue sea 5165 (confirmed 2026-10-03)"| s2["battery selector 2<br/>(2026-09-21: velit source)"]
   mw["meanwell RSP-1000-24 +V"] -->|"pos 1, terminal 1, 6 AWG"| s2
   djiout2["DJI power 2000 AC out"] -->|"14 AWG, direct, no switch"| mw
   s2 -->|"OUTPUT, velit's own 6 AWG cable, fused both ends"| velit["velit 2000R"]
@@ -44,23 +44,28 @@ flowchart TB
 ```mermaid
 flowchart LR
   inlet["shore inlet<br/>conntek 30A<br/>generator plugs in here"] -->|"10 AWG 3-conductor"| m8077["blue sea 8077<br/>30A double-pole main"]
-  m8077 -->|"10 AWG 3-conductor, terminals 2+4/6+8 (jumpered common, 10 AWG jumper)"| b3["BAOMAIN 3<br/>1-0-2, 2-pole"]
-  b3 -->|"pos 1, terminals 1/5, 12 AWG 3-conductor"| box["3131 box<br/>7210 15A breaker"]
+  m8077 -->|"10 AWG 3-conductor, terminals 2+4/6+8 (jumpered common, 10 AWG jumper)"| b3["BAOMAIN 1 - shore AC destination switch<br/>1-0-2, 2-pole"]
+  b3 -->|"pos 1, terminals 1/5, 12 AWG 3-conductor (a second spool obtained 2026-10-03, after the original was reassigned to the kitchen's 20A circuit)"| box["3131 box<br/>7210 15A breaker"]
   b3 -->|"pos 2, terminals 3/7, AC-in, 10 AWG 3-conductor"| mp["multiplus-ii"]
-  box -->|"12 AWG 3-conductor"| rec["receptacle"]
+  box -->|"12 AWG 3-conductor, same spool"| rec["receptacle"]
   rec --> djiin["DJI power 2000 AC in"]
   mp -->|"AC-out-1, 10 AWG"| p8027["blue sea 8027<br/>GFCI on outlets"]
 ```
 
 ## ac loads
 
-BAOMAIN 2 is spare as of the 2026-09-21 velit redesign (see the dc positive diagram for the velit's new circuit — battery selector 2, not an AC transfer switch). the 8027's second 15A branch, previously wired toward BAOMAIN 2, is unconnected — a candidate for the water heater (TBD).
+kitchen redesign (2026-10-02): real nameplate watts (oven 1750W, cooktop 1800W with its own 20A-minimum breaker requirement, fridge 35-45W, confirmed AC 2026-10-03) ruled out one shared "kitchen" branch — oven+cooktop combined (3550W) exceed every AC source in this build. now two independent circuits: BAOMAIN 3 - fridge/receptacle AC source switch is no longer spare-adjacent, it's the 15A fridge+USB circuit's source-selector. BAOMAIN 2 - oven/cooktop AC source switch (freed by the 2026-09-21 velit redesign) is the 20A oven/cooktop circuit's source-selector, feeding BAOMAIN 4 - oven/cooktop AC destination switch (new switch) which mechanically interlocks oven and cooktop so they can never both be live. the 8027's third 15A branch remains spare (candidate: water heater). DJI's AC output (confirmed 2026-10-03): 4 ports, 100-120V/25A ≈ 3000W continuous for the US variant — clears the kitchen's worst case comfortably.
 
 ```mermaid
 flowchart LR
-  p8027["blue sea 8027"] -->|"8027 15A branch, terminals 3/7, gauge TBD (pending kitchen watts)"| b1["BAOMAIN 1"]
-  djiout["DJI power 2000 AC out"] -->|"terminals 1/5"| b1
-  b1 -->|"terminals 2+4/6+8 (jumpered common), gauge TBD, jumper gauge TBD to match"| kitchen["kitchen circuit<br/>oven, cooktop, fridge"]
+  p8027a["blue sea 8027<br/>existing 15A branch"] -->|"terminals 3/7, 14 AWG"| b1["BAOMAIN 3 - fridge/receptacle AC source switch"]
+  djiout1["DJI AC output port (1 of 2)"] -->|"terminals 1/5, iron forge cord"| b1
+  b1 -->|"terminals 2+4/6+8 (jumpered common), 14 AWG, 14 AWG jumper"| kfu["fridge + USB outlet<br/>(both confirmed 120VAC, 2026-10-03)"]
+  p8027b["blue sea 8027<br/>new 20A breaker"] -->|"terminals 3/7, 12 AWG"| b2["BAOMAIN 2 - oven/cooktop AC source switch"]
+  djiout2b["DJI AC output port (2 of 2)"] -->|"terminals 1/5, iron forge cord"| b2
+  b2 -->|"terminals 2+4/6+8 (jumpered common), 12 AWG, 12 AWG jumper"| b4["BAOMAIN 4 - oven/cooktop AC destination switch<br/>(new — load interlock, not source)"]
+  b4 -->|"terminals 1/5, 12 AWG"| oven["oven<br/>typhur CV03, 1750W"]
+  b4 -->|"terminals 3/7, 12 AWG"| cooktop["cooktop<br/>empava EMPV-12EC07, 1800W, 20A min"]
 ```
 
 ## 12V bus (blue sea 5026)
