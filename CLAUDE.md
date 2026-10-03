@@ -16,13 +16,13 @@
 
 ## where to look
 
-- electrical questions: read electrical/wiring.md and electrical/verify.md first. wiring diagrams are in electrical/diagrams.md. parts are in electrical/parts.md and cable lengths in electrical/measurements.md.
-- power budget and load checks: the load budget section of README.md
+- electrical questions: read electrical/PLAN.md first (design, diagrams, install order, supplies, by subsystem section) and electrical/verify.md (open questions, change log). what's actually built is in electrical/README.md. cable lengths are in electrical/measurements.md.
+- power budget and load checks: the load budget section of the root README.md
 - manuals and datasheets: reference/, shared across subsystems. read them to settle verify items and cite the file name.
 
 ## conventions
 
-- each subsystem folder has parts.md, a plan file (wiring.md for electrical), and verify.md. manuals live in the shared root reference/ folder, not per subsystem.
+- each subsystem folder has a README.md (as-built — only grows as something is confirmed complete or a part is confirmed in hand) and a PLAN.md (the design: one section per subsystem/diagram, each leading with its diagram, then an installation checklist, then a supplies checklist, both using `[x]`/`[ ]` task-list syntax). verify.md holds open questions and the change log; measurements.md holds cable lengths and physical layout. manuals live in the shared root reference/ folder, not per subsystem.
 - one fact lives in one file. link to it instead of copying it.
 - mark unconfirmed specs with the word verify and list them in the subsystem's verify.md.
 - when a decision changes, edit the file and add a dated line to that subsystem's change log in verify.md.

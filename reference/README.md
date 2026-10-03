@@ -19,12 +19,12 @@ have:
 - EMPV-12EC07_Manual.pdf (kitchen cooktop use and care guide — 1800W total, 120VAC, and the source of the "minimum circuit breaker amperage: 20" requirement that drove the 2026-10-02 kitchen circuit redesign)
 - DEAPRULL_ D31A.png (kitchen fridge spec-sheet screenshot — flagged as partly unreliable, see electrical/verify.md; the dual-voltage/35-45W figures actually used came from a web search, not this file)
 
-note: the BAOMAIN transfer-switch terminal wiring (jumper 2-4 and 6-8, common vs position legs) isn't spelled out in the real manual either, but it's consistent with that manual's own truth table (page 3). the specific transfer-switch application came from a web search — a wiring tutorial and RV/van forum threads for this switch family. it's in wiring.md, not here, since it's not a PDF to file.
+note: the BAOMAIN transfer-switch terminal wiring (jumper 2-4 and 6-8, common vs position legs) isn't spelled out in the real manual either, but it's consistent with that manual's own truth table (page 3). the specific transfer-switch application came from a web search — a wiring tutorial and RV/van forum threads for this switch family. it's in electrical/PLAN.md, not here, since it's not a PDF to file.
 
 wanted (electrical):
 - blue sea instructions: 8077, 3131, 7210, 5005, 5502 (or egis class T block)
 - egis powerbar 6600-404 spec sheet (both busbars are now this model, 2026-10-03 — the 6600-804 spec sheet is no longer needed)
-- victron orion-tr smart 24/12-30 isolated manual — not bought yet (12V bus redundancy, adopted 2026-10-03); its own wire/fuse sizing in electrical/wiring.md is a reasoned estimate until this is on hand
+- victron orion-tr smart 24/12-30 isolated manual — not bought yet (12V bus redundancy, adopted 2026-10-03); its own wire/fuse sizing in electrical/PLAN.md is a reasoned estimate until this is on hand
 
 wanted (plumbing): none yet.
 

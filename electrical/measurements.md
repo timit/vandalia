@@ -10,9 +10,9 @@ fill in the length column with a tape measure along the actual route, then add a
 |---|---|---|---|---|
 | SOK+ to class T block | 2/0 red (pacer, 8ft reel — shared across all 2/0 red runs below, 2026-10-02) | | | M8 / M8 |
 | class T block to + bar | 2/0 red (same 8ft reel) | | | M8 / 3/8" |
-| + bar to multiplus+ | 2/0 red (same 8ft reel — the long unknown leg; measure before cutting, see parts.md) | | | 3/8" / M8 |
+| + bar to multiplus+ | 2/0 red (same 8ft reel — the long unknown leg; measure before cutting, see PLAN.md) | | | 3/8" / M8 |
 | SOK- to - bar | 2/0 black (pacer, 8ft reel — shared across both 2/0 black runs, 2026-10-02) | | | M8 / 3/8" |
-| - bar to multiplus- | 2/0 black (same 8ft reel — the long unknown leg; measure before cutting, see parts.md) | | | 3/8" / M8 |
+| - bar to multiplus- | 2/0 black (same 8ft reel — the long unknown leg; measure before cutting, see PLAN.md) | | | 3/8" / M8 |
 | starter battery to selector 1 (installed with DJI charger, AEP 100A/65VDC fuse at battery) | 6 AWG (confirmed marked on the wire, 2026-10-03) | under 15ft (stated) | | 5/16" |
 | selector 1 to XS input | 6 AWG red (changed from 4 AWG — matches the rest of this circuit; pacer, 15ft reel shared across all 4 red 6 AWG runs below, 2026-10-02) | under 6ft (stated — under-bed run) | | XS terminal, verify |
 | selector 1 to DJI charger | 6 AWG (as installed, same cable) | | | per charger kit |

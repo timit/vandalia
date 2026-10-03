@@ -20,8 +20,8 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 ## now and next
 
 - done: electrical design settled. most parts ordered, including the DJI branch parts (3131 box and 7210 breaker).
-- now (2026-10-03): kitchen circuit redesigned around real nameplate watts, split into a 15A fridge+USB branch and a 20A interlocked oven/cooktop branch (all parts now in hand except the 3 receptacles). cargo-area layout documented (electrical/measurements.md), surfacing two wire-budget risks on the meanwell's runs — measure before cutting. two design additions adopted and parts obtained this session: the negative busbar downsized from the 8-stud egis 6600-804 to a second 4-stud 6600-404 (stud length physically confirmed), and a 24V-to-12V converter (orion-tr smart 24/12-30) plus a third battery selector, giving the 5026 12V bus the same DJI/victron redundancy every other circuit has — neither installed yet, and the orion-tr's own manual still isn't on hand, see electrical/parts.md and electrical/verify.md.
-- next: measure every cable run (electrical/measurements.md) before cutting, settle the remaining items in electrical/verify.md (several tape-measure checks, the water heater wattage once it's purchased, the orion-tr's own wire/fuse sizing once its manual is on hand).
+- now (2026-10-03): electrical docs restructured into electrical/README.md (as-built) and electrical/PLAN.md (design, install order, supplies checklists), replacing wiring.md/diagrams.md/parts.md. install actually started: shore inlet, 8077, all 4 BAOMAIN-row switches, both mounted battery selectors, and the multiplus are mounted; no wiring pulled yet. two design additions adopted and parts obtained this session: the negative busbar downsized to a second 4-stud egis 6600-404, and a 24V-to-12V converter (orion-tr smart 24/12-30) plus a third battery selector giving the 5026 12V bus the same DJI/victron redundancy every other circuit has — see electrical/PLAN.md.
+- next: measure every cable run (electrical/measurements.md) before cutting, work through electrical/PLAN.md's installation checklists in order, settle the remaining items in electrical/verify.md.
 - later: plumbing.
 
 ## layout
@@ -29,7 +29,7 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 - README.md: this file. shared facts for the whole build.
 - CLAUDE.md: working rules for claude code. it imports this README.
 - reference/: manuals and datasheets, shared across subsystems.
-- electrical/: parts.md, wiring.md, diagrams.md, measurements.md, verify.md
+- electrical/: README.md (as-built), PLAN.md (design, install order, supplies), measurements.md, verify.md
 - plumbing/: placeholder
 
 ## van
@@ -48,26 +48,9 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 | shore inlet | TBD | keep the run to the 8077 short |
 | 8077 and 8027 panels | TBD | each back needs protection |
 
-## key electrical decisions
+## electrical design and decisions
 
-- 24V bank, not 12V.
-- keep the existing DJI power 2000 system as a second independent source. manual selector switches choose which system feeds each circuit. no ATS.
-- orion XS 1400 is the alternator DC-DC charger (replaced the orion-tr smart 12/24-15, which is being returned).
-- class T fuse on the battery main, not ANL or mega (lithium fault current).
-- ANL fuses only on the XS input and output. keep those runs short (ANL interrupt rating is 6,000A at 32V).
-- no smartshunt. the SOK reports state of charge over CAN.
-- the generator plugs into the shore inlet. there is no second inlet.
-- switch position convention (2026-09-21): position 1 is always the DJI leg, position 2 is always the victron leg, on every switch split between the two systems — matches the physical layout (DJI driver side/left, victron passenger side/right) to the switch throw direction.
-- BAOMAIN 1 - shore AC destination switch routes shore/generator power to the DJI (position 1) or the victron (position 2).
-- battery selector 1 shares the DJI charger's installed, 100A-fused van feed between the DJI car charger (position 1) and the orion XS (position 2). only one draws at a time.
-- battery selector 2 (2026-09-21) chooses the velit's power source directly on the DC side: position 1 is the DJI-fed meanwell RSP-1000-24, position 2 taps the 24V bus. recovers the inverter+meanwell round-trip conversion loss (about 17%, from the real datasheet efficiency figures) when the velit runs on battery power, without losing the DJI backup path. BAOMAIN 2 - oven/cooktop AC source switch is no longer used and is spare — see electrical/wiring.md and electrical/verify.md.
-- battery selector 3 (adopted and obtained 2026-10-03, not yet installed) gives the 5026 12V bus the same DJI/victron choice every other major circuit has: position 1 is the existing DJI SDC feed (13.6V/10A, ~136W), position 2 is a new orion-tr smart 24/12-30 isolated DC-DC converter off the 24V bus (30A/360W at 12V) — resolves the real headroom gap where the USB panels alone (432W rated) could exceed the DJI feed's 136W ceiling. follows the same position-1-is-DJI convention as every other switch.
-- negative busbar downsized (2026-10-03): swapped the 8-stud egis 6600-804 for a second 4-stud 6600-404 (matching the positive bar), with its 8 connections stacked across the 4 studs — see electrical/wiring.md and electrical/parts.md.
-- kitchen circuit split (2026-10-02): real nameplate watts showed oven (1750W) and cooktop (1800W, with its own manufacturer-required 20A-minimum breaker) can't share one branch or run together on any source in this build. now two circuits: a 15A branch (fridge + a USB charging outlet) via BAOMAIN 3 - fridge/receptacle AC source switch, and a 20A branch (oven and cooktop) via BAOMAIN 2 - oven/cooktop AC source switch feeding BAOMAIN 4 - oven/cooktop AC destination switch — a new switch, repurposed as a load interlock rather than a source selector, so oven and cooktop can never both be live. see electrical/wiring.md and electrical/verify.md.
-- the blue sea 8077 (30A main) sits before BAOMAIN 1 - shore AC destination switch, so one main protects both branches.
-- the DJI AC input branch gets its own 15A breaker (DJI AC input max is 15A).
-- blue sea 5026 (12V fuse block) is fed from either the DJI 12V feed or a new orion-tr smart 24/12-30 converter off the 24V bus, chosen by battery selector 3 (adopted 2026-10-03, see above).
-- one chassis bond, on the negative busbar only. no neutral-ground bond in any panel (the multiplus grounds neutral internally).
+24V victron system with the existing DJI power 2000 kept as a second independent source, manual switches choosing which system feeds each circuit (no ATS). full design, the switch/selector map, install order, and supplies are in electrical/PLAN.md. what's actually confirmed built is in electrical/README.md.
 
 ## load budget
 
