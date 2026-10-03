@@ -20,9 +20,8 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 ## now and next
 
 - done: electrical design settled. most parts ordered, including the DJI branch parts (3131 box and 7210 breaker).
-- now (2026-10-02): kitchen circuit redesigned around real nameplate watts (oven, cooktop, fridge manuals added to reference/) — split into a 15A fridge+USB branch and a 20A interlocked oven/cooktop branch, needing a 4th BAOMAIN switch and a new 20A breaker, both not yet bought. west marine trip done — busbars, class T block and fuse confirmed matching plan (caught a real correction: the class T block is M8 studs, not 3/8" as assumed, which flips the 2/0 lug count — see electrical/verify.md). cable reel gauges confirmed (15ft #6 red/black, 10ft #2 black, 8ft #2/0 red/black — two of these are tight against the raw run estimates, measure before cutting, see parts.md). still need the AWG/stud of the 4 lug 5-packs obtained — west marine's site won't let claude code pull those specs, so check the physical labels/receipt. the 5123 ANL fuse and 5065 holder aren't confirmed obtained yet.
-- next: measure every cable run (electrical/measurements.md), confirm whether the fridge/USB outlet actually run on AC (assumed, not confirmed), confirm the cooktop has a pluggable cord rather than being meant for hardwiring, source a replacement wire for the DJI AC-input branch (its 12 AWG spool was reassigned to the kitchen circuit), and settle the remaining items in electrical/verify.md.
-- decide later: whether to add the 24V-to-12V converter and a third battery selector switch for the 5026 bus (renamed from "battery selector 2" on 2026-09-21 — that switch now belongs to the velit, see below) — driven partly by the fuse/source mismatch on that bus now open in electrical/verify.md (the feed is 13.6V/10A max, but it's fused at 40A).
+- now (2026-10-03): kitchen circuit redesigned around real nameplate watts, split into a 15A fridge+USB branch and a 20A interlocked oven/cooktop branch (all parts now in hand except the 3 receptacles). cargo-area layout documented (electrical/measurements.md), surfacing two wire-budget risks on the meanwell's runs — measure before cutting. two design additions adopted and parts obtained this session: the negative busbar downsized from the 8-stud egis 6600-804 to a second 4-stud 6600-404 (stud length physically confirmed), and a 24V-to-12V converter (orion-tr smart 24/12-30) plus a third battery selector, giving the 5026 12V bus the same DJI/victron redundancy every other circuit has — neither installed yet, and the orion-tr's own manual still isn't on hand, see electrical/parts.md and electrical/verify.md.
+- next: measure every cable run (electrical/measurements.md) before cutting, settle the remaining items in electrical/verify.md (several tape-measure checks, the water heater wattage once it's purchased, the orion-tr's own wire/fuse sizing once its manual is on hand).
 - later: plumbing.
 
 ## layout
@@ -62,10 +61,12 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 - BAOMAIN 1 - shore AC destination switch routes shore/generator power to the DJI (position 1) or the victron (position 2).
 - battery selector 1 shares the DJI charger's installed, 100A-fused van feed between the DJI car charger (position 1) and the orion XS (position 2). only one draws at a time.
 - battery selector 2 (2026-09-21) chooses the velit's power source directly on the DC side: position 1 is the DJI-fed meanwell RSP-1000-24, position 2 taps the 24V bus. recovers the inverter+meanwell round-trip conversion loss (about 17%, from the real datasheet efficiency figures) when the velit runs on battery power, without losing the DJI backup path. BAOMAIN 2 - oven/cooktop AC source switch is no longer used and is spare — see electrical/wiring.md and electrical/verify.md.
+- battery selector 3 (adopted and obtained 2026-10-03, not yet installed) gives the 5026 12V bus the same DJI/victron choice every other major circuit has: position 1 is the existing DJI SDC feed (13.6V/10A, ~136W), position 2 is a new orion-tr smart 24/12-30 isolated DC-DC converter off the 24V bus (30A/360W at 12V) — resolves the real headroom gap where the USB panels alone (432W rated) could exceed the DJI feed's 136W ceiling. follows the same position-1-is-DJI convention as every other switch.
+- negative busbar downsized (2026-10-03): swapped the 8-stud egis 6600-804 for a second 4-stud 6600-404 (matching the positive bar), with its 8 connections stacked across the 4 studs — see electrical/wiring.md and electrical/parts.md.
 - kitchen circuit split (2026-10-02): real nameplate watts showed oven (1750W) and cooktop (1800W, with its own manufacturer-required 20A-minimum breaker) can't share one branch or run together on any source in this build. now two circuits: a 15A branch (fridge + a USB charging outlet) via BAOMAIN 3 - fridge/receptacle AC source switch, and a 20A branch (oven and cooktop) via BAOMAIN 2 - oven/cooktop AC source switch feeding BAOMAIN 4 - oven/cooktop AC destination switch — a new switch, repurposed as a load interlock rather than a source selector, so oven and cooktop can never both be live. see electrical/wiring.md and electrical/verify.md.
 - the blue sea 8077 (30A main) sits before BAOMAIN 1 - shore AC destination switch, so one main protects both branches.
 - the DJI AC input branch gets its own 15A breaker (DJI AC input max is 15A).
-- blue sea 5026 (12V fuse block) stays on the DJI 12V feed for now. a 24V-to-12V converter is a later option.
+- blue sea 5026 (12V fuse block) is fed from either the DJI 12V feed or a new orion-tr smart 24/12-30 converter off the 24V bus, chosen by battery selector 3 (adopted 2026-10-03, see above).
 - one chassis bond, on the negative busbar only. no neutral-ground bond in any panel (the multiplus grounds neutral internally).
 
 ## load budget
@@ -80,6 +81,7 @@ nameplate watts only. replace TBD with the number from the label or manual, and 
 | honda EU2200i | 1,800W continuous | plugs into the shore inlet |
 | shore power | 30A | about 3,600W at 120V |
 | orion XS 1400 | 50A at 24V (about 1,200W) | set the input limit, about 60A; alternator rating verify |
+| orion-tr smart 24/12-30 isolated (adopted and obtained 2026-10-03, not yet installed) | 30A at 12V, 360W rated | DC-DC step-down for the 5026 bus's victron leg (battery selector 3, position 2); input-side current/fuse sizing not yet verified against its own manual — see electrical/verify.md |
 
 | load | system | voltage | watts | notes |
 |---|---|---|---|---|
@@ -103,7 +105,7 @@ checks to run once the watts are filled in:
 2. the same worst case against the honda's 1,800W and the DJI's AC output when running on a backup source. **kitchen note**: oven and cooktop are victron/8027-sourced on their victron leg but can also take the DJI leg via BAOMAIN 2 - oven/cooktop AC source switch — ~1905W worst-case is only marginally over the honda's 1800W (~105W, essentially the fridge+USB draw) if cooking on generator power, a small and likely tolerable overage compared to the ~1795W overage the un-interlocked single-branch design would have had. DJI's AC output (confirmed 2026-10-02: ~3000W continuous) clears this worst case comfortably. the velit's DJI leg (position 1, via the meanwell) is still AC and still counts here too.
 2a. the velit's direct-DC leg (33A max) against the 24V bus's actual capacity alongside everything else already drawing from it (XS charging, cerbo, the multiplus itself) — not yet checked.
 3. daily energy use in Wh against the SOK's 3,840Wh.
-4. the 12V bus load against the DJI SDC-to-XT60 feed: 13.6V default, 10A max per DJI's own cable spec (about 136W) — the USB panels alone can ask for up to 432W, so this is the real ceiling on that bus, not the 40A ANL fuse currently on it (see electrical/verify.md).
+4. the 12V bus load against its source. **adopted 2026-10-03**: the DJI SDC-to-XT60 feed alone (13.6V default, 10A max, about 136W) was a real ceiling against the USB panels' 432W rated draw — resolved by adding battery selector 3 and an orion-tr smart 24/12-30 converter (30A/360W at 12V) as a second, higher-capacity source. real continuous load (LED pucks + starlink, both still TBD) against either leg individually is still worth checking once those watts are known.
 
 ## interfaces between subsystems
 
@@ -117,7 +119,7 @@ checks to run once the watts are filled in:
 | kitchen circuit: oven + cooktop | kitchen | electrical | 20A branch, source chosen by BAOMAIN 2 - oven/cooktop AC source switch, load (oven vs. cooktop) interlocked by BAOMAIN 4 - oven/cooktop AC destination switch | designed |
 | autoterm air 2D 24V diesel heater | heating | electrical | 24V feed, fusing, and failover power TBD | not designed |
 | starlink mini | networking | electrical | 12-48V input, on the 5026 bus | existing |
-| 12V loads (LED pucks, USB panels) | electrical | lighting | blue sea 5026, fed from DJI SDC for now | existing |
+| 12V loads (LED pucks, USB panels) | electrical | lighting | blue sea 5026, source chosen by battery selector 3 — DJI SDC feed, or orion-tr smart 24/12-30 off the 24V bus (adopted 2026-10-03) | designed |
 | exterior shower (camplux F10 ultra, propane) | plumbing | gas | propane supply TBD | not designed |
 
 when a plumbing or other part draws power, add it to the load budget above and give it a circuit in this table.

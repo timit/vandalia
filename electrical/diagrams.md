@@ -29,7 +29,7 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  sokn["SOK battery -"] -->|"2/0"| nbar["- bar<br/>egis 6600-804"]
+  sokn["SOK battery -"] -->|"2/0"| nbar["- bar<br/>egis 6600-404 (swapped from the 8-stud 6600-804, 2026-10-03 — stacked, see wiring.md)"]
   mpn["multiplus-ii -"] -->|"2/0"| nbar
   xsg["orion XS GND"] -->|"6 AWG"| nbar
   cerbon["cerbo -"] -->|"supplied cable, M8 ring"| nbar
@@ -54,7 +54,7 @@ flowchart LR
 
 ## ac loads
 
-kitchen redesign (2026-10-02): real nameplate watts (oven 1750W, cooktop 1800W with its own 20A-minimum breaker requirement, fridge 35-45W, confirmed AC 2026-10-03) ruled out one shared "kitchen" branch — oven+cooktop combined (3550W) exceed every AC source in this build. now two independent circuits: BAOMAIN 3 - fridge/receptacle AC source switch is no longer spare-adjacent, it's the 15A fridge+USB circuit's source-selector. BAOMAIN 2 - oven/cooktop AC source switch (freed by the 2026-09-21 velit redesign) is the 20A oven/cooktop circuit's source-selector, feeding BAOMAIN 4 - oven/cooktop AC destination switch (new switch) which mechanically interlocks oven and cooktop so they can never both be live. the 8027's third 15A branch remains spare (candidate: water heater). DJI's AC output (confirmed 2026-10-03): 4 ports, 100-120V/25A ≈ 3000W continuous for the US variant — clears the kitchen's worst case comfortably.
+kitchen redesign (2026-10-02): real nameplate watts (oven 1750W, cooktop 1800W with its own 20A-minimum breaker requirement, fridge 35-45W, confirmed AC 2026-10-03) ruled out one shared "kitchen" branch — oven+cooktop combined (3550W) exceed every AC source in this build. now two independent circuits: BAOMAIN 3 - fridge/receptacle AC source switch is no longer spare-adjacent, it's the 15A fridge+USB circuit's source-selector. BAOMAIN 2 - oven/cooktop AC source switch (freed by the 2026-09-21 velit redesign) is the 20A oven/cooktop circuit's source-selector, feeding BAOMAIN 4 - oven/cooktop AC destination switch (new switch) which mechanically interlocks oven and cooktop so they can never both be live. the 8027's second and third 15A branches remain spare (candidates: water heater, other future circuits). DJI's AC output (confirmed 2026-10-03): 4 ports, 100-120V/25A ≈ 3000W continuous for the US variant — clears the kitchen's worst case comfortably.
 
 ```mermaid
 flowchart LR
@@ -70,15 +70,14 @@ flowchart LR
 
 ## 12V bus (blue sea 5026)
 
-solid is how it works now. dashed is the later option that adds a 24V-to-12V converter and a third battery selector (2026-09-21: renamed from "battery selector 2" to "battery selector 3" — selector 2 is now assigned to the velit, see the dc positive diagram. this option would need a new switch, not a repurposed one).
+**12V bus redundancy adopted 2026-10-03, parts obtained 2026-10-03** (not yet installed): battery selector 3 (position 1 DJI, position 2 victron, same convention as every other switch) picks between the existing DJI SDC feed (~136W ceiling) and a new orion-tr smart 24/12-30 isolated converter off the 24V bus (30A/360W) — resolves the real gap where the USB panels alone are rated up to 432W. the orion-tr's own wire/fuse figures below are reasoned estimates (no manual on file for this specific part yet) — see wiring.md and verify.md.
 
 ```mermaid
 flowchart LR
-  djisdc["DJI SDC 12V feed<br/>XT60, 13.6V/10A max"] -->|"10-15A ATC/ATO fuse (fixed — was a 40A ANL, wrong format for this cable)"| fb["blue sea 5026<br/>12V fuse block"]
-  bank["24V bank"] -.->|"about 25A fuse, gauge TBD, verify"| conv["orion-tr smart 24/12-30"]
-  conv -.->|"gauge TBD"| s3["battery selector 3<br/>(not yet owned)"]
-  djisdc -.->|"gauge TBD"| s3
-  s3 -.->|"gauge TBD"| fb
+  djisdc["DJI SDC 12V feed<br/>XT60, 13.6V/10A max"] -->|"10-15A ATC/ATO fuse (fixed — was a 40A ANL, wrong format for this cable)"| s3["battery selector 3<br/>(obtained 2026-10-03, not yet installed)"]
+  bank["24V bank (+ bar)"] -->|"~20A fuse, ~12 AWG (estimate, verify against the orion-tr's own manual)"| conv["orion-tr smart 24/12-30<br/>isolated, 30A/360W out"]
+  conv -->|"10 AWG, 30A-class fuse (estimate)"| s3
+  s3 -->|"10 AWG, 30A-class fuse (upsized from 10-15A for the new victron leg)"| fb["blue sea 5026<br/>12V fuse block"]
 ```
 
 ## data cables

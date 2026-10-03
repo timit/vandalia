@@ -23,7 +23,8 @@ note: the BAOMAIN transfer-switch terminal wiring (jumper 2-4 and 6-8, common vs
 
 wanted (electrical):
 - blue sea instructions: 8077, 3131, 7210, 5005, 5502 (or egis class T block)
-- egis powerbar 6600-404 and 6600-804 spec sheets
+- egis powerbar 6600-404 spec sheet (both busbars are now this model, 2026-10-03 — the 6600-804 spec sheet is no longer needed)
+- victron orion-tr smart 24/12-30 isolated manual — not bought yet (12V bus redundancy, adopted 2026-10-03); its own wire/fuse sizing in electrical/wiring.md is a reasoned estimate until this is on hand
 
 wanted (plumbing): none yet.
 
