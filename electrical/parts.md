@@ -2,84 +2,105 @@
 
 last updated: 2026-10-03
 
-## have or ordered
+one item per line, checklist style: `[x]` purchased/in hand, `[ ]` still needed. categories mirror wiring.md/diagrams.md's own sections (dc positive and alternator, dc negative and ground, ac input, ac loads, 12V bus, data cables), plus lugs and tools/supplies since those cut across circuits. for the reasoning behind a choice, the full history, or open questions, see wiring.md and verify.md.
 
-**victron and battery**
-- victron multiplus-ii 24/3000/70, 120V (3000VA, about 2,400W continuous). confirmed 2 AC outputs: AC-out-1 (uninterruptible, rated 50A) and AC-out-2 (32A, disconnects on battery operation, reconnects ~2min after AC-in-1 returns) — not used in this build, BAOMAIN 1 - shore AC destination switch stays as the source selector. AC-in/AC-out are screw terminal blocks (N/PE/L, 2Nm, min 6 AWG at full 50A rating). factory default battery profile (28.8V absorption/27.6V float for 24V) is higher than the ≤27.6V absorption this build targets for the SOK — should be changed to a lithium profile before charging the bank. with DVCC on and a working CAN link, the cerbo manual states plainly that configuring charge voltage/profile in VictronConnect "is unnecessary and has no effect" — the multiplus, XS, and other DVCC-compatible chargers charge using the voltage the battery's BMS sends over CAN, full stop. that's stronger than a "fallback" — but it depends on the CAN link actually working. SOK isn't on victron's official compatibility list, but its BMS reportedly speaks the Pylontech CAN protocol and gets auto-detected as Pylontech (community-sourced, not a victron guarantee — see wiring.md and verify.md). set the local profile correctly anyway, in case that link isn't there or isn't working. reference/32424-MultiPlus-II___Quattro-II-pdf-en.pdf
-- victron cerbo GX MK2 (PN BPP900450110). box includes: power cable with an inline 3.15A slow-blow fuse already built in, terminated in M8 ring eyes for direct battery/busbar attachment (no separate fuse holder needed — this build's earlier "5065 holder + 3A ATC" plan for the cerbo was wrong and is dropped); terminal blocks; 2x VE.Can terminators. powered via the "Power in V+" terminal only, 8-70VDC — do NOT power it from a multiplus AC-out (victron's own manual: this can deadlock the system after a fault, since the multiplus won't boot without the cerbo and the cerbo won't boot without AC). MK2 has 2 fully configurable VE.Can ports (not a fixed BMS-Can port like the original Cerbo GX) — dedicate one to the SOK, set to BMS-Can (500kbit/s), terminated at the cerbo end with one of the included terminators. SOK is not itself on victron's official compatibility list (checked directly), but its BMS is reported to speak the Pylontech CAN protocol and auto-detect as Pylontech — a supported brand — per multiple DIY solar forum reports. verify by checking the cerbo's device list for that auto-detection once connected; this is community evidence, not a victron guarantee. reference/140558-Ekrano_GX__Venus_GX__Cerbo_GX__Cerbo-S_GX_Manual-pdf-en.pdf, reference/BPP900450110-photo.heic, reference/BPP900450110-support.heic
-- SOK SK24V150PH 24V 150Ah, 3.84kWh nominal (25.6V nominal, 21.6-29.2V max range). standard discharge ≤150A continuous, max 170A@60s / 800A@10s peak, short-circuit 2000A (corrected — parts.md previously said 200A continuous/500A peak, which was wrong). charging voltage 28V, float 27.6V per SOK's own spec (this build's chargers are set to absorption ≤27.6V, slightly conservative — see wiring.md). self-heating, CAN/RS485/bluetooth. terminal power cable torque 9-11 N·m (66-97 in-lb); max 150A per cable/terminal pair; max power cable length 10m, max comms cable length 15m. includes a 2m battery-to-inverter CAN cable in the box. max 15 in parallel or 2 in series (not both) — a second SOK (parallel) is fine. reference/SK24V150PH.pdf
-- victron orion XS 1400 (input 9-35V, output 10-35V, 1-50A adjustable, 1400W continuous @ 40°C). screw terminals (IN/GND/OUT), no lug needed, max 4 AWG cable. victron recommends a dedicated 60-70A external fuse for this unit specifically, paired with 6 AWG (under 5m) or 4 AWG (5-10m) — see wiring.md for how that compares to this build's shared-feed fuse. reference/124067-Orion_XS_DC-DC_battery_charger-pdf-en.pdf
-- victron VE.direct cable, 2.95 ft
-- victron RJ45 UTP cable, 0.9 m (2.95 ft)
+## dc positive and alternator
 
-**AC**
-- blue sea 8027 (main + 6; 30A main; three 15A branches installed, three positions open for later expansion). 0.125" 5052-H32 aluminum, 5-1/4 x 7-1/2 in overall, 4-7/16 x 6-11/16 in mounting centers. breakers are AC/DC rated, 65VDC/277VAC max. neutral bus and ground bus are physically separate inside the panel, confirmed by blue sea's own wiring diagram — matches this build's "no neutral-ground bond in any panel" decision. the backlit labels are a DC device needing their own fused (1.0-2.0A) DC feed and ground, separate from the AC wiring — not yet routed anywhere in this build, see wiring.md. reference/bluesea8027-instructions.pdf
-- blue sea 8077 (30A double-pole main-only panel; on LED and reverse-polarity LED). panel footprint about 2.63 x 3.75in (width x height) per multiple retailer listings (walmart, fisheries supply, wolfsmarine) — no official blue sea 8077 instructions on file for this build to confirm directly, so treat as well-sourced but not manual-verified.
-- conntek 30A 125V stainless shore inlet
-- enclosure box, 8027: carlon E989N-CAR, 8 x 8 x 4in, noryl (PPO/PVC-alloy thermoplastic), screw cover with foam-in-place gasket, NEMA 6P. comfortably larger than the 8027's 5-1/4 x 7-1/2in footprint and exceeds the ≥3in internal depth target. non-metallic, matches this build's single-chassis-bond requirement. [home depot](https://www.homedepot.com/p/Carlon-8-in-x-8-in-x-4-in-Gray-Electrical-PVC-Junction-Box-E989N-CAR-E989N-CAR/100404099)
-- enclosure box, 8077: carlon E987N-3-HD, 4 x 4 x 4in, PVC, screw cover with foam-in-place gasket, NEMA 4/4X/6P. comfortably larger than the 8077's ~2.63 x 3.75in footprint (see above). non-metallic. [home depot](https://www.homedepot.com/p/Carlon-4-in-x-4-in-x-4-in-Gray-Electrical-PVC-Junction-Box-E987N-3-HD-E987N-3-HD/100404095)
-- 10 AWG 3-conductor SOOW cord (southwire, black, sold by the foot) for the shore-inlet-to-8077 run — UL listed and CSA certified, rated for indoor/outdoor and wet locations, oil/moisture/ozone resistant, flexible stranding. resolves the marine/UL-rating question for this specific run (unlike the 12 AWG triplex above, still unverified for its own branch). [lowe's](https://www.lowes.com/pd/Southwire-10-AWG-3-Black-Power-Cord-By-the-Foot/50148254) — 15ft ordered, comfortably covers the up-to-10ft run with slack to spare. the three interior 10 AWG 3-conductor runs (8077→BAOMAIN 1 - shore AC destination switch, BAOMAIN 1 - shore AC destination switch→multiplus AC-in, multiplus AC-out→8027) are separate and still unbought — 15ft doesn't leave enough surplus to cover those too.
-- 4x BAOMAIN 32A cam changeover switch with enclosure, 2-pole, 8-terminal, 3-position maintained (1-0-2), model SZW26-32/D202.2D — the 4th (BAOMAIN 4 - oven/cooktop AC destination switch, needed as of the 2026-10-02 kitchen redesign) obtained 2026-10-03, [same listing](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) as the other 3. Ith 32A confirmed on the actual unit's nameplate (photo), 660V. terminal is M4 screw, accepts 2.5-6.0mm² wire (about 14-10 AWG — 10 AWG is at the top of the range, don't go heavier), tightening torque 1.2 N·m. reference/baomain-operating-intructions.pdf (the real manufacturer manual — supersedes the manuals.plus reproduction's 30A figure) and reference/baomain-interior-photo.heic, reference/baomain-exterior-photo.heic. transfer-switch terminal wiring (jumper-based, not spelled out by BAOMAIN but consistent with their own truth table) is in wiring.md.
-- blue sea 3131 circuit breaker enclosure (DJI branch)
-- blue sea a-series 15A white toggle breaker (7210). verify single-pole.
-- 2x blue sea 7214 A-series white toggle breaker, single pole, 20A, obtained 2026-10-03 — same family as the 7210, confirmed fits the 8027. only one is needed right now, for the new oven/cooktop circuit's victron leg (BAOMAIN 2 - oven/cooktop AC source switch position 2, one of the 8027's 3 open positions) — resolves that "still to buy" item. the second is a spare.
-- 12 AWG 12/3 triplex marine wire, tinned OFC, 20ft — **reassigned 2026-10-02** from the BAOMAIN 1 - shore AC destination switch pos 1 to 3131 to DJI receptacle branch (its original job) to the new 20A oven/cooktop circuit (BAOMAIN 2 - oven/cooktop AC source switch common → BAOMAIN 4 - oven/cooktop AC destination switch common → oven/cooktop receptacles), where 12 AWG is the NEC minimum gauge anyway. marine/UL rating for AC branch use: verify.
-- a second 12 AWG 12/3 triplex marine wire spool, 20ft, obtained 2026-10-03 — **resolves the DJI-input branch's open wire need**: covers BAOMAIN 1 - shore AC destination switch pos 1 → 3131 → DJI receptacle, the branch left without wire when the first spool was reassigned above.
-- 14 AWG 14/3 triplex marine wire, tinned OFC, 20ft, obtained 2026-10-03 — covers the new 15A fridge+USB circuit (8027's existing branch → BAOMAIN 3 - fridge/receptacle AC source switch → receptacles). marine/UL rating: same unverified status as the other triplex spools.
-- iron forge cable 12/3 SJTW replacement appliance cords, 15A rated, 12 AWG, molded 90° plug one end / open end the other — 15ft and 6ft, obtained 2026-10-02 for the two DJI AC-output-port taps (one to BAOMAIN 3 - fridge/receptacle AC source switch position 1, one to BAOMAIN 2 - oven/cooktop AC source switch position 1 — see wiring.md). the molded plug end plugs into one of DJI's two built-in AC output ports (confirmed via reference/DJI_Power_2000_um_en.pdf, section 1.1 — these are real plug-in outlets, not hardwired terminals); the open end lands on the BAOMAIN M4 terminal.
+- [x] SOK SK24V150PH, 24V 150Ah, 3.84kWh — main battery bank
+- [x] victron orion XS 1400, 1-50A adjustable — alternator DC-DC charger
+- [x] battery selector switch, 300A off-1-2 — selector 1, van feed to XS/DJI charger
+- [x] battery selector switch, 300A off-1-2 — selector 2, velit source
+- [x] egis powerbar 6600-404, 4-stud — positive busbar. [west marine](https://www.westmarine.com/egis-mobile-electric-powerbar---four-m103-8inch-studs-4-circuits-8---600-amp-21976824.html)
+- [x] egis mobile electric 3912B class T fuse block, M8 studs — battery main fuse holder. [west marine](https://www.westmarine.com/egis-mobile-electric-class-t-fuse-block-225---400-a-sealed-21481650.html)
+- [x] eaton/bussmann JJN-300 limitron class T fuse, 300A — battery main fuse. [west marine](https://www.westmarine.com/eaton-limitron-fast-acting-class-t-fuse-22185755.html)
+- [x] 2x blue sea 5005 ANL fuse block, 5/16" studs — XS output fuse, velit direct-DC tap fuse
+- [ ] blue sea 5123, 60A ANL fuse — XS output
+- [ ] blue sea 5165, 40A ANL fuse — velit direct-DC tap
+- [x] pacer marine tinned copper battery cable, 15ft #6 red — selector/XS/busbar positive runs
+- [x] pacer marine tinned copper battery cable, 8ft #2/0 red — positive 2/0 runs
+- [x] meanwell RSP-1000-24 — AC-to-24VDC supply for the velit, DJI leg
+- [x] velit 2000R rooftop AC, 24V DC, 720W — rooftop air conditioner
+- [ ] molded-plug 12-14 AWG appliance cord — DJI AC output to meanwell
+- [x] DJI power 2000 + expansion battery 2000 — secondary AC/DC power system
+- [x] DJI super fast charger (DYS_DC1000) — alternator-to-DJI charger
 
-**DC**
-- 3x 300A 3-position battery selector switch (off-1-2, no both), IP66 — the 3rd ([generic listing](https://www.amazon.ca/Battery-Selector-Switch-Position-Marine/dp/B0C85R2VD2), same spec as the other two) obtained 2026-10-03 for **selector 3**. sold as "aramox" but a generic OEM design also sold as spartan power, seaflo, and others under the same specs — no dedicated datasheet exists beyond the printed label. confirmed via photos: 300A continuous, 500A for 5 min, 900A for 30 sec, ABS body, tinned copper, M10 studs. terminals labeled "OUTPUT" (common), "1", "2". all three units are assigned: **selector 1** (van feed between orion XS and DJI charger, phase 3), **selector 2** (2026-09-21 — velit source: direct 24V bus tap vs. DJI-fed meanwell, see wiring.md), **selector 3** (2026-10-03 — 5026 12V bus source: DJI SDC feed vs. the new orion-tr converter, see wiring.md). reference/aramox-exterior-photo.heic, reference/aramox-interior-photo.heic
-- victron orion-tr smart 24/12-30 isolated (30A/360W at 12V, bluetooth/victronconnect configurable), obtained 2026-10-03 — the 5026 12V bus's new victron-leg source, via selector 3. [amazon](https://www.amazon.com/dp/B086R9ZVK5). no manual on file yet — its own input/output wire and fuse sizing in wiring.md's schedule are still reasoned estimates until the real manual is read; add it to reference/ before wiring this circuit.
-- 2x blue sea 5005 ANL fuse block, 35-300A (5/16" studs, 32V DC). one holds the XS output's 60A ANL (5123); the other, previously unassigned, now holds the velit direct-DC tap's ANL fuse (2026-09-21 — see wiring.md)
-- egis powerbar 6600-404 (four M10/3/8" studs, +4 circuits, 600A continuous, 70-80VDC max, tin-plated copper, nylon 6 30%-glass-filled base, clear polycarbonate cover) — now **both** bars, positive and negative. **busbar downsize adopted 2026-10-03**: the negative bar was the 8-stud 6600-804; swapped for a second 6600-404 to save physical space, now that the stud length is confirmed at 1-1/4" — comfortably enough to stack 3 ring lugs (standard stud-stacking: multiple lugs per stud, nut-and-washer between each). stud assignment for the 8 negative-bar connections plus the already-planned second SOK: **stud 1** — SOK- (both, once the second SOK is added). **stud 2** — multiplus- (dedicated, no stacking, this is the one connection worth keeping alone given its current). **stud 3** — XS GND, cerbo-, meanwell -V. **stud 4** — multiplus exterior grounding point, velit -, chassis bond. both bars confirmed via egismobile.com/fisheriessupply listings. [4-stud](https://www.westmarine.com/egis-mobile-electric-powerbar---four-m103-8inch-studs-4-circuits-8---600-amp-21976824.html)
-- egis mobile electric 3912B class T fuse block, 225-400A, 80VDC max, M8 studs with serrated flange nuts, IP66/IP67/IP6K9K sealed latching cover, tin-plated copper busbar. **correction**: this build had assumed 3/8" studs at the class T block (verify item, never confirmed) — the real unit uses M8, meaningfully smaller than 3/8" (not interchangeable the way M10 and "3/8" stud" lugs commonly are). changes the lug count — see "lugs" under "still to buy" below. [west marine](https://www.westmarine.com/egis-mobile-electric-class-t-fuse-block-225---400-a-sealed-21481650.html)
-- eaton/bussmann JJN-300 limitron class T fuse, 300A, 300VAC, fast-acting/current-limiting, 200kA AIC interrupt rating — clears the SOK's required minimum interrupt rating (2000A AIC) by two orders of magnitude. matches this build's planned 300A rating for the 2/0 cable. [west marine](https://www.westmarine.com/eaton-limitron-fast-acting-class-t-fuse-22185755.html)
-- pacer marine tinned copper battery cable, 5 reels obtained 2026-10-02: 15ft #6 red, 15ft #6 black, 10ft #2 black, 8ft #2/0 red, 8ft #2/0 black. covers every 2/0/2 AWG/6 AWG need in this build's schedule, but the cargo-area layout confirmed 2026-10-03 (see measurements.md) changed the risk picture — **measure before cutting either 6 AWG reel**:
-  - **#6 red (15ft for 4 runs)**: selector 1 pos 2→XS input and XS output→+bar are short (under-bed, under 6ft each); +bar→selector 2's direct tap is now confirmed *short* (selector 2 sits directly above the SOK/busbars); but **meanwell+V→selector 2 is now confirmed long** — the meanwell is driver-side near the DJI, selector 2 is passenger-side, so this one run alone could be 6-9ft, potentially consuming most of the reel by itself.
-  - **#6 black (15ft for 2 runs)**: XS GND→−bar is short (under-bed); **meanwell−V→−bar is the same long driver-to-passenger crossing as above**, not the short run this reel was sized against.
-  - **2/0 red and black (8ft each)**: SOK-to-class-T-block legs are short ("as close as practical," now further confirmed — SOK sits right at the front-wall/passenger corner where the busbars presumably also live); +bar→multiplus+ and −bar→multiplus− cross the passenger-side wall's ~3ft depth plus a height offset — likely shorter than the previous 6ft worst case, but still not tape-measured.
-  - **#2 black (10ft for the one chassis-bond run, 6-8ft stated)**: comfortable slack, unaffected by the above.
+## dc negative and ground
 
-**existing systems**
-- DJI power 2000 plus expansion battery 2000. AC output auto-shuts-off after 30min with no load, shuts down fully after 60min with no input/output — hold the AC button for continuous-supply mode for intermittent loads like the fridge. expansion battery port: 40.0-58.4V DC, max 60A, max 3000W (internal DJI-to-DJI link). reference/DJI_Power_2000_um_en.pdf, reference/DJI_Power_Expansion_Battery_2000_User_Guide_Multi.pdf
-- DJI super fast charger (model DYS_DC1000) for DJI power 1000/1000V2/2000, 12-45V DC in (rated), max 70A, max 1000W; SDC output 40-58.4V DC, 2 ports (UPC 6941565996053). also works in reverse ("charging mode") to feed the car battery from the power station and prevent over-discharge: 12V system 11-14.4V DC or 24V system 22-28.8V DC, max 1000W. default charging power 500W, raise to 1000W in the DJI app (DJI power 1000 needs the DJI power dongle for app access; not needed for the power 2000). operating temp -10 to 45°C discharging, 0 to 45°C recharging. not water or dust resistant. ships with a 100A fuse. reference/DJI_Power_1kW_Super_Fast_Car_Charger_Multi.pdf
-- blue sea 5026: "ST Blade Fuse Block, 12 Circuits with Negative Bus" (LED pucks, four USB panels, starlink mini) fed from DJI SDC via XT60. DJI's own SDC-to-XT60 cable spec is 13.6V default, 10A max. upstream feed fuse: blue sea caps this at 125A max, but their own instructions say consult ABYC E-11 Table V for the interrupt rating needed (not yet checked). 6.472 x 3.315 x 1.518in, mounts with #8 or M4 screws at 2.5in spacing, terminal screws #8-32. photo of the actual unit confirms the layout and shows a 10A ATC fuse already populated in one branch. reference/5026.pdf, reference/Wiring-Diagram-5026_5031.pdf, reference/bluesea5026-interior-photo.heic, reference/bluesea5026-exterior-photo.heic
-- meanwell RSP-1000-24: 24V output, 40A rated (0-40A range), 960W rated power (the "1000W" is the series name, not this variant's actual rating), 20-26.4V output adjustable range, 88% typical efficiency (reference/RSP-1000-SPEC.pdf p.2). AC input 90-264VAC universal, 47-63Hz, draws up to 12A at 115VAC full load (informs the DJI-out-to-meanwell branch gauge — 12A fits comfortably on 14 AWG or heavier), inrush 25A/115VAC typ. ships with remote-on/off (pin 6) and -S (pin 2) shorted by default, so it's simply on whenever AC is present — no extra wiring needed. AC input terminal max torque 18 kgf-cm (~1.76 N·m); DC output terminal max torque 10 kgf-cm (~0.98 N·m). 1.95kg. photo of the actual unit confirms the nameplate matches and shows the +V output already through a single inline fuse holder, -V unfused — matches the velit cable's "fused positive only at the source end" spec. **2026-09-21 redesign**: only serves the DJI leg now (fed directly from DJI AC out, no BAOMAIN switch); its -V output is permanently bonded to the negative bar (safe — the unit is galvanically isolated input-to-output, 3kVAC per its datasheet). **2026-10-03**: this branch plugs into a DJI AC output port rather than being hardwired — needs its own molded-plug cord (14 AWG minimum, 12A load), same style as the two iron forge cords used for the kitchen taps but a separate (third) one, not yet sourced. no external breaker needed — DJI's own output protection plus the meanwell's internal AC-input protection cover it. reference/RSP-1000-SPEC.pdf, reference/meanwell-exterior-photo.heic
-- velit 2000R rooftop AC, 24V DC input variant: 720W rated, 10-33A operating current, 8000-10000BTU depending on variant, 66lb. ships with its own 6 AWG DC power cable — fused on both positive and negative at the unit end, positive only at the source end. **2026-09-21 redesign**: the source end is now battery selector 2's OUTPUT terminal (DJI-fed meanwell on pos 1, direct 24V bus tap on pos 2), not the meanwell directly — see wiring.md. reference/Velit_2000R_User_Manual_2609.pdf
-- kitchen circuit (2026-10-02 redesign — real nameplate specs replace the old "TBD" watts): **oven**, typhur CV03 sync oven, 120VAC/60Hz, 1750W rated, 26L, 24lb, plug-in (reference/Typhur_CV03SyncOven.pdf). **cooktop**, empava EMPV-12EC07 induction, 120VAC/60Hz, 1800W total (2 elements, 1800W each individually but shared), and its own spec table states **"Minimum circuit breaker Amperage: 20"** — a manufacturer requirement, not just this build's choice. **confirmed hardwired, not plug-in**: its manual requires installation "by a qualified technician," a "three-wire cable" (not cord), and NEC-compliant wiring — no receptacle needed (reference/EMPV-12EC07_Manual.pdf). **fridge**, deaprull D31A, 31L/33qt compact drawer fridge, dual-voltage: AC 120/240V or DC 12/24V, 35-45W running (as low as 35W in eco-mode) per the manufacturer's other product listings and an independent review (reference/DEAPRULL_ D31A.png is a spec-sheet screenshot that said 12VDC-only and "0.4 kWh annual" — both appear wrong/mislabeled and aren't used). **confirmed running on AC** (2026-10-02). oven and cooktop combined (3550W) exceed every AC source in this build, DJI's AC output included (confirmed 2026-10-02: 4 ports, 100-120V/25A ≈ 3000W continuous for the US variant, per dji.com/power-2000/specs — the closest of any source, but still short), and can never run together — see wiring.md's limits section for the full circuit split (15A fridge+USB via BAOMAIN 3 - fridge/receptacle AC source switch, 20A oven/cooktop via BAOMAIN 2 - oven/cooktop AC source switch + the new BAOMAIN 4 - oven/cooktop AC destination switch interlock).
-- USB charging outlet (part of the 15A fridge circuit) — **confirmed** a 120VAC outlet with built-in USB-A/USB-C ports (2026-10-02). specific product: TBD.
-- honda EU2200i generator (1,800W continuous)
+- [x] egis powerbar 6600-404 — negative busbar, replaces the 6600-804
+- [ ] return egis powerbar 6600-804 — superseded by the 6600-404 above
+- [x] pacer marine tinned copper battery cable, 15ft #6 black — negative-side runs
+- [x] pacer marine tinned copper battery cable, 10ft #2 black — chassis bond
+- [x] pacer marine tinned copper battery cable, 8ft #2/0 black — negative 2/0 runs
+- [ ] 2 AWG lug, 1/4" hole, x1-2 — chassis bond
+- [ ] 10 AWG single-conductor cable — multiplus exterior grounding point to negative bar
 
-**tools**
-- DxCRIMP hex ferrule crimper, AWG 24-4, self-adjusting, obtained 2026-10-03 — for this build's screw-terminal connections that accept a bootlace ferrule (XS's IN/GND/OUT terminals explicitly take one, per its manual; likely the meanwell's and 5026's screw terminals too).
-- ferrule set, 166pc, 8 sizes AWG 1/0-12, obtained 2026-10-03 — the 4-12 AWG sizes match the ferrule crimper's range and this build's lighter screw-terminal connections. the 1/0 and 2/0 sizes likely have no use here: this build's 2/0 connections all terminate in ring lugs bolted to studs (SOK, class T block, busbars, multiplus), not ferrules into clamp terminals.
-- pro'skit 902-160 crimpro crimper, AWG 2-4-6, obtained 2026-10-03 — for this build's 6/4/2 AWG screw-terminal connections. **correction**: this was originally proposed for "the large wires that go into the multiplus," which was wrong — the multiplus's battery terminals are M8 bolts (stud + ring lug), not ferrule/clamp terminals, so no ferrule crimper applies there regardless of size. still useful elsewhere in this build.
-- [IWISS Battery Cable Lug Crimping Tool Kit](https://www.amazon.com/IWISS-Battery-Crimping-Terminals-Stripper/dp/B09PYH9B4Q), obtained 2026-10-03 — covers 8, 6, 4, 2, 1, 1/0, 2/0, 3/0, 4/0 AWG, includes a wire stripper. the confirmed tool for this build's 2/0 ring lugs. the "toscoco" hydraulic crimper from an earlier batch (ambiguous 2/0 die coverage) is now a spare/backup — the IWISS kit covers the job either way.
+## ac input
 
-## still to buy
+- [x] victron multiplus-ii 24/3000/70, 120V, 3000VA — main inverter/charger
+- [x] blue sea 8077, 30A double-pole main — shore/generator main breaker
+- [x] conntek 30A 125V stainless shore inlet
+- [x] carlon E987N-3-HD enclosure, 4x4x4in — houses the 8077. [home depot](https://www.homedepot.com/p/Carlon-4-in-x-4-in-x-4-in-Gray-Electrical-PVC-Junction-Box-E987N-3-HD-E987N-3-HD/100404095)
+- [x] southwire 10 AWG 3-conductor SOOW cord, 15ft — shore inlet to 8077. [lowe's](https://www.lowes.com/pd/Southwire-10-AWG-3-Black-Power-Cord-By-the-Foot/50148254)
+- [x] BAOMAIN 32A cam changeover switch, SZW26-32/D202.2D — BAOMAIN 1, shore AC destination
+- [x] blue sea 3131 circuit breaker enclosure — DJI AC-input branch
+- [x] blue sea 7210, 15A toggle breaker — DJI AC-input branch
+- [x] 12 AWG 12/3 triplex marine wire, 20ft — DJI AC-input branch
+- [ ] 10 AWG 3-conductor cable — 3 interior AC runs
+- [ ] surface-mount outlet box w/ 15A/20A receptacle — DJI AC-input branch
+- [x] honda EU2200i generator, 1,800W — backup/shore AC source
 
-**west marine (local)**
-- tinned marine cable still needed: 10 AWG single-conductor black or green (short — multiplus exterior grounding point to the negative bar, victron requires ≥4mm², separate from its DC negative and AC ground connections), 10 AWG 3-conductor for the three interior runs (8077→BAOMAIN 1 - shore AC destination switch, BAOMAIN 1 - shore AC destination switch→multiplus AC-in, multiplus AC-out→8027 — the shore-inlet-to-8077 run is sourced separately as SOOW cord, see "AC" above). the 2/0, 2 AWG, and 6 AWG needs are now covered by the pacer cable reels below.
-- receptacles, 3 needed (2026-10-02): fridge, USB-charging outlet, oven — all plug-in appliances with their own cords (matching the pattern already used for the DJI AC-input branch). the cooktop needs no receptacle — confirmed hardwired per its own manual (qualified-technician install, NEC-compliant wiring, no plug). specific products TBD.
-- blue sea 5123 (60A ANL fuse). 5065 waterproof inline ATO/ATC holder + 10-15A ATC fuse — repurposed from an earlier cerbo-power plan (no longer needed there, the cerbo's supplied cable already has its own inline 3.15A fuse) to the DJI SDC-to-5026 feed, replacing the 40A ANL that was the wrong fuse format for that 10A-rated cable.
-- blue sea 5165 (40A ANL fuse, confirmed 2026-10-03) for the velit direct-DC tap — mounts in the second already-owned 5005 block, previously unused. 6,000A interrupt rating, matching this build's other ANL fuses.
-- a third molded-plug 14 AWG cord (2026-10-03), same style as the two iron forge cords used for the kitchen DJI taps, for the DJI AC output port → meanwell AC input connection — not yet sourced.
-- blue sea 5026 branch fuses: 4x 10A ATC for the USB panels; LED pucks and starlink fuses TBD pending their watts
-- a second egis powerbar 6600-404 (busbar downsize adopted 2026-10-03, see "have or ordered" above) — this becomes the new negative bar. return the already-owned 6600-804 once the swap is physically made (don't return it before the new one's in hand and the stacking plan's confirmed to actually clear on the real part).
+## ac loads
 
-**lugs**
+- [x] blue sea 8027, main + 6, 30A main — AC branch panel
+- [x] carlon E989N-CAR enclosure, 8x8x4in — houses the 8027. [home depot](https://www.homedepot.com/p/Carlon-8-in-x-8-in-x-4-in-Gray-Electrical-PVC-Junction-Box-E989N-CAR-E989N-CAR/100404099)
+- [x] BAOMAIN 32A cam changeover switch — BAOMAIN 3, fridge/receptacle AC source. [amazon](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH)
+- [x] BAOMAIN 32A cam changeover switch — BAOMAIN 2, oven/cooktop AC source
+- [x] BAOMAIN 32A cam changeover switch — BAOMAIN 4, oven/cooktop AC destination
+- [x] 2x blue sea 7214, 20A toggle breaker — oven/cooktop circuit (1 spare)
+- [x] 12 AWG 12/3 triplex marine wire, 20ft — oven/cooktop circuit
+- [x] 14 AWG 14/3 triplex marine wire, 20ft — fridge+USB circuit
+- [x] iron forge 12/3 SJTW molded-plug cord, 15ft — DJI AC-output tap, fridge/USB leg
+- [x] iron forge 12/3 SJTW molded-plug cord, 6ft — DJI AC-output tap, oven/cooktop leg
+- [x] typhur CV03 sync oven, 1750W — kitchen oven
+- [x] empava EMPV-12EC07 induction cooktop, 1800W — kitchen cooktop, hardwired
+- [x] deaprull D31A fridge, 35-45W, 120VAC — kitchen fridge
+- [ ] USB charging outlet, 120VAC w/ USB-A/USB-C — kitchen, specific product TBD
+- [ ] receptacles x3 — fridge, USB outlet, oven
+- [ ] GFCI breaker, blue sea 309x/310x series — 8027 AC-out-1
 
-4 seafit heavy duty tinned lug 5-packs obtained 2026-10-02, in order: #2/0-5/16", #6-3/8", #6-5/16", #2/0-5/16" (the duplicate URL was real — 2 packs of the same #2/0-5/16" item, not a typo). confirmed physically that a 3/8"-stud lug fits the aramox selectors' M10 studs (same interchangeable marine-retail pairing as the egis busbars), so the #6-3/8" product covers both busbar ends and selector ends, not two different parts. reconciled against what this build actually needs:
+## 12V bus
 
-- **return**: 2x seafit "#2/0-5/16" (10 lugs) — confirmed mix-up, no 2/0 connection in this build lands on a 5/16" stud.
-- **keep, covered**: 1x seafit "#6-5/16" (5 lugs, 1 spare) — covers the 2 ANL-block-stud ends (XS output's block, velit tap's block).
-- **keep, need 4 more of the same product**: 1x seafit "#6-3/8" (5 lugs, only 5 of 9 needed) — covers 4 busbar ends (XS output→+bar, XS GND→-bar, velit tap→+bar, meanwell−V→−bar) plus 5 selector ends (selector 1→XS, van feed→selector 1 OUTPUT, selector 1→DJI charger leg, meanwell+V→selector 2, velit tap→selector 2).
-- **still need to buy, nothing purchased yet**: 2/0 with M8 holes x6 (SOK+, SOK-, both class-T-block ends, both multiplus ends — **corrected 2026-10-02** from an earlier 3/8"x6/M8x4 guess, once the class T block was confirmed M8 not 3/8"); 2/0 with 3/8" holes x4 (the four busbar landing points — the egis busbars' M10(3/8") stud is the one place in this build where 3/8"-stud lugs and M10 hardware are interchangeable, unlike the class T block's M8); 2 AWG with a 1/4" hole x1-2 for the chassis bond (the factory stud is 1/4-20, noticeably smaller than every other stud in this build — don't default to 3/8"); 10 AWG with a 3/8" hole x3 (**new need, 2026-10-03** — selector 3's three M10-stud connections: DJI SDC feed in, orion-tr output in, OUTPUT to the 5026; a gauge/stud combination not covered by anything above).
-- **other lug/terminal notes**: XS terminals are screw terminals per its manual, no lug needed. cerbo's supplied power cable has M8 ring eyes already attached, landing on the + and - bars (3/8"/M10) — a possible mismatch, check physically, may need re-terminating. #10 ring terminals (blue for 14 AWG, yellow for 12 AWG) cover the 3131 breaker's connections. the orion-tr's own input/output terminal type (screw terminal vs. stud) isn't known yet — verify once its manual is on hand.
+- [x] blue sea 5026, 12-circuit fuse block — 12V bus (LED pucks, USB panels, starlink)
+- [x] victron orion-tr smart 24/12-30 isolated, 30A/360W — 5026 bus's victron-leg converter. [amazon](https://www.amazon.com/dp/B086R9ZVK5)
+- [x] battery selector switch, 300A off-1-2 — selector 3, 5026 bus source
+- [ ] blue sea 5065 holder + 10-15A ATC fuse — DJI SDC to 5026 feed
+- [ ] blue sea 5026 branch fuses, 4x 10A ATC — USB panels
+- [ ] 10 AWG lug, 3/8" hole, x3 — selector 3 connections
 
-**tools and other supplies**
-- adhesive heat shrink, cable cutter, inch-pound torque wrench, multimeter, 1-1/8" hole saw
-- GFCI breaker for the 8027: victron's multiplus-ii manual specifically recommends blue sea systems GFCI circuit breakers PN 309x or 310x for AC-out-1
-- DJI branch: surface-mount outlet box with 15A/20A receptacle, connectors for the neutral and ground pass-through
-- 8x short jumper wires for the BAOMAIN switches (terminal 2-to-4 and 6-to-8, two per switch), 4 switches now needed (2026-10-02 — up from 3) — see wiring.md's transfer-switch terminal wiring section. **BAOMAIN 1 - shore AC destination switch: 10 AWG** (matches its 30A circuit — needed for the 2026-09-20 install). **BAOMAIN 3 - fridge/receptacle AC source switch: 14 AWG** (15A fridge+USB circuit). **BAOMAIN 2 - oven/cooktop AC source switch and BAOMAIN 4 - oven/cooktop AC destination switch: 12 AWG** (shared 20A oven/cooktop circuit — BAOMAIN 2 - oven/cooktop AC source switch's jumpers carry whichever source is selected into that circuit, BAOMAIN 4 - oven/cooktop AC destination switch's carry the same circuit downstream, so both match its gauge, not either individual leg's).
+## data cables
+
+- [x] victron cerbo GX MK2 (PN BPP900450110) — system monitor, CAN/DVCC hub
+- [x] victron VE.direct cable, 2.95ft — orion XS to cerbo
+- [x] victron RJ45 UTP cable, 0.9m — multiplus to cerbo
+
+## lugs
+
+- [x] seafit "#6-3/8" lug 5-pack — busbar and selector 6 AWG ends
+- [x] seafit "#6-5/16" lug 5-pack — ANL block 6 AWG ends
+- [ ] seafit "#6-3/8" lug 5-pack, x4 more — busbar and selector 6 AWG ends (only have 1 of 5 needed)
+- [ ] return: 2x seafit "#2/0-5/16" lug 5-pack — wrong size, no use in this build
+- [ ] 2/0 lug, M8 hole, x6 — SOK, class T block, multiplus
+- [ ] 2/0 lug, 3/8" hole, x4 — busbar ends
+
+## tools and other supplies
+
+- [x] DxCRIMP hex ferrule crimper, AWG 24-4
+- [x] ferrule set, 166pc, AWG 1/0-12
+- [x] pro'skit 902-160 crimpro crimper, AWG 2-4-6 — for 6/4/2 AWG screw terminals
+- [x] [IWISS battery cable lug crimping tool kit](https://www.amazon.com/IWISS-Battery-Crimping-Terminals-Stripper/dp/B09PYH9B4Q), AWG 8-4/0 — for the 2/0 ring lugs
+- [ ] adhesive heat shrink
+- [ ] cable cutter
+- [ ] inch-pound torque wrench
+- [ ] multimeter
+- [ ] 1-1/8" hole saw
+- [ ] 8x short jumper wires — BAOMAIN switch commons (10 AWG for BAOMAIN 1, 14 AWG for BAOMAIN 3, 12 AWG for BAOMAIN 2 and 4)
