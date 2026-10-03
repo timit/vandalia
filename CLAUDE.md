@@ -16,14 +16,16 @@
 
 ## where to look
 
-- electrical questions: read electrical/PLAN.md first (design, diagrams, install order, supplies, by subsystem section) and electrical/verify.md (open questions, change log). what's actually built is in electrical/README.md. cable lengths are in electrical/measurements.md.
+- electrical questions: read electrical/PLAN.md (design, diagrams, install order, supplies, by subsystem section — open questions and settled decisions are at its end). what's actually built is in electrical/README.md.
 - power budget and load checks: the load budget section of the root README.md
-- manuals and datasheets: reference/, shared across subsystems. read them to settle verify items and cite the file name.
+- manuals and datasheets: reference/, shared across subsystems. read them to settle open questions and cite the file name.
+- history of how something got decided: `git log` — every change is a commit with a descriptive message. there is no separate change log file.
 
 ## conventions
 
-- each subsystem folder has a README.md (as-built — only grows as something is confirmed complete or a part is confirmed in hand) and a PLAN.md (the design: one section per subsystem/diagram, each leading with its diagram, then an installation checklist, then a supplies checklist, both using `[x]`/`[ ]` task-list syntax). verify.md holds open questions and the change log; measurements.md holds cable lengths and physical layout. manuals live in the shared root reference/ folder, not per subsystem.
+- each subsystem folder has exactly two files: README.md (as-built — only grows as something is confirmed complete or a part is confirmed in hand) and PLAN.md (the design: one section per subsystem/diagram, each leading with its diagram, then an installation checklist, then a supplies checklist, both using `[x]`/`[ ]` task-list syntax; cable lengths and physical layout notes are inline on the relevant line, not a separate table). manuals live in the shared root reference/ folder, not per subsystem.
 - one fact lives in one file. link to it instead of copying it.
-- mark unconfirmed specs with the word verify and list them in the subsystem's verify.md.
-- when a decision changes, edit the file and add a dated line to that subsystem's change log in verify.md.
+- mark an unconfirmed spec inline as `(verify: ...)` on the line it concerns. if it doesn't anchor to one line, put it under PLAN.md's "open questions" section.
+- a rejected or settled-either-way design alternative goes under PLAN.md's "decided" section, trimmed to one line, so it doesn't get re-proposed later.
+- when a decision changes, just edit the file — the commit message is the record of what changed and why, not a separate change log entry.
 - keep this file under 200 lines. put long tables and details in the subsystem files, not here.

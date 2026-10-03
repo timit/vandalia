@@ -2,15 +2,17 @@
 
 last updated: 2026-10-03
 
-this file only records what's actually true of the physical system — confirmed installed, or a permanent fact about a part already in hand (nameplate/datasheet specs, which don't change based on install status). it grows as PLAN.md's checklists get checked off. for the design and the plan to get there, see PLAN.md. for open questions, see verify.md.
+this file only records what's actually true of the physical system — confirmed installed, or a permanent fact about a part already in hand (nameplate/datasheet specs, which don't change based on install status). it grows as PLAN.md's checklists get checked off. for the design and the plan to get there, see PLAN.md, which also carries open questions and settled design decisions at its end.
 
 ## install progress
 
-mounted: the shore inlet, blue sea 8077, BAOMAIN 1, BAOMAIN 3, BAOMAIN 2, battery selector 1, battery selector 2, and the multiplus. that's the mounting half of ac input's first install step — none of the actual wiring has been pulled yet, and nothing is energized.
+mounted: the shore inlet (driver-side wall, rear/top), blue sea 8077, BAOMAIN 1, BAOMAIN 3, BAOMAIN 2, battery selector 1, and battery selector 2 (all in the switch row along the front wall, top — the left-to-right order among them wasn't recorded, see PLAN.md's open questions), and the multiplus (passenger-side wall, rear). that's the mounting half of ac input's first install step — none of the actual wiring has been pulled yet, and nothing is energized.
+
+the DJI power 2000 and its super fast charger pre-date this install (existing equipment, already in place) — floor, driver side, rear of the cargo area.
 
 separately, the van feed's 6 AWG wire has been run from the starter battery (under the driver seat) to the rear, with its AEP 100A fuse inline — not yet landed on anything. this is ahead of sequence (it's a dc positive and alternator step) but doesn't need rework; it just waits for the DC backbone to be wired first.
 
-not yet mounted: the busbars (placement still open — see measurements.md), the orion XS, the class T fuse block, BAOMAIN 4, and battery selector 3.
+not yet mounted: the busbars (placement still open, see PLAN.md's dc negative and ground installation), the orion XS, the class T fuse block, BAOMAIN 4, and battery selector 3.
 
 ## confirmed part specs
 

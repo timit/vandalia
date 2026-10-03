@@ -1,6 +1,6 @@
 # plumbing subsystem
 
-status: not started. when it starts, add parts.md, a plan file (plumbing.md), and verify.md, following the electrical folder.
+status: not started. when it starts, add a PLAN.md (design, by subsystem section, each with a diagram/installation checklist/supplies checklist, plus open questions and decided alternatives at the end) and replace this file with an as-built README.md, following the electrical folder's convention.
 
 ## known items to capture
 

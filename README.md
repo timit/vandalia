@@ -21,7 +21,7 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 
 - done: electrical design settled. most parts ordered, including the DJI branch parts (3131 box and 7210 breaker).
 - now (2026-10-03): electrical docs restructured into electrical/README.md (as-built) and electrical/PLAN.md (design, install order, supplies checklists), replacing wiring.md/diagrams.md/parts.md. install actually started: shore inlet, 8077, all 4 BAOMAIN-row switches, both mounted battery selectors, and the multiplus are mounted; no wiring pulled yet. two design additions adopted and parts obtained this session: the negative busbar downsized to a second 4-stud egis 6600-404, and a 24V-to-12V converter (orion-tr smart 24/12-30) plus a third battery selector giving the 5026 12V bus the same DJI/victron redundancy every other circuit has — see electrical/PLAN.md.
-- next: measure every cable run (electrical/measurements.md) before cutting, work through electrical/PLAN.md's installation checklists in order, settle the remaining items in electrical/verify.md.
+- next: work through electrical/PLAN.md's installation checklists in order, measuring each cable run before cutting (lengths are inline on the relevant step) and settling the open questions at the end of the file.
 - later: plumbing.
 
 ## layout
@@ -29,7 +29,7 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 - README.md: this file. shared facts for the whole build.
 - CLAUDE.md: working rules for claude code. it imports this README.
 - reference/: manuals and datasheets, shared across subsystems.
-- electrical/: README.md (as-built), PLAN.md (design, install order, supplies), measurements.md, verify.md
+- electrical/: README.md (as-built), PLAN.md (design, install order, supplies, open questions, decided alternatives)
 - plumbing/: placeholder
 
 ## van
@@ -44,7 +44,7 @@ add new subsystems (heating, audio, exterior, and so on) as new folders.
 | velit 2000R rooftop AC | existing maxxair roof hole, enlarged to 14 x 14 in | |
 | starlink mini | roof box | cable pass-through still being decided |
 | fresh water tank | 35-gallon spare-tire-replacement tank | plumbing |
-| multiplus, cerbo, class T block, busbars | TBD | see electrical/measurements.md |
+| multiplus, cerbo, class T block, busbars | TBD | see electrical/PLAN.md |
 | shore inlet | TBD | keep the run to the 8077 short |
 | 8077 and 8027 panels | TBD | each back needs protection |
 
@@ -64,7 +64,7 @@ nameplate watts only. replace TBD with the number from the label or manual, and 
 | honda EU2200i | 1,800W continuous | plugs into the shore inlet |
 | shore power | 30A | about 3,600W at 120V |
 | orion XS 1400 | 50A at 24V (about 1,200W) | set the input limit, about 60A; alternator rating verify |
-| orion-tr smart 24/12-30 isolated (adopted and obtained 2026-10-03, not yet installed) | 30A at 12V, 360W rated | DC-DC step-down for the 5026 bus's victron leg (battery selector 3, position 2); input-side current/fuse sizing not yet verified against its own manual — see electrical/verify.md |
+| orion-tr smart 24/12-30 isolated (adopted and obtained 2026-10-03, not yet installed) | 30A at 12V, 360W rated | DC-DC step-down for the 5026 bus's victron leg (battery selector 3, position 2); input-side current/fuse sizing not yet verified against its own manual — see electrical/PLAN.md's 12V bus section |
 
 | load | system | voltage | watts | notes |
 |---|---|---|---|---|
