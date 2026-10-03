@@ -85,6 +85,8 @@ terminal is M4 screw, per the real manual: accepts 2.5-6.0mm² wire (about 14-10
 
 everything off, SOK off, no fuses installed. this is the actual sequence used starting with the 2026-09-20 install session: AC input first, then the DC backbone (so shore can charge the SOK), then the alternator branch. cerbo/DVCC and the DJI AC branch aren't part of this pass — they come later.
 
+**progress as of 2026-10-03**: mounted — the shore inlet, 8077, all 6 switch-row items (BAOMAIN 1, BAOMAIN 3, BAOMAIN 2, battery selector 1, battery selector 2), and the multiplus. that's the mounting half of step 1 done; none of phase 1's wiring (step 2 onward) has been pulled yet, and nothing is energized. separately, the van feed's 6 AWG wire has been run from the starter battery (under the driver seat) to the rear, with its AEP 100A fuse inline — this is phase 3 prep (step 13-15), done out of sequence; it's fine as-is but shouldn't be landed on selector 1 until phase 2 (DC backbone) is finished, per the reasoning in the paragraph above. not yet mounted: the busbars (still an open placement decision, see parts.md/measurements.md), the orion XS, class T block, BAOMAIN 4, and selector 3.
+
 **phase 1 — AC input to the multiplus**
 
 1. shore power disconnected the entire time. mount the inlet, 8077, BAOMAIN 1 - shore AC destination switch, and multiplus.
