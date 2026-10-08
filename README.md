@@ -59,9 +59,9 @@ nameplate watts only. replace TBD with the number from the label or manual, and 
 
 | source | capacity | notes |
 |---|---|---|
-| SOK 24V 150Ah | 3,840Wh; 150A continuous, 800A/10s peak (corrected from an earlier 200A/500A estimate — see reference/SK24V150PH.pdf) | second SOK planned |
+| SOK 24V 150Ah | 3,840Wh; 150A continuous, 800A/10s peak (corrected from an earlier 200A/500A estimate — see [reference/SK24V150PH.pdf](reference/SK24V150PH.pdf)) | second SOK planned |
 | multiplus-ii 24/3000/70 | 3000VA, about 2,400W continuous | 70A charger; input limit 30A shore, about 14A honda, 16A household outlet (20A circuit, 80% continuous-load derate) |
-| DJI power 2000 plus expansion battery | 4,096Wh | AC input 15A max; AC output 4 ports, 100-120V/25A ≈ 3000W continuous (US variant, confirmed 2026-10-02 at dji.com/power-2000/specs — not in the manual itself); SDC-to-XT60 cable (feeds the 5026 12V bus) is 13.6V default, 10A max — corrected from an earlier 12A figure, see load budget check 4 below |
+| DJI power 2000 plus expansion battery | 4,096Wh | AC input 15A max; AC output 4 ports, 100-120V/25A ≈ 3000W continuous (US variant, confirmed 2026-10-02 at [dji.com/power-2000/specs](https://www.dji.com/power-2000/specs) — not in the manual itself); SDC-to-XT60 cable (feeds the 5026 12V bus) is 13.6V default, 10A max — corrected from an earlier 12A figure, see load budget check 4 below |
 | honda EU2200i | 1,800W continuous | plugs into the shore inlet |
 | shore power | 30A | about 3,600W at 120V |
 | orion XS 1400 | 50A at 24V (about 1,200W) | set the input limit, about 60A; alternator rating verify |
@@ -69,11 +69,11 @@ nameplate watts only. replace TBD with the number from the label or manual, and 
 
 | load | system | voltage | watts | notes |
 |---|---|---|---|---|
-| oven (typhur CV03 sync oven) | 20A oven/cooktop circuit, BAOMAIN 2 - oven/cooktop AC source switch + BAOMAIN 4 - oven/cooktop AC destination switch | 120V AC | 1750W rated | reference/Typhur_CV03SyncOven.pdf; mechanically interlocked with the cooktop (BAOMAIN 4 - oven/cooktop AC destination switch), never live at the same time |
-| cooktop (empava EMPV-12EC07) | 20A oven/cooktop circuit, BAOMAIN 2 - oven/cooktop AC source switch + BAOMAIN 4 - oven/cooktop AC destination switch | 120V AC | 1800W total | reference/EMPV-12EC07_Manual.pdf — its own spec table requires a **minimum 20A breaker**, which is why this circuit is 20A and interlocked rather than sharing a 15A branch with anything else |
-| fridge (deaprull D31A) | 15A fridge+USB circuit, BAOMAIN 3 - fridge/receptacle AC source switch | 120V AC (confirmed — dual-voltage unit, DC 12/24V also available but not used) | 35-45W running | cycles; dual-voltage per the manufacturer's other listings and an independent review, not the spec-sheet screenshot on file (reference/DEAPRULL_ D31A.png), which had a wrong-looking "0.4 kWh annual" figure |
+| oven (typhur CV03 sync oven) | 20A oven/cooktop circuit, BAOMAIN 2 - oven/cooktop AC source switch + BAOMAIN 4 - oven/cooktop AC destination switch | 120V AC | 1750W rated | [reference/Typhur_CV03SyncOven.pdf](reference/Typhur_CV03SyncOven.pdf); mechanically interlocked with the cooktop (BAOMAIN 4 - oven/cooktop AC destination switch), never live at the same time |
+| cooktop (empava EMPV-12EC07) | 20A oven/cooktop circuit, BAOMAIN 2 - oven/cooktop AC source switch + BAOMAIN 4 - oven/cooktop AC destination switch | 120V AC | 1800W total | [reference/EMPV-12EC07_Manual.pdf](reference/EMPV-12EC07_Manual.pdf) — its own spec table requires a **minimum 20A breaker**, which is why this circuit is 20A and interlocked rather than sharing a 15A branch with anything else |
+| fridge (deaprull D31A) | 15A fridge+USB circuit, BAOMAIN 3 - fridge/receptacle AC source switch | 120V AC (confirmed — dual-voltage unit, DC 12/24V also available but not used) | 35-45W running | cycles; dual-voltage per the manufacturer's other listings and an independent review, not the spec-sheet screenshot on file ([reference/DEAPRULL_ D31A.png](reference/DEAPRULL_ D31A.png)), which had a wrong-looking "0.4 kWh annual" figure |
 | USB charging outlet | 15A fridge+USB circuit, BAOMAIN 3 - fridge/receptacle AC source switch | 120V AC (confirmed — an outlet with built-in USB ports, not a 12V DC adapter) | TBD, likely 30-60W | shares the 15A branch with the fridge |
-| velit 2000R | battery selector 2 (direct 24V bus tap, or DJI-fed meanwell RSP-1000-24) | 24V DC | 720W rated (24V variant, 10-33A DC) | reference/Velit_2000R_User_Manual_2609.pdf; meanwell (DJI leg only, 2026-09-21) max 1,000W |
+| velit 2000R | battery selector 2 (direct 24V bus tap, or DJI-fed meanwell RSP-1000-24) | 24V DC | 720W rated (24V variant, 10-33A DC) | [reference/Velit_2000R_User_Manual_2609.pdf](reference/Velit_2000R_User_Manual_2609.pdf); meanwell (DJI leg only, 2026-09-21) max 1,000W |
 | water heater (ecosmart eco mini 4) | TBD | 120V AC | TBD | |
 | autoterm air 2D | 24V (not designed) | 24V DC | TBD | |
 | USB panels (4 x 108W) | 12V, blue sea 5026 | 12V DC | up to 432W | rarely all at once |

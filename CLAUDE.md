@@ -6,6 +6,7 @@
 
 - write all content in lower case, including headings and the first word of each sentence. exceptions: acronyms and initialisms (AC, DC, DJI), unit symbols and alphanumeric model or thread codes (300A, M8, RJ45), and file names or links where case matters (CLAUDE.md, README.md, urls). this applies to everything generated in this project, including edits to these files.
 - give amazon links for products by default. search links are fine when no direct page is verified.
+- link to every source, not just mention it: a product link the user shares, a file in reference/ or elsewhere in the project, or a web page found while researching all become a real markdown link (`[text](url)`), never a bare filename or URL as plain text. local file links use a correct relative path from the citing file's own location (e.g. `../reference/foo.jpeg` from a subsystem's PLAN.md, not `reference/foo.jpeg`) — check the path resolves before moving on.
 - when a message includes a link for an item already obtained or still needed, add that exact link to its supplies line in the relevant subsystem's PLAN.md.
 - when recommending a tool or part, state failure modes and range limits first.
 - say plainly when a spec is unverified. do not present items marked verify as facts.

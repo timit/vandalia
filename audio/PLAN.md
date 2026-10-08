@@ -36,7 +36,7 @@ flowchart LR
 - [x] [ATOTO AC-FCR04W front camera](https://www.amazon.com/dp/B0DKT4XJXS), 1080P, 150° FOV
 - [x] [ATOTO AC-RCR04W rear camera](https://www.amazon.com/dp/B0DK6LDBSM), 1080P HDR, 145° FOV, IP67 — replaced the stock rear camera
 - [x] [Gebildet 2-pack 40/30A relay harness kit](https://www.amazon.com/dp/B07TWC48QW), 4-pin SPST — wire colors: white=86 (trigger), black=85 (ground), red=30 (power in), blue=87 (switched output) — only needed if the troubleshooting above points to the relay fix
-- [x] salvaged OEM 12V 30A relay (used previously for the stock camera) — alternative to the Gebildet kit above; its 4 wires aren't color-coded, identify the 85/86 coil pair vs. the 30/87 switch pair with a continuity check (relay unplugged from its socket): the pair showing ~50-120 ohms resistance is the coil (85/86, either wire either way); the pair showing open circuit is the switch (30/87, either wire either way). photos: reference/IMG_1713.jpeg (housing back, embossed part number), reference/IMG_1711.jpeg (pin diagram face — 30/86/87/85, 12V 30A), reference/IMG_1712.jpeg (socket with its 4 uncolored wires)
+- [x] salvaged OEM 12V 30A relay (used previously for the stock camera) — alternative to the Gebildet kit above; its 4 wires aren't color-coded, identify the 85/86 coil pair vs. the 30/87 switch pair with a continuity check (relay unplugged from its socket): the pair showing ~50-120 ohms resistance is the coil (85/86, either wire either way); the pair showing open circuit is the switch (30/87, either wire either way). photos: [housing back, embossed part number](../reference/IMG_1713.jpeg), [pin diagram face — 30/86/87/85, 12V 30A](../reference/IMG_1711.jpeg), [socket with its 4 uncolored wires](../reference/IMG_1712.jpeg)
 - [ ] inline fuse holder + small fuse (1-3A likely, confirm against actual camera draw) for the relay's pin-30 feed — **not included with either relay above**, confirmed by physical inspection
 
 ## head unit power source
@@ -45,7 +45,7 @@ the head unit's accessory power, ground, and old camera video feed all currently
 
 ```mermaid
 flowchart LR
-  mirror["mirror harness (factory FR7/cargo-van<br/>camera-to-mirror-monitor prewire, 6-pin)<br/>reference/IMG_1715.jpeg"]
+  mirror["mirror harness (factory FR7/cargo-van<br/>camera-to-mirror-monitor prewire, 6-pin)"]
   mirror -->|"switched power (confirmed)"| headunitNow["ATOTOMOVE S8 Ultra<br/>(current power source)"]
   mirror -->|"ground"| headunitNow
   mirror -.->|"reverse trigger — obsolete, old system only"| unused1["unused"]
@@ -59,7 +59,7 @@ flowchart LR
 
 ### installation
 
-- [x] traced the mirror-area harness: 6-cavity connector, matches the documented Mercedes factory FR7/cargo-van rearview-camera-to-mirror-monitor prewire (6-pin connector A221 545 01 28 per an official Mercedes-Benz upfitter bulletin) — power, ground, reversing/video-release signal, and microphone pins, with video carried separately over a FAKRA-style connector rather than through this block. photos: reference/IMG_1715.jpeg
+- [x] traced the mirror-area harness: 6-cavity connector, matches the documented Mercedes factory FR7/cargo-van rearview-camera-to-mirror-monitor prewire (6-pin connector A221 545 01 28 per an [official Mercedes-Benz upfitter bulletin](https://www.mbvans.com/content/dam/mb-vans/us/upfitter/bulletins/sprinter-retrofitting-rear-view-camera.pdf)) — power, ground, reversing/video-release signal, and microphone pins, with video carried separately over a FAKRA-style connector rather than through this block. [photo](../reference/IMG_1715.jpeg)
 - [x] identified and tested the wires in this harness: power wire confirmed **switched** (drops to 0V with ignition off — matches the documented "Kl. 15" ignition-switched designation, corrects an earlier read of "constant"); ground wire confirmed; reverse-trigger wire confirmed (this is the old system's trigger path, separate from and now superseded by the new rear camera's own trigger output — see "camera wiring" above)
 - [x] the 2 remaining wires in this harness, left cropped but uncapped by the original aftermarket install, assumed to be the mic+/mic- leads for a factory mirror-mounted microphone (per the documented connector's pin list) — **not confirmed**, assumption only (verify: continuity/voltage check to confirm before relying on this)
 - [x] the single independently-routed wire hanging near this harness identified as the video feed line (FAKRA-style, functions as a signal/return pair) — this fed the factory rear camera's video to the mirror monitor originally, then was intercepted by the old aftermarket install to feed the old head unit instead. now orphaned: the new rear camera has its own direct RCA run to the new head unit (see "camera wiring" above), so this wire isn't needed for anything
@@ -92,12 +92,12 @@ flowchart LR
 ### installation
 
 - [x] AudioControl LC-5.1300 amp mounted under the driver seat (shares the under-seat cavity with the starter battery and the electrical/ subsystem's van-feed wire — routing constraint already noted there)
-- [x] 2x Focal Access 1 crossovers wired — one channel in from the amp per side, internally split to woofer and tweeter outputs. photo: reference/IMG_1714.jpeg
+- [x] 2x Focal Access 1 crossovers wired — one channel in from the amp per side, internally split to woofer and tweeter outputs. [photo](../reference/IMG_1714.jpeg)
 - [x] front woofer + tweeter pairs (L and R) wired from each crossover's outputs
 
 ### supplies
 
-- [x] AudioControl LC-5.1300, 5-channel (4x 100W + 1x 300W @ 4-ohm), independent 12dB/octave Linkwitz-Riley crossovers per channel (verify: nameplate/model number — see diagram note)
+- [x] AudioControl LC-5.1300, 5-channel (4x 100W + 1x 300W @ 4-ohm), independent 12dB/octave Linkwitz-Riley crossovers per channel (verify: nameplate/model number — see diagram note). spec source: [official AudioControl quick-start guide](https://archive.audiocontrol.com/downloads/car/current/lc-51300/lc-51300-qsg.pdf); the on-file photo is [reference/audiocontrol-LE5-1300-UM11225.heic](../reference/audiocontrol-LE5-1300-UM11225.heic)
 - [x] 2x Focal Access 1, 12dB/octave passive crossover, 2-way (woofer/tweeter)
 - [x] front woofer + tweeter pairs, L and R (specific model: not yet recorded)
 
