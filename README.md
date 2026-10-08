@@ -36,8 +36,9 @@ add new subsystems (heating, exterior, and so on) as new folders.
 ## van
 
 - 2021 mercedes-benz sprinter, 144" wheelbase, 4x4, OM642 V6 diesel
+- VIN W1Y4EBVY1MT057126; GVWR 4105kg/9050lb; GCWR 6319kg/13930lb; GAWR front 2000kg/4410lb, rear 2431kg/5360lb; type TRUCK; date of manufacture 05/2021; paint code 7709; label part number A 907 584 34 05 — from the vehicle's own federal certification sticker, [reference/IMG_1726.jpeg](reference/IMG_1726.jpeg)
 - alternator rating: 180A or 220A stock, depending on build variant (confirmed by sprinter parts suppliers and OEM listings, 2026-10-03) — the exact figure is printed on the alternator's own back cover, worth a physical check for certainty, but either option clears the XS's 60A draw with comfortable headroom left for the van's other factory 12V loads
-- weight budget: TBD (the SOK weighs about 70 lb)
+- weight budget: TBD (the SOK weighs about 70 lb) — GVWR above (9050lb) is the hard ceiling once the build's weight is tallied
 
 | item | location | notes |
 |---|---|---|

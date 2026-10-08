@@ -20,7 +20,7 @@ all three units installed and operational:
 
 pre-dates this project, confirmed in place:
 
-- AudioControl LC-5.1300 5-channel amplifier, under the driver seat (verify: nameplate — reference photo is filed as "LE5-1300", likely a typo)
+- AudioControl LC-5.1300 5-channel amplifier, under the driver seat — model confirmed directly from the box found in the glove box (clearly printed "LC-5.1300"), resolving the earlier "LE5-1300" filename typo concern. see PLAN.md's front speakers and amplifier section for full specs
 - 2x Focal Access 1 passive crossovers (12dB/octave), one per side, each fed by a single amp channel
 - front woofer + tweeter pairs, L and R, off each crossover's outputs
 
