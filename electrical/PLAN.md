@@ -4,13 +4,13 @@ last updated: 2026-10-03
 
 one section per subsystem (matching the diagrams below), each leading with its diagram, then an installation checklist (ordered, check off as done), then a supplies checklist (`[x]` in hand, `[ ]` still needed). a returned item is removed from its supplies list entirely, not kept as a checked-off line. cable lengths and reel-sharing notes are inline on the relevant installation/supply line, not a separate table. open questions that anchor to one specific line are tagged inline as `(verify: ...)`; ones that don't are in "open questions" at the end. rejected or settled-either-way design alternatives are in "decided" at the end, so they don't get re-proposed. for the full history of how any of this got decided, `git log` is the change log — every change here has a commit message. for what's actually confirmed built, see README.md.
 
-sections are ordered to match the real install sequence: ac input, then the DC backbone (negative before positive — that's the system's only ground reference and it goes in first), then the alternator and velit (part of dc positive and alternator), then the kitchen AC loads, then the 12V bus, then data cables last.
+sections are ordered to match the real install sequence: ac input (wired, then held unenergized), then the DC backbone (negative before positive — that's the system's only ground reference and it goes in first, ending with the multiplus profile set and shore power plugged in), then the alternator (still part of dc positive and alternator), then back to ac input to finish (AC-out-1 to the 8027), then the kitchen AC loads and the velit (the back half of dc positive and alternator, concurrent with the kitchen) together, then the 12V bus, then data cables last. a few installation steps are flagged inline where this crosses section boundaries, since the sections themselves are grouped by diagram, not strictly by phase.
 
 ## tools required
 
 - [x] DxCRIMP hex ferrule crimper, AWG 24-4
 - [x] ferrule set, 166pc, AWG 1/0-12
-- [x] pro'skit 902-160 crimpro crimper, AWG 2-4-6 — for 6/4/2 AWG screw terminals
+- [x] [pro'skit 902-160 crimpro crimper](https://www.amazon.com/dp/B002PI6LU8), AWG 2-4-6 — for 6/4/2 AWG screw terminals
 - [x] [IWISS battery cable lug crimping tool kit](https://www.amazon.com/IWISS-Battery-Crimping-Terminals-Stripper/dp/B09PYH9B4Q), AWG 8-4/0 — for the 2/0 ring lugs
 - [ ] adhesive heat shrink
 - [x] cable cutter
@@ -45,10 +45,8 @@ flowchart LR
 - [ ] wire inlet → 8077 → BAOMAIN 1 common, 10 AWG 3-conductor throughout (10ft max on the inlet-to-8077 leg — 15ft southwire SOOW cord on hand; verify: if this leg ever needs to be longer, blue sea's 8027-family manual says an additional fuse/breaker is needed within 10ft of the inlet — applied here by analogy, not confirmed for the 8077 specifically)
 - [ ] install BAOMAIN 1's jumpers (terminal 2→4, 6→8), 10 AWG. common = 8077 output. pos 1 (terminal 1/5) = 3131/DJI branch, wired later. pos 2 (terminal 3/7) = multiplus AC-in, 10 AWG 3-conductor
 - [ ] continuity check: no hot-neutral or hot-neutral-ground continuity anywhere wired so far; confirm position 2 connects it and position 0 opens it
-- [ ] **hold here** — do not plug in shore power until the DC backbone (dc negative and ground, dc positive and alternator) is fully wired and the SOK is on
-- [ ] set the multiplus's battery profile to lithium, absorption ≤27.6V, via VictronConnect (needs the multiplus powered from the DC backbone above — no cerbo/DVCC yet to do this automatically)
-- [ ] plug in shore power; verify with a multimeter (120V hot-neutral, 120V hot-ground, 0V neutral-ground); confirm the reverse-polarity LED is off before energizing any branch circuit
-- [ ] multiplus AC-out-1 → 8027, 10 AWG 3-conductor, landing on the 8027's 30A main
+- [ ] **hold here** — do not plug in shore power yet. go wire the DC backbone (dc negative and ground, then dc positive and alternator below) first; that section ends with the multiplus profile set and shore power plugged in, then comes back to finish this list
+- [ ] multiplus AC-out-1 → 8027, 10 AWG 3-conductor, landing on the 8027's 30A main (do this after dc positive and alternator's alternator steps are done — it's next chronologically, before ac loads)
 - [ ] wire the DJI AC-input branch (deferred): BAOMAIN 1 pos 1 → 3131 box → 7210 15A breaker → receptacle → DJI AC in, 12 AWG 3-conductor (verify: 3131 gland size and how its grounds connect, that the 7210 is single-pole, and the marine/UL rating of this triplex — labeled "marine grade" with no UL/ABYC rating given)
 - [ ] continuity check on the DJI AC-input branch before energizing it
 
@@ -84,20 +82,21 @@ flowchart TB
 
 ### installation
 
-- [ ] cut, crimp, pull-test, and heat-shrink the 2/0 cables (both polarities)
+- [ ] mount the SOK — floor, passenger-side corner, parallel to the front wall, closest to the multiplus (a planned second SOK extends along the front wall toward the driver side)
 - [ ] mount the positive and negative busbars near the SOK — exact placement still open within that area, but keep them near the SOK (passenger-side corner, closest to the multiplus) rather than shifted driver-side: the high-current 2/0 connections matter far more for being short than the meanwell's 6 AWG runs do for being shortened (voltage drop on those is under 1% even at 9ft)
-- [ ] wire the negative side first — this is the system's only ground reference, it goes in before anything else: SOK- → negative bar → multiplus-, 2/0 both legs (pacer 8ft black reel, shared across both legs — the -bar→multiplus- leg is the long unknown, measure before cutting)
+- [ ] cut, crimp, pull-test, and heat-shrink the negative-side 2/0 cables now that both ends (SOK, negative bar, multiplus) are in place to measure against — pacer 8ft black reel, shared across both legs; the -bar→multiplus- leg is the long unknown, measure before cutting
+- [ ] wire the negative side first — this is the system's only ground reference, it goes in before anything else: SOK- → negative bar → multiplus-, 2/0 both legs
 - [ ] multiplus's separate exterior grounding point → negative bar, 10 AWG minimum (verify: victron's manual says "at least 4mm²" and "on the product's exterior" but doesn't pin down exactly where — check the unit itself)
 - [ ] single chassis bond off the negative bar → factory stud, 2 AWG (pacer 10ft reel, comfortable slack, 6-8ft to the stud; verify: the stud is 1/4-20, smaller than every other stud in this build — confirm it has enough remaining thread engagement for one more ring terminal without loosening what's already grounded there, and get its actual torque spec rather than reusing this build's 120-140 in-lb, which is sized for 3/8"/M8 hardware)
-- [ ] torque every stud (egis busbar 120-140 in-lb; SOK terminals 9-11 N·m — different torque, don't reuse the setting)
+- [ ] torque every negative-side stud just landed (egis busbar 120-140 in-lb; SOK terminals 9-11 N·m — different torque, don't reuse the setting)
 
 ### supplies
 
-- [x] egis powerbar 6600-404 — negative busbar, replaces the 6600-804
+- [x] [egis powerbar 6600-404](https://www.westmarine.com/egis-mobile-electric-powerbar---four-m103-8inch-studs-4-circuits-8---600-amp-21976824.html) — negative busbar, replaces the 6600-804
 - [x] pacer marine tinned copper battery cable, 15ft #6 black — negative-side runs
 - [x] pacer marine tinned copper battery cable, 10ft #2 black — chassis bond
 - [x] pacer marine tinned copper battery cable, 8ft #2/0 black — negative 2/0 runs
-- [x] seafit "#2-1/4" lug 5-pack — chassis bond (1 needed, 4 spare)
+- [x] [seafit "#2-1/4" lug 5-pack](https://www.westmarine.com/seafit-heavy-duty-tinned-lugs-22320485.html) — chassis bond (1 needed, 4 spare)
 - [ ] 10 AWG single-conductor cable — multiplus exterior grounding point to negative bar
 - [ ] 2/0 lug, M8 hole, x2 — SOK-, multiplus- (plan: drill from seafit "#2/0-5/16" lugs, see dc positive and alternator)
 - [ ] 2/0 lug, 3/8" hole, x2 — SOK-→-bar and -bar→multiplus- busbar ends (shares the seafit "#2/0-3/8" 5-pack tracked under dc positive and alternator)
@@ -125,8 +124,13 @@ flowchart LR
 ### installation
 
 - [ ] continuity check: no continuity between the + and - bars (negative side wired already, above)
-- [ ] wire the positive side: SOK+ → class T fuse block (fuse not inserted yet) → positive bar → multiplus+, 2/0 throughout (pacer 8ft red reel, shared across all three legs — the +bar→multiplus+ leg is the long unknown, measure before cutting; SOK sits on the floor, passenger-side corner, parallel to the front wall, closest to the multiplus — a planned second SOK extends along the front wall toward the driver side)
+- [ ] mount the class T fuse block near the busbars (fuse not inserted yet)
+- [ ] cut, crimp, pull-test, and heat-shrink the positive-side 2/0 cables now that all ends are in place — pacer 8ft red reel, shared across all three legs; the +bar→multiplus+ leg is the long unknown, measure before cutting
+- [ ] wire the positive side: SOK+ → class T fuse block → positive bar → multiplus+, 2/0 throughout
+- [ ] torque every positive-side stud just landed (egis busbar 120-140 in-lb; class T block 190 in-lb max; SOK terminals 9-11 N·m)
 - [ ] install the class T fuse last; turn on the SOK (a small spark on connection is normal)
+- [ ] set the multiplus's battery profile to lithium, absorption ≤27.6V, via VictronConnect (now possible — the multiplus is powered from the DC backbone just finished; no cerbo/DVCC yet to do this automatically)
+- [ ] plug in shore power; verify with a multimeter (120V hot-neutral, 120V hot-ground, 0V neutral-ground); confirm the reverse-polarity LED is off before energizing any branch circuit; continue with the alternator steps below next — ac input's AC-out-1-to-8027 step comes after those, not before
 - [ ] pull the AEP fuse on the van feed (or disconnect the starter battery terminal) before touching any alternator wiring — the short segment between battery and fuse holder stays live even with the fuse pulled (this area shares the under-seat cavity with an existing audiocontrol LE5-1300 amplifier — route new DC cables clear of its wiring)
 - [x] mount battery selector 1
 - [ ] mount the orion XS
@@ -138,6 +142,9 @@ flowchart LR
 - [ ] continuity check with selector 1 OFF: confirm position 2 connects OUTPUT to "2" and nothing else, before reinserting the fuse
 - [ ] reinsert the AEP fuse; switch selector 1 to position 2
 - [ ] configure the XS via VictronConnect: lithium profile, absorption ≤27.6V, input current limit ~60A (verify: the alternator is rated 180A or 220A depending on build variant, printed on its own back cover — either option clears this 60A setting with headroom, but worth a physical check for certainty), engine-running detection on
+
+the alternator branch above is done. the rest of this section (velit, below) happens alongside ac loads — not immediately next — since both are the same later phase of work; do ac input's AC-out-1-to-8027 step first if it isn't done yet.
+
 - [ ] DJI AC out → meanwell AC input: molded-plug cord, 14 AWG minimum (no separate breaker needed — DJI's own output protection plus the meanwell's internal AC-input protection cover it; meanwell mounts driver-side wall, near the DJI, making this tap short)
 - [x] mount battery selector 2 near the DC busbars (both battery selectors are already mounted, in the switch row, far passenger end, directly above the SOK)
 - [ ] meanwell +V output → selector 2 terminal "1" (position 1, DJI leg), 6 AWG (pacer 15ft red reel, same as above — **this leg is longer than the rest of this reel's runs**: the meanwell is driver-side near the DJI, selector 2 is passenger-side above the SOK, so this crosses most of the 5.5ft front wall plus the height change — realistically 6-9ft, not under 6ft; measure before cutting)
@@ -167,7 +174,7 @@ flowchart LR
 - [x] DJI power 2000 + expansion battery 2000 — secondary AC/DC power system
 - [x] DJI super fast charger (DYS_DC1000) — alternator-to-DJI charger
 - [x] seafit "#6-5/16" lug 5-pack — ANL block 6 AWG ends (XS output, velit tap)
-- [x] 2x seafit "#6-3/8" lug 5-pack — busbar and selector 6 AWG ends (10 lugs covers all 9 ends, shared with dc negative and ground, 1 spare)
+- [x] 2x [seafit "#6-3/8" lug 5-pack](https://www.westmarine.com/seafit-heavy-duty-tinned-lugs-22320329.html) — busbar and selector 6 AWG ends (10 lugs covers all 9 ends, shared with dc negative and ground, 1 spare)
 - [ ] 2x seafit "#2/0-5/16" lug 5-pack — 6 M8-hole ends total (SOK+/-, multiplus+/-, both class T block ends), drilled from 5/16" to M8 (10 lugs covers 6 needed with 4 spare for a future second SOK)
 - [ ] 1x seafit "#2/0-3/8" lug 5-pack — 4 3/8"-hole busbar ends total (block→+bar, +bar→multiplus+, SOK-→-bar, -bar→multiplus-), no modification needed (5 lugs covers 4 needed with 1 spare)
 
@@ -193,8 +200,8 @@ flowchart LR
 - [ ] BAOMAIN 3 common → fridge and USB-charging receptacles, 14 AWG (receptacle products: TBD)
 - [ ] install a new 20A breaker in one of the 8027's open positions → BAOMAIN 2 terminal 3/7, 12 AWG (position 2)
 - [ ] install BAOMAIN 2's jumpers, 12 AWG. pos 1 (terminal 1/5) = DJI AC output port, deferred. pos 2 (terminal 3/7) = 8027's new 20A breaker. common = feeds BAOMAIN 4's common
-- [ ] BAOMAIN 2 common → BAOMAIN 4 common, 12 AWG
 - [ ] mount BAOMAIN 4 and install its jumpers, 12 AWG. common = BAOMAIN 2's output. pos 1 (terminal 1/5) = oven's receptacle. pos 2 (terminal 3/7) = cooktop, hardwired direct, no receptacle (BAOMAIN 4 mounts in the kitchen cabinet, ~4ft forward of the cargo area's front wall — outside the cargo area entirely)
+- [ ] BAOMAIN 2 common → BAOMAIN 4 common, 12 AWG
 - [ ] BAOMAIN 4 terminal 1/5 → oven's receptacle, 12 AWG (product: TBD)
 - [ ] BAOMAIN 4 terminal 3/7 → cooktop, hardwired direct, 12 AWG
 - [ ] leave BAOMAIN 3 and BAOMAIN 2 terminal 1/5 unconnected (DJI AC-output-port taps, deferred)
@@ -207,14 +214,14 @@ flowchart LR
 
 - [x] blue sea 8027, main + 6, 30A main — AC branch panel
 - [x] carlon E989N-CAR enclosure, 8x8x4in — houses the 8027. [home depot](https://www.homedepot.com/p/Carlon-8-in-x-8-in-x-4-in-Gray-Electrical-PVC-Junction-Box-E989N-CAR-E989N-CAR/100404099)
-- [x] BAOMAIN 32A cam changeover switch — BAOMAIN 3, fridge/receptacle AC source
-- [x] BAOMAIN 32A cam changeover switch — BAOMAIN 2, oven/cooktop AC source
-- [x] BAOMAIN 32A cam changeover switch — BAOMAIN 4, oven/cooktop AC destination
+- [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 3, fridge/receptacle AC source
+- [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 2, oven/cooktop AC source
+- [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 4, oven/cooktop AC destination
 - [x] 2x blue sea 7214, 20A toggle breaker — oven/cooktop circuit (1 spare)
 - [x] 12 AWG 12/3 triplex marine wire, 20ft — oven/cooktop circuit (verify: marine/UL rating — labeled "marine grade" with no UL/ABYC rating given)
 - [x] 14 AWG 14/3 triplex marine wire, 20ft — fridge+USB circuit
-- [x] iron forge 12/3 SJTW molded-plug cord, 15ft — DJI AC-output tap, fridge/USB leg
-- [x] iron forge 12/3 SJTW molded-plug cord, 6ft — DJI AC-output tap, oven/cooktop leg
+- [x] [iron forge 12/3 SJTW molded-plug cord, 15ft](https://www.amazon.com/clp/B0C5KHWHMT) — DJI AC-output tap, fridge/USB leg
+- [x] [iron forge 12/3 SJTW molded-plug cord, 6ft](https://www.amazon.com/clp/B0B8DPVW57) — DJI AC-output tap, oven/cooktop leg
 - [x] typhur CV03 sync oven, 1750W — kitchen oven
 - [x] empava EMPV-12EC07 induction cooktop, 1800W — kitchen cooktop, hardwired
 - [x] deaprull D31A fridge, 35-45W, 120VAC — kitchen fridge
@@ -248,7 +255,7 @@ flowchart LR
 
 - [x] blue sea 5026, 12-circuit fuse block — 12V bus (LED pucks, USB panels, starlink)
 - [x] victron orion-tr smart 24/12-30 isolated, 30A/360W — 5026 bus's victron-leg converter. [amazon](https://www.amazon.com/dp/B086R9ZVK5)
-- [x] battery selector switch, 300A off-1-2 — selector 3, 5026 bus source
+- [x] [battery selector switch, 300A off-1-2](https://www.amazon.com/dp/B0C85R2VD2) — selector 3, 5026 bus source
 - [ ] blue sea 5065 holder + 10-15A ATC fuse — DJI SDC to 5026 feed (verify: confirm the fuse states a real AIC rating when bought — ABYC E-11 table V isn't freely published and doesn't apply cleanly here anyway, since this feed's actual source is DJI's own 10A-current-limited, BMS-protected battery, not a raw bank; standard ATC/ATO fuses, typically 1000-6000A AIC at 32V, are almost certainly adequate)
 - [ ] blue sea 5026 branch fuses, 4x 10A ATC — USB panels
 - [ ] 10 AWG lug, 3/8" hole, x3 — selector 3 connections

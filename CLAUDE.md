@@ -6,6 +6,7 @@
 
 - write all content in lower case, including headings and the first word of each sentence. exceptions: acronyms and initialisms (AC, DC, DJI), unit symbols and alphanumeric model or thread codes (300A, M8, RJ45), and file names or links where case matters (CLAUDE.md, README.md, urls). this applies to everything generated in this project, including edits to these files.
 - give amazon links for products by default. search links are fine when no direct page is verified.
+- when a message includes a link for an item already obtained or still needed, add that exact link to its supplies line in the relevant subsystem's PLAN.md.
 - when recommending a tool or part, state failure modes and range limits first.
 - say plainly when a spec is unverified. do not present items marked verify as facts.
 - keep answers short and mobile-friendly. lead with the answer.
