@@ -18,6 +18,10 @@ have:
 - Typhur_CV03SyncOven.pdf (kitchen oven user manual — 1750W, 120VAC, confirms the manufacturer's rated power used in README's load budget)
 - EMPV-12EC07_Manual.pdf (kitchen cooktop use and care guide — 1800W total, 120VAC, and the source of the "minimum circuit breaker amperage: 20" requirement that drove the 2026-10-02 kitchen circuit redesign)
 - DEAPRULL_ D31A.png (kitchen fridge spec-sheet screenshot — partly unreliable; the dual-voltage/35-45W figures actually used came from a web search, not this file)
+- audiocontrol-LE5-1300-UM11225.heic (AudioControl amp manual photo — filename says "LE5-1300," likely a typo; everything findable points to LC-5.1300, see audio/PLAN.md)
+- IMG_1711.jpeg, IMG_1712.jpeg, IMG_1713.jpeg (salvaged OEM relay for the rear camera's reverse trigger — pin diagram face, housing back/part number, and socket wiring, respectively; see audio/PLAN.md's camera wiring section)
+- IMG_1714.jpeg (the 2x Focal Access 1 passive crossovers for the front speakers; see audio/PLAN.md's front speakers and amplifier section)
+- IMG_1715.jpeg (the factory mirror-area connector — matches the documented Mercedes FR7/cargo-van rearview-camera-to-mirror-monitor prewire harness; see audio/PLAN.md's head unit power source section)
 
 note: the BAOMAIN transfer-switch terminal wiring (jumper 2-4 and 6-8, common vs position legs) isn't spelled out in the real manual either, but it's consistent with that manual's own truth table (page 3). the specific transfer-switch application came from a web search — a wiring tutorial and RV/van forum threads for this switch family. it's in electrical/PLAN.md, not here, since it's not a PDF to file.
 
