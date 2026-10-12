@@ -1,6 +1,6 @@
 # audio: as-built
 
-last updated: 2026-10-07
+last updated: 2026-10-12
 
 this file only records what's actually true of the physical system. for the design and remaining install work, see PLAN.md.
 
@@ -12,9 +12,9 @@ all three units installed and operational:
 - ATOTO AC-FCR04W front-facing camera (1080P, 150° FOV)
 - ATOTO AC-RCR04W rear-facing camera (1080P HDR, 145° FOV, IP67), replacing the vehicle's stock rear camera
 
-**known issue (open)**: the rear camera doesn't stay on reliably in reverse — it displays briefly, then drops. See PLAN.md's installation checklist and open questions.
+**known issue (open)**: the rear camera doesn't activate when the vehicle is put in reverse, though it works fine when viewed manually (power, ground, and video all confirmed good). per the camera's real manual, this points to wire A1 ("to the back-up lamp (+12V)") — separate from the A2 trigger wire already correctly connected — likely not (re)connected to the vehicle's reverse-light circuit during the recent power rewiring. see PLAN.md's "camera wiring" section.
 
-**known issue (open)**: the head unit is currently powered entirely from the factory mirror-area camera/mirror-monitor harness (confirmed switched power, ground, plus an unused trigger wire, 2 assumed-mic leads, and an orphaned video feed) rather than a dedicated source. a separate factory radio-bay harness was found at the head unit's own location (confirmed constant power and ground, speaker wires present) and is the better source — rewiring to it is pending a switched wire still being found there. see PLAN.md's "head unit power source" section.
+**resolved**: the head unit and both cameras are now powered from the radio-bay harness (constant, fuse #41) plus a new accessory-switched tap sourced from an unassigned position in the driver-seat-base fuse box (position 32) — replacing the original factory mirror-area harness, which was undersized for a full head unit. see PLAN.md's "head unit power source" section.
 
 ## existing front speaker system
 

@@ -1,6 +1,6 @@
 # audio plan
 
-last updated: 2026-10-07
+last updated: 2026-10-12
 
 one section per subsystem, each leading with its diagram, then an installation checklist (ordered, check off as done), then a supplies checklist (`[x]` in hand, `[ ]` still needed). open questions that anchor to one specific line are tagged inline as `(verify: ...)`; ones that don't are in "open questions" at the end. rejected or settled-either-way design alternatives are in "decided" at the end, so they don't get re-proposed.
 
@@ -8,27 +8,32 @@ one section per subsystem, each leading with its diagram, then an installation c
 
 ```mermaid
 flowchart LR
-  revlight["vehicle reverse-light circuit"] -->|"sense signal"| rearcam["ATOTO AC-RCR04W<br/>rear camera"]
-  keyed["keyed/ignition 12V+<br/>(shared with head unit)"] -->|"accessory + (red)"| rearcam
-  rearcam -->|"rear camera + (pink), trigger out"| headunit["ATOTOMOVE S8 Ultra<br/>rear camera + (pink), trigger in"]
-  rearcam -->|"video (yellow RCA)"| headunit
-  frontcam["ATOTO AC-FCR04W<br/>front camera"] -->|"video, RCA"| headunit
-  gnd["chassis ground"] --- rearcam
+  revlight["vehicle reverse-light circuit"] -->|"A1 pink: back-up lamp +12V"| rearcam["ATOTO AC-RCR04W<br/>rear camera"]
+  acc32["accessory-power tap<br/>(position 32, see head unit power source)"] -->|"D red: accessory/ignition +12V"| rearcam
+  acc32 -->|"accessory/ignition +12V"| frontcam["ATOTO AC-FCR04W<br/>front camera"]
+  acc32 -->|"accessory/ignition +12V"| headunit["ATOTOMOVE S8 Ultra"]
+  rearcam -->|"A2 pink: rear camera +, trigger out"| headunit
+  rearcam -->|"C: video (yellow RCA)"| headunit
+  frontcam -->|"video, RCA"| headunit
+  gnd["chassis ground"] -.- rearcam
+  gnd -.- frontcam
 ```
+
+wiring confirmed 2026-10-12 against the actual manufacturer manuals ([rear camera](../reference/ATOTO_AC-RCR04W.pdf), [front camera](../reference/ATOTO_AC-FCR04W.pdf), product pages: [S8G1109UN head unit](https://www.eproductcare.com/zcNT), [AC-RCR04W](https://www.eproductcare.com/Ab5B), [AC-FCR04W](https://www.eproductcare.com/w545)) — these superseded an earlier, wrong assumption sourced from forum posts (which described capping the camera's pink wire and wiring the vehicle's reverse light straight to the head unit's pink wire instead; that is not how this specific camera is designed). per the real diagram, the rear camera has **two separate pink wires**: **A1**, labeled "to the back-up lamp (+12V)," runs straight to the vehicle's reverse-light circuit and is live only when actually in reverse; **A2**, labeled "rear camera+," is the camera's own trigger output to the head unit's own "rear camera +" input, and is unrelated to A1 — the pink-to-pink (A2-to-head-unit) connection already made is correct as-is.
 
 ### installation
 
 - [x] mount and wire the head unit (ATOTOMOVE S8 Ultra)
 - [x] mount and wire the front-facing camera (ATOTO AC-FCR04W) — video to head unit
 - [x] mount and wire the rear-facing camera (ATOTO AC-RCR04W), replacing the stock rear camera
-- [x] rear camera accessory + (red) → keyed/ignition power source, same one the head unit uses
-- [x] rear camera video (yellow male RCA) → head unit rear camera input (yellow female RCA)
-- [x] rear camera chassis ground → established
-- [x] rear camera backup-lamp wire → vehicle reverse-light circuit → established
-- [x] rear camera "rear camera +" (pink) → head unit "rear camera +" (pink) — confirmed this is the camera's own trigger output telling the head unit to switch display, not a raw pass-through of the reverse-light circuit; power for the camera comes from the accessory + wire above instead, so there's no current-starvation risk on this signal path
-- [ ] **troubleshoot known issue**: camera displays briefly on reverse, then drops. since the camera's real power is the robust keyed+ feed (not the reverse-light wire), this is no longer suspected to be a power/voltage-sag problem — more likely the backup-lamp sense signal itself isn't holding steady for the full time in reverse. check in this order: (1) watch the actual exterior reverse lamp while held in reverse — if it flickers, the problem is upstream in the vehicle's reverse-light circuit or transmission switch, not this install; (2) inspect the backup-lamp wire's splice — if it's a quick-splice/vampire-tap connector, redo it as a soldered or crimped, heat-shrunk joint; (3) measure voltage at that wire for the full duration of a sustained reverse engagement, confirm it holds steady near 12V rather than sagging or dropping; (4) check the camera's chassis ground connection quality — a marginal ground can make a sense input read erratically right at its threshold
-- [ ] if the above all checks out solid and it still flickers: add a relay so the backup-lamp wire only triggers the relay coil (85/86), while the relay's switched output (87, fed from the same robust keyed+ source via pin 30) feeds the camera's backup-lamp sense input instead of the raw factory wire directly — gives the camera a clean signal regardless of what the factory circuit is actually doing
-- [ ] confirm the rear camera now stays on steadily for the full duration of reverse, not just the first moment
+- [x] rear + front camera accessory/ignition (+12V) → the accessory-power tap at position 32 (see "head unit power source" below), same source the head unit itself now uses
+- [x] rear camera video (yellow male RCA) → head unit rear camera input (yellow female RCA); front camera video → head unit front camera input
+- [x] rear + front camera chassis ground → established
+- [x] rear camera "rear camera +" (A2, pink) → head unit "rear camera +" (pink) — confirmed correct per the real manual: this is the camera's own trigger output to the head unit, separate from the A1 reverse-light wire below
+- [x] both cameras confirmed operational via the DVR app (live feed present, power/ground/video all good) — 2026-10-12
+- [ ] **troubleshoot known issue**: rear camera does not activate at all when put in reverse (both cameras work fine when viewed manually). per the real wiring diagram, this points squarely at wire **A1** ("to the back-up lamp (+12V)") — a separate pink wire from A2, dedicated to sensing the vehicle's actual reverse-light circuit. likely culprit: A1 was never (re)connected to the vehicle's reverse-light circuit during the recent accessory-power rewiring, since that work focused on accessory power (D) and the A2 trigger line. next steps: (1) locate wire A1 at the camera's own connector — distinct from A2, both pink, so trace by the manual's diagram rather than color alone; (2) confirm whether it's actually spliced to the vehicle's reverse-light circuit; (3) with ignition on and the vehicle in reverse, probe A1 directly at the camera end for ~12V; (4) if it reads 0V, trace back to find the break — likely simply never reconnected when the harness was moved during this rewiring round
+- [ ] once A1 is confirmed connected and live in reverse, confirm the rear camera now displays automatically and stays on for the full duration of reverse
+- [ ] if A1 checks out solid (reads 12V in reverse) but the camera still doesn't switch: check the head unit's settings menu for a "reverse trigger" / "rear camera auto-display" toggle — some ATOTO units need this explicitly enabled even with correct wiring
 
 ### supplies
 
@@ -41,21 +46,17 @@ flowchart LR
 
 ## head unit power source
 
-the head unit's accessory power, ground, and old camera video feed all currently come from a single harness behind the rearview mirror — not a dedicated run. investigated 2026-10-07; a proper factory source was found separately and this section documents moving to it.
+resolved 2026-10-12. the head unit originally ran entirely off the factory mirror-harness prewire (undersized for a full head unit); it's now moved to the radio-bay harness for constant power + ground, plus a new accessory-switched tap for the ACC/ignition leg that the radio-bay harness itself turned out not to carry.
 
 ```mermaid
 flowchart LR
-  mirror["mirror harness (factory FR7/cargo-van<br/>camera-to-mirror-monitor prewire, 6-pin)"]
-  mirror -->|"switched power (confirmed)"| headunitNow["ATOTOMOVE S8 Ultra<br/>(current power source)"]
-  mirror -->|"ground"| headunitNow
-  mirror -.->|"reverse trigger — obsolete, old system only"| unused1["unused"]
-  mirror -.->|"2 leads, assumed mic+/mic-, unconfirmed"| unused2["unused"]
-  mirror -.->|"video feed (separate FAKRA-style wire, pos/neg), orphaned"| unused3["unused — old camera removed"]
-  radiobay["radio-bay harness (factory,<br/>at the head unit's own location)"] -.->|"constant power (confirmed) — not yet used"| headunitFuture["ATOTOMOVE S8 Ultra<br/>(recommended power source)"]
-  radiobay -.->|"ground (confirmed) — not yet used"| headunitFuture
-  radiobay -.->|"switched power — not yet found"| headunitFuture
-  radiobay -.-> speakerwires["original speaker wires<br/>(role not yet traced)"]
+  radiobay["radio-bay harness (factory,<br/>fuse #41, 25A, confirmed constant)"] -->|"constant power + ground"| headunit["ATOTOMOVE S8 Ultra"]
+  seatbox["driver-seat-base fuse box,<br/>position 32 (unassigned, confirmed switched)"] -->|"18AWG, 5A ATM fuse"| headunit
+  seatbox -->|"same tap"| rearcam["rear + front cameras<br/>(accessory/ignition +12V)"]
+  mirror["mirror harness (factory FR7/cargo-van<br/>camera-to-mirror-monitor prewire, 6-pin)"] -.->|"capped, unused"| mirror
 ```
+
+see "camera wiring" above for how this same position-32 tap also feeds both cameras.
 
 ### installation
 
@@ -73,14 +74,20 @@ flowchart LR
   - [photo](../reference/IMG_1721.jpeg): a black wire with a braided/shielded wrap, visibly cut and re-spliced with heat-shrink butt connectors — likely the **antenna cable**: a center conductor plus a shield braid is how antenna coax is built, and the cut-and-resplice pattern matches the same "old installer intercepted a factory signal" pattern already found at the mirror harness. the fuse map's "antenna voltage converter" (part of fuse #28) and "antenna switch box" (fuse #30, fuse block F55/4) are the likely circuits on the other end. reasoned match, not confirmed by tracing yet
   - still no red/dark-green wire (the switched-power candidate from the 2013 reference) found in this batch — the switched-power search continues
 - [ ] confirm the DSP-pair and antenna-cable hypotheses above by tracing each back to its fuse (same method that confirmed the constant-power wire), rather than relying on the reasoned match alone
-- [ ] find or confirm a switched/ignition power wire at the radio-bay harness — still not identified; look specifically for red/dark-green next
-- [ ] re-wire the head unit's power and ground from the mirror harness to the radio-bay harness (constant + switched once found + ground) — the radio-bay harness is sized for an actual head unit's draw; the mirror harness was sized for a small mirror-mounted display and has been running the whole head unit, which it probably isn't rated for
-- [ ] once the head unit is moved off it, cap the mirror harness's power/ground/trigger/mic/video wires and leave the factory circuit intact but disconnected from the aftermarket system — nothing currently needs it
+- [x] confirmed no switched/ignition wire exists in the radio-bay harness itself (physically checked, none found) — consistent with the the12volt.com reference, which documented this harness as constant-only. likely explanation: the factory head unit wakes over the vehicle network (CAN/LIN), not a physical ACC wire, so the factory radio circuit doesn't carry one
+- [x] **dead end, logged so it isn't re-tried**: the co-driver footwell box's MF1 "terminal 15, special signal, cockpit body manufacturer" fuse (sub-block MF1, position 6 of 6) looked like the ideal documented tap, but physically traced to an empty, unwired cavity on this van's actual harness — Mercedes never ran a wire to it on this build. confirmed by opening the MF1 carrier and finding positions 5 and 6 (of 6) empty.
+- [x] found and used instead: the driver-seat-base fuse box (separate from the co-driver footwell box, see root README.md's van section — this is the box behind "fuses on the outside of the driver's seat base" in [fusemap.pdf](../reference/fusemap.pdf) p.8) has an **unassigned** position, **32**, that tested switched (12V with ignition on, 0V off) with no documented function and no competing circuit. populated it with a mini blade fuse female terminal crimped onto 18AWG wire, an inline ATM fuse holder carrying a 5A fuse, run to the radio bay — now feeding the head unit's accessory/ignition input and both cameras' accessory/ignition inputs. confirmed working 2026-10-12 (both cameras show live feed via the DVR app).
+- [x] re-wired the head unit's power and ground from the mirror harness to the radio-bay harness (constant off fuse #41 + ground), with the new position-32 tap above supplying the accessory/ignition leg the radio-bay harness itself didn't carry
+- [ ] cap the mirror harness's power/ground/trigger/mic/video wires and leave the factory circuit intact but disconnected from the aftermarket system — nothing currently needs it
 - [ ] once the speaker wires are identified by channel, confirm whether they feed the AudioControl amp's speaker-level inputs — now confirmed the amp has 8 such inputs built in for exactly this kind of OEM integration (see "front speakers and amplifier" below) — determines whether the new head unit should drive those same wires or whether the amp should be reconfigured to take RCA from the new head unit's preamp outputs instead
 
 ### supplies
 
-no new parts needed — this is a rewiring task using sources already present in the vehicle.
+- [x] [mini blade fuse female terminal](https://www.amazon.com/Connect-37155-Connector-Female-Terminals/dp/B071W6GKTL) — crimped onto the 18AWG tap wire, seated into position 32's bus-side socket
+- [x] inline ATM mini fuse holder — [1st Source FHM-16, waterproof](https://www.amazon.com/1st-Source-MINI-FUSE-HOLDER/dp/B00NU9AW42) or [Bussmann CFH, waterproof](https://www.amazon.com/Bussmann-Mini-Waterproof-Holder-Terminals/dp/B076FFHY89) — carries the 5A fuse at the tap itself
+- [x] [5A ATM/mini blade fuses](https://www.amazon.com/Blade-Style-Fuses-Circuit-Protection/dp/B071X7YYNV)
+- [x] [iCrimp mini/micro open-barrel crimping tool](https://www.amazon.com/IWISS-Crimping-AWG28-20-Terminals-Connectors/dp/B078WNZ9FW), AWG 28-20 — needed for the small terminal above, a cable-lug crimper won't do this cleanly
+- [x] 18AWG primary wire, position 32 to the radio bay
 
 ## front speakers and amplifier
 
@@ -112,9 +119,9 @@ flowchart LR
 ## open questions
 
 - the rear camera's actual current draw — needed to size the relay's fuse correctly, if the relay fix ends up being needed
-- which harness pin/wire color carries the REV trigger signal on this specific S8 variant, and whether this matters now that the pink wire is confirmed to be camera-to-head-unit, not vehicle-to-head-unit directly
 - **front speakers, active-crossover upgrade (deferred, pursue later)**: the AudioControl LC-5.1300 amp (see "front speakers and amplifier" below) has independent 12dB/octave crossovers built into its own 5 channels, same slope as the Focal Access 1 passive crossovers currently in place. since only 2 of its 5 channels are used right now (one per side, feeding each Focal crossover's single input), there's likely enough spare capacity to run the front woofers and tweeters on independent channels (4 total) with the amp doing the frequency split electronically, freeing the passive crossovers — plus the 5th channel still available for a sub. this is a real rewiring project (new amp-to-driver runs per channel, reconfiguring the amp's onboard crossover points), not a quick change, and isn't needed for anything to keep working — the current passive setup is correct and complete as-is.
 
 ## decided
 
+- rejected the forum-sourced fix of capping the rear camera's pink wire and wiring the vehicle's reverse light straight to the head unit's pink wire — the real AC-RCR04W manual shows two separate pink wires (A1 to the vehicle's reverse light, A2 camera-to-head-unit trigger) and the existing A2-to-head-unit connection is already correct as wired.
 - going active on the front speakers isn't required by the new head unit — its DSP doesn't change what the passive Focal crossovers are doing, and removing them without independent per-driver amplification would send full-range signal to the tweeters (likely to damage them quickly) and highs to the woofers. the existing passive crossovers stay in place unless/until the active upgrade above is actually pursued.
