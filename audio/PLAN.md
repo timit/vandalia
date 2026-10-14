@@ -31,18 +31,17 @@ wiring confirmed 2026-10-12 against the actual manufacturer manuals ([rear camer
 - [x] rear + front camera chassis ground → established
 - [x] rear camera "rear camera +" (A2, pink) → head unit "rear camera +" (pink) — confirmed correct per the real manual: this is the camera's own trigger output to the head unit, separate from the A1 reverse-light wire below
 - [x] both cameras confirmed operational via the DVR app (live feed present, power/ground/video all good) — 2026-10-12
-- [ ] **troubleshoot known issue**: rear camera does not activate at all when put in reverse (both cameras work fine when viewed manually). per the real wiring diagram, this points squarely at wire **A1** ("to the back-up lamp (+12V)") — a separate pink wire from A2, dedicated to sensing the vehicle's actual reverse-light circuit. likely culprit: A1 was never (re)connected to the vehicle's reverse-light circuit during the recent accessory-power rewiring, since that work focused on accessory power (D) and the A2 trigger line. next steps: (1) locate wire A1 at the camera's own connector — distinct from A2, both pink, so trace by the manual's diagram rather than color alone; (2) confirm whether it's actually spliced to the vehicle's reverse-light circuit; (3) with ignition on and the vehicle in reverse, probe A1 directly at the camera end for ~12V; (4) if it reads 0V, trace back to find the break — likely simply never reconnected when the harness was moved during this rewiring round
-- [ ] once A1 is confirmed connected and live in reverse, confirm the rear camera now displays automatically and stays on for the full duration of reverse
-- [ ] if A1 checks out solid (reads 12V in reverse) but the camera still doesn't switch: check the head unit's settings menu for a "reverse trigger" / "rear camera auto-display" toggle — some ATOTO units need this explicitly enabled even with correct wiring
+- [x] **resolved**: rear camera wasn't activating in reverse because wire **A1** ("to the back-up lamp (+12V)") was actually spliced into the **brake** light circuit, not the reverse light — confirmed by lifting off the brake pedal while in reverse (parking brake set) and watching which wire stayed live. a Mercedes towbar fitting manual for this van ([MB-098-07U](https://www.ecs-electronicsuk.co.uk/ecsdata/manuals/MB09807U.pdf)) independently confirmed the brake-circuit wire color (blue/red), corroborating the miswire. re-spliced A1 to the correct reverse-light wire, identified the same way (live only with foot off the brake, transmission in reverse). camera now activates reliably in reverse — 2026-10-12.
+- [x] rear + front cameras, head unit, and all new wiring wire-tied and buttoned up — 2026-10-12
+- [ ] **new, minor issue**: slight noise on the rear camera's video feed. prime suspects, in order: (1) ground loop — camera's ground point may have moved during this rewiring, check it's a clean, low-resistance chassis ground; (2) the new accessory-power wire or reverse-light wire now routed parallel to the video RCA run for some distance — separate them or cross at 90°; (3) RCA connector seating; (4) alternator whine, if noise tracks with engine RPM. not yet diagnosed further.
 
 ### supplies
 
 - [x] [ATOTOMOVE S8 Ultra head unit](https://www.amazon.com/dp/B0FCXLPTCB), 10.1" — android head unit, wireless carplay/android auto
 - [x] [ATOTO AC-FCR04W front camera](https://www.amazon.com/dp/B0DKT4XJXS), 1080P, 150° FOV
 - [x] [ATOTO AC-RCR04W rear camera](https://www.amazon.com/dp/B0DK6LDBSM), 1080P HDR, 145° FOV, IP67 — replaced the stock rear camera
-- [x] [Gebildet 2-pack 40/30A relay harness kit](https://www.amazon.com/dp/B07TWC48QW), 4-pin SPST — wire colors: white=86 (trigger), black=85 (ground), red=30 (power in), blue=87 (switched output) — only needed if the troubleshooting above points to the relay fix
-- [x] salvaged OEM 12V 30A relay (used previously for the stock camera) — alternative to the Gebildet kit above; its 4 wires aren't color-coded, identify the 85/86 coil pair vs. the 30/87 switch pair with a continuity check (relay unplugged from its socket): the pair showing ~50-120 ohms resistance is the coil (85/86, either wire either way); the pair showing open circuit is the switch (30/87, either wire either way). photos: [housing back, embossed part number](../reference/IMG_1713.jpeg), [pin diagram face — 30/86/87/85, 12V 30A](../reference/IMG_1711.jpeg), [socket with its 4 uncolored wires](../reference/IMG_1712.jpeg)
-- [ ] inline fuse holder + small fuse (1-3A likely, confirm against actual camera draw) for the relay's pin-30 feed — **not included with either relay above**, confirmed by physical inspection
+- [x] [Gebildet 2-pack 40/30A relay harness kit](https://www.amazon.com/dp/B07TWC48QW), 4-pin SPST — wire colors: white=86 (trigger), black=85 (ground), red=30 (power in), blue=87 (switched output) — not needed for the camera signal (the A1 miswiring was the whole problem); one held in reserve
+- [x] salvaged OEM 12V 30A relay (4 uncolored wires) — not needed for the camera signal either; repurposed instead for the dash USB charger circuit, see "dash USB chargers" below
 
 ## head unit power source
 
@@ -88,6 +87,37 @@ see "camera wiring" above for how this same position-32 tap also feeds both came
 - [x] [5A ATM/mini blade fuses](https://www.amazon.com/Blade-Style-Fuses-Circuit-Protection/dp/B071X7YYNV)
 - [x] [iCrimp mini/micro open-barrel crimping tool](https://www.amazon.com/IWISS-Crimping-AWG28-20-Terminals-Connectors/dp/B078WNZ9FW), AWG 28-20 — needed for the small terminal above, a cable-lug crimper won't do this cleanly
 - [x] 18AWG primary wire, position 32 to the radio bay
+
+## dash USB chargers
+
+two factory dash USB ports, almost exclusively used for MagSafe wireless phone chargers. originally factory-switched off the vehicle's own starter battery; moved to a relay so they can run off a more robust source without adding standby drain on the starter battery while parked (started 2026-10-08 as a sidebar off the head unit power work).
+
+```mermaid
+flowchart LR
+  seatbox["driver-seat-base fuse box,<br/>position 32 tap (same as head unit)"] -->|"coil trigger (85/86)"| relay["salvaged OEM 12V 30A relay"]
+  radiobay["radio-bay harness, fuse #41"] -->|"pin 30, switch power in"| relay
+  relay -->|"pin 87, switch power out,<br/>own inline fuse"| usb["dash USB ports<br/>(2x, MagSafe chargers)"]
+  gnd["chassis ground"] -.- relay
+  gnd -.- usb
+```
+
+coil fed from the same low-current switched signal as the head unit/cameras (position 32), so the relay stays open — zero draw — whenever the ignition is off, eliminating the standby-drain risk a constant-hot feed would have had. switch side carries the real charging current, sourced from fuse #41 rather than the thin signal tap, with its own separate inline fuse at the relay's output.
+
+**known tradeoff, accepted**: the relay's pin-30 feed shares fuse #41 with the head unit's own constant power, rather than each having independent factory-level protection. not ideal — a fault on either load's wiring upstream of the relay/head-unit split could in theory affect both — but practical, since it avoids a second run back to the fuse box, and the relay's own output-side fuse still isolates the USB circuit specifically. accepted as-is.
+
+### installation
+
+- [x] identified the salvaged OEM relay's pins by continuity check (unplugged, multimeter): ~50-120 ohm pair = coil (85/86); open-circuit pair = switch (30/87)
+- [x] relay coil (85/86) → chassis ground, and → the position-32 switched tap (same source as the head unit/cameras)
+- [x] relay switch-in (30) → fuse #41 (radio-bay constant feed)
+- [x] relay switch-out (87) → dash USB ports, through its own inline ATM fuse holder (separate from the 5A fuse protecting the position-32 signal tap)
+- [x] dash USB ports' ground → chassis ground
+- [x] wired, wire-tied, and buttoned up — 2026-10-12
+
+### supplies
+
+- [x] salvaged OEM 12V 30A relay (reused from the old stock camera install, 4 uncolored wires, pins identified by continuity — see "camera wiring" above)
+- [ ] inline ATM fuse holder + fuse (3-5A, sized to actual USB/MagSafe draw) for the relay's pin-87 output — confirm this was actually sourced/used; the ones bought for the position-32 tap were earmarked for that signal circuit, not this output leg
 
 ## front speakers and amplifier
 

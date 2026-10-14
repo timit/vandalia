@@ -12,9 +12,15 @@ all three units installed and operational:
 - ATOTO AC-FCR04W front-facing camera (1080P, 150° FOV)
 - ATOTO AC-RCR04W rear-facing camera (1080P HDR, 145° FOV, IP67), replacing the vehicle's stock rear camera
 
-**known issue (open)**: the rear camera doesn't activate when the vehicle is put in reverse, though it works fine when viewed manually (power, ground, and video all confirmed good). per the camera's real manual, this points to wire A1 ("to the back-up lamp (+12V)") — separate from the A2 trigger wire already correctly connected — likely not (re)connected to the vehicle's reverse-light circuit during the recent power rewiring. see PLAN.md's "camera wiring" section.
+**resolved**: the rear camera wasn't activating in reverse because its reverse-sense wire was actually spliced into the brake light circuit rather than the backup light — corrected 2026-10-12. see PLAN.md's "camera wiring" section.
+
+**known issue (open, minor)**: slight noise on the rear camera's video feed, not yet diagnosed — likely a ground loop or routing issue from the recent rewiring. see PLAN.md's "camera wiring" section.
 
 **resolved**: the head unit and both cameras are now powered from the radio-bay harness (constant, fuse #41) plus a new accessory-switched tap sourced from an unassigned position in the driver-seat-base fuse box (position 32) — replacing the original factory mirror-area harness, which was undersized for a full head unit. see PLAN.md's "head unit power source" section.
+
+## dash USB chargers
+
+the two factory dash USB ports (used for MagSafe phone chargers) are now relay-switched: coil triggered by the same position-32 accessory tap the head unit uses, switch side powered from fuse #41. keeps them off the vehicle's starter battery while parked (no standby drain) without needing a dedicated run to the house 24V bus. see PLAN.md's "dash USB chargers" section.
 
 ## existing front speaker system
 

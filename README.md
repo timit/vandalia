@@ -13,7 +13,7 @@ a reliable, serviceable van build with a traditional 24V victron electrical syst
 | folder | status |
 |---|---|
 | electrical/ | active. design settled, parts being bought. |
-| audio/ | head unit and both cameras installed and operational. one known issue open — see audio/PLAN.md. |
+| audio/ | head unit, both cameras, and the dash USB charger relay installed and operational. one minor known issue open (camera video noise) — see audio/PLAN.md. |
 | plumbing/ | not started. |
 
 add new subsystems (heating, exterior, and so on) as new folders.
