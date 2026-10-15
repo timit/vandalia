@@ -15,14 +15,15 @@ sections are ordered to match the real install sequence: ac input (wired, then h
 - [ ] adhesive heat shrink
 - [x] cable cutter
 - [x] inch-pound torque wrench
-- [x] multimeter
+- [x] commercial electric (mastech) MS8922H voltage tester — AC/DC voltage and GFCI test only, **no continuity/resistance function**, confirmed from its [manual](https://www.manualslib.com/manual/1483854/Mastech-Ms8922h.html) — not sufficient on its own for this plan's continuity checks
+- [x] [woods DMMW3 pocket multimeter](https://www.woodshomeproducts.com/product/pocket-auto-range-multimeter/), 10-function, CAT III 300V, UL listed — has resistance/continuity/diode test, confirmed capable of every continuity check called for in this plan. [manual](https://manuals.plus/asin/B071D9KNMM)
 - [ ] 1-1/8" hole saw
 
 ## conventions
 
 **switch position convention** (2026-09-21): position 1 is always the DJI leg, position 2 is always the victron leg, on every switch that splits between the two systems (BAOMAIN 1, BAOMAIN 2, BAOMAIN 3, battery selector 1, battery selector 2, battery selector 3). matches the physical layout — DJI mounted driver side/left, victron gear passenger side/right — so turning a switch left (position 1) selects DJI and right (position 2) selects victron. exception: BAOMAIN 4 selects between two *loads* (oven/cooktop), not two sources, so this convention doesn't apply to it — which appliance sits on which leg is arbitrary.
 
-**BAOMAIN transfer-switch terminal wiring**: jumper terminal 2 to terminal 4 (common hot) and terminal 6 to terminal 8 (common neutral) to turn the switch's two independent contact pairs into one proper double-throw. terminal 1/5 is the "position 1" leg; terminal 3/7 is the "position 2" leg. ground never goes through the switch — bond all grounds together directly. terminal is M4 screw, accepts 2.5-6.0mm² wire (about 14-10 AWG), torque 1.2 N·m. each switch's specific terminal assignment is in its own category's installation checklist below. verify with a continuity meter before energizing — BAOMAIN's own manual doesn't spell out this transfer-switch application, though the jumper pattern matches the manual's own truth table.
+**BAOMAIN transfer-switch terminal wiring**: jumper terminal 2 to terminal 4 (common hot) and terminal 6 to terminal 8 (common neutral) to turn the switch's two independent contact pairs into one proper double-throw. terminal 1/5 is the "position 1" leg; terminal 3/7 is the "position 2" leg. ground never goes through the switch — bond all grounds together directly. terminal is a clamp/box terminal (screw with a square pressure washer, fully removable — not a stud, so ring terminals don't fit), accepts 2.5-6.0mm² wire (about 14-10 AWG), torque 1.2 N·m (verify: this torque figure assumed a direct screw-clamp and hasn't been confirmed against the switch's own spec for this box-terminal style). confirmed by continuity meter on BAOMAIN 1 (2026-10-14): terminals 2/4 and 6/8 are genuinely separate contacts, not already bridged internally — the jumper is required, not optional. confirmed method: twist the incoming wire and the jumper together (or crimp into one ferrule sized for the box) and insert both into the terminal's clamp cavity together — seats securely, tested on BAOMAIN 1. each switch's specific terminal assignment is in its own category's installation checklist below.
 
 **AC wiring is the dangerous part of this build — have it inspected before energizing anything past the inlet, especially the BAOMAIN switches.**
 
@@ -42,9 +43,10 @@ flowchart LR
 ### installation
 
 - [x] mount the shore inlet, blue sea 8077, BAOMAIN 1, and the multiplus (shore power disconnected throughout)
-- [ ] wire inlet → 8077 → BAOMAIN 1 common, 10 AWG 3-conductor throughout (10ft max on the inlet-to-8077 leg — 15ft southwire SOOW cord on hand; verify: if this leg ever needs to be longer, blue sea's 8027-family manual says an additional fuse/breaker is needed within 10ft of the inlet — applied here by analogy, not confirmed for the 8077 specifically)
-- [ ] install BAOMAIN 1's jumpers (terminal 2→4, 6→8), 10 AWG. common = 8077 output. pos 1 (terminal 1/5) = 3131/DJI branch, wired later. pos 2 (terminal 3/7) = multiplus AC-in, 10 AWG 3-conductor
-- [ ] continuity check: no hot-neutral or hot-neutral-ground continuity anywhere wired so far; confirm position 2 connects it and position 0 opens it
+- [x] wire inlet → 8077 → BAOMAIN 1 common, 10 AWG 3-conductor throughout (10ft max on the inlet-to-8077 leg — 15ft southwire SOOW cord on hand; verify: if this leg ever needs to be longer, blue sea's 8027-family manual says an additional fuse/breaker is needed within 10ft of the inlet — applied here by analogy, not confirmed for the 8077 specifically)
+- [x] install BAOMAIN 1's jumpers (terminal 2→4 hot, 6→8 neutral), 10 AWG, twisted together with the incoming hot/neutral from the 8077 and seated together in each clamp terminal — confirmed solid, 2026-10-14
+- [x] land BAOMAIN 1 pos 2 (terminal 3/7) → multiplus AC-in, 10 AWG 3-conductor, ferruled into its spring-loaded push-in terminals (L/N/PE) — confirmed seated securely, 2026-10-15. pos 1 (terminal 1/5) = 3131/DJI branch, wired later
+- [x] continuity check: no hot-neutral or hot-neutral-ground continuity anywhere wired so far; confirmed position 2 connects it and position 0 opens it — 2026-10-15
 - [ ] **hold here** — do not plug in shore power yet. go wire the DC backbone (dc negative and ground, then dc positive and alternator below) first; that section ends with the multiplus profile set and shore power plugged in, then comes back to finish this list
 - [ ] multiplus AC-out-1 → 8027, 10 AWG 3-conductor, landing on the 8027's 30A main (do this after dc positive and alternator's alternator steps are done — it's next chronologically, before ac loads)
 - [ ] wire the DJI AC-input branch (deferred): BAOMAIN 1 pos 1 → 3131 box → 7210 15A breaker → receptacle → DJI AC in, 12 AWG 3-conductor (verify: 3131 gland size and how its grounds connect, that the 7210 is single-pole, and the marine/UL rating of this triplex — labeled "marine grade" with no UL/ABYC rating given)
