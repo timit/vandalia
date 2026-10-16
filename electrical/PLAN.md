@@ -112,6 +112,7 @@ flowchart LR
   vf["van 12V feed<br/>starter battery +"] -->|"AEP 100A 65VDC fuse, 6 AWG, to OUTPUT terminal"| s1["battery selector 1"]
   s1 -->|"pos 1, terminal 1, 6 AWG"| djic["DJI car charger"]
   s1 -->|"pos 2, terminal 2, 6 AWG"| xs["orion XS 1400"]
+  fgnd["front ground run<br/>(starter battery area, already pulled)"] -->|"6 AWG, direct"| djic
   djic --> djip["DJI power 2000"]
   xs -->|"60A ANL, 6 AWG"| pbar["+ bar<br/>egis 6600-404"]
   sok["SOK battery +"] -->|"2/0"| ct["class T fuse<br/>300A"]
@@ -141,7 +142,8 @@ flowchart LR
 - [ ] selector 1 terminal "2" → XS IN, 6 AWG (position 2, victron leg; pacer 15ft red reel, shared across all 4 red 6 AWG runs in this section — this leg is under 6ft, under-bed run; XS's own terminal is a screw type, no lug)
 - [ ] leave terminal "1" unconnected for now (DJI charger leg, deferred)
 - [ ] XS OUT → 6 AWG → 60A ANL (5123) → positive bar (same 15ft red reel, under 6ft)
-- [ ] XS GND → 6 AWG → negative bar (pacer 15ft black reel, shared with meanwell -V below, under 6ft)
+- [ ] XS GND → 6 AWG → negative bar (pacer 15ft black reel, shared with meanwell -V below, under 6ft) — **not the same ground as the DJI charger's, see below**; the orion XS's output lands on the SOK's own positive bar, so its return has to close the loop at the SOK's negative bar specifically, not chassis or any other ground point
+- [x] front ground run (already pulled from the starter battery area to the switch box, 6 AWG) lands directly on the **DJI car charger's own ground terminal** — decided 2026-10-16, replacing an earlier plan to cap it off unused. the DJI charger's output goes to DJI power 2000, a completely separate system from the SOK, so its return belongs there, not on the SOK's negative bar — landing it on the SOK bus instead would bridge two systems this build otherwise keeps independent except through the selector switches themselves. the two chargers now share only the common + feed through selector 1; each keeps its own separate ground
 - [ ] continuity check with selector 1 OFF: confirm position 2 connects OUTPUT to "2" and nothing else, before reinserting the fuse
 - [ ] reinsert the AEP fuse; switch selector 1 to position 2
 - [ ] configure the XS via VictronConnect: lithium profile, absorption ≤27.6V, input current limit ~60A (verify: the alternator is rated 180A or 220A depending on build variant, printed on its own back cover — either option clears this 60A setting with headroom, but worth a physical check for certainty), engine-running detection on
