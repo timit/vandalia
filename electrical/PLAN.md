@@ -132,7 +132,7 @@ flowchart LR
 - [x] wire the positive side: SOK+ → class T fuse block → positive bar → multiplus+, 2/0 throughout — landed 2026-10-16, fuse itself correctly not yet inserted
 - [x] torque every positive-side stud just landed (egis busbar 120-140 in-lb; class T block 190 in-lb max; SOK terminals 9-11 N·m) — 2026-10-16
 - [ ] install the class T fuse last; turn on the SOK (a small spark on connection is normal)
-- [ ] set the multiplus's battery profile to lithium, absorption ≤27.6V, via VictronConnect — **this unit has no built-in Bluetooth**, confirmed from the manual's configuration chapter (§5.3): it requires a Victron MK3-USB (VE.Bus to USB) interface plugged into one of its VE.Bus RJ45 ports, connected via USB to a computer running the VictronConnect desktop app, not the phone app over Bluetooth. use the VE.Bus port temporarily (the cerbo isn't wired to it yet). float voltage not yet decided — the SOK's own manual lists 27.6V as its float spec, same figure chosen here for absorption; confirm the intended float value before saving the profile rather than reusing the absorption number by default
+- [ ] set the multiplus's battery profile to lithium, absorption ≤27.6V — **the cerbo/WiFi/Remote Console path doesn't actually work for this, confirmed 2026-10-16**: with no SOK CAN-bus wired and DVCC off, the multiplus runs its own standalone internal charge algorithm, which the GX Remote Console doesn't expose at all — that's only configurable via VictronConnect/VEConfigure, which for a Bluetooth-less unit means the MK3-USB after all (see supplies). the cerbo power + VE.Bus connections already made aren't wasted — still needed for "data cables" later, just landed early. **separately, flag before ever enabling DVCC later**: once SOK's CAN-bus is wired, DVCC (if enabled) overrides the multiplus's internal curve entirely, letting the battery's own BMS dictate charge voltage via CVL instead — the manual is explicit that DVCC should only be enabled for batteries Victron has explicitly tested and listed as supported ("if DVCC is not mentioned in notes relating to your battery, do not enable it") — whether SOK's Pylontech-emulation qualifies hasn't been checked yet (see victron's battery compatibility manual, not yet in reference/). float voltage still not decided either — the SOK's own manual lists 27.6V as its float spec, same figure chosen here for absorption; confirm the intended float value before saving the profile rather than reusing the absorption number by default
 - [ ] plug in shore power; verify with a multimeter (120V hot-neutral, 120V hot-ground, 0V neutral-ground); confirm the reverse-polarity LED is off before energizing any branch circuit; continue with the alternator steps below next — ac input's AC-out-1-to-8027 step comes after those, not before
 - [ ] pull the AEP fuse on the van feed (or disconnect the starter battery terminal) before touching any alternator wiring — the short segment between battery and fuse holder stays live even with the fuse pulled (this area shares the under-seat cavity with an existing audiocontrol LE5-1300 amplifier — route new DC cables clear of its wiring)
 - [x] mount battery selector 1
@@ -274,10 +274,10 @@ flowchart LR
 
 ### installation
 
-- [ ] cerbo power (Power in V+) → + and - bars, supplied cable with an inline 3.15A slow-blow fuse already built in (verify: the cable's M8 ring eyes may not fit the + and - bar studs, which are 3/8" elsewhere in this build — may need re-terminating)
+- [x] cerbo power (Power in V+) → + and - bars, supplied cable with an inline 3.15A slow-blow fuse already built in — pulled forward early, 2026-10-16, to unblock configuring the multiplus without needing an MK3-USB (see "dc positive and alternator" above and "set the multiplus's battery profile" there). the M8 ring eyes fit the 3/8" bar studs fine, despite the size mismatch flagged earlier — confirmed by direct test, not worth re-terminating
 - [ ] dedicate one of the cerbo's 2 VE.Can ports to the SOK; set the port profile to BMS-Can (500kbit/s); terminate with one of the 2 included VE.Can terminators
 - [ ] SOK → cerbo, CAN, SOK's own supplied cable
-- [ ] multiplus → cerbo, VE.bus RJ45, 0.9m supplied
+- [x] multiplus → cerbo, VE.bus RJ45, 0.9m supplied — pulled forward early, 2026-10-16, same reason as above
 - [ ] orion XS → cerbo, VE.direct, 2.95ft supplied
 - [ ] power the cerbo only from "Power in V+" (8-70VDC) — never from a multiplus AC-out
 - [ ] turn DVCC on
@@ -285,8 +285,8 @@ flowchart LR
 
 ### supplies
 
-- [x] victron cerbo GX MK2 (PN BPP900450110) — system monitor, CAN/DVCC hub
-- [ ] [victron interface MK3-USB (VE.Bus to USB), ASS030140000](https://www.fisheriessupply.com/victron-energy-interface-mk3-usb/ass030140000) — required to configure the multiplus at all; this unit has no built-in Bluetooth
+- [x] victron cerbo GX MK2 (PN BPP900450110) — system monitor, CAN/DVCC hub. ships with its own power cable (inline 3.15A fuse, M8 rings) — powered early from the busbars and VE.Bus-connected to the multiplus (both landed 2026-10-16), originally to try configuring the multiplus without an MK3-USB — turned out not to work (see "dc positive and alternator" above), but both connections are needed for this section anyway, nothing wasted
+- [ ] [victron interface MK3-USB-C (VE.Bus to USB-C)](https://www.amazon.com/gp/product/B0BNBVKSTH) — actually required after all to configure the multiplus's standalone charge voltage curve; a computer running VictronConnect or VEConfigure, not the phone app. USB-C variant chosen to match the computer being used, in place of the USB-A ASS030140000
 - [x] victron VE.direct cable, 2.95ft — orion XS to cerbo
 - [x] victron RJ45 UTP cable, 0.9m — multiplus to cerbo
 
