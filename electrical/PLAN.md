@@ -79,18 +79,18 @@ flowchart TB
   mpg["multiplus exterior grounding point"] -->|"10 AWG min, separate from DC- and AC ground"| nbar
   mwn["meanwell RSP-1000-24 -V"] -->|"6 AWG, permanently bonded here — safe, galvanically isolated"| nbar
   veln["velit 2000R -"] -->|"velit's own 6 AWG cable, fused at the velit end"| nbar
-  nbar -->|"2 AWG, one point only, 6-8ft to factory stud"| chassis["chassis bond"]
+  nbar -->|"2 AWG, one point only, to the factory undercarriage ground bolt"| chassis["chassis bond<br/>(crossmember, front of rear axle — official Mercedes ground bolt)"]
 ```
 
 ### installation
 
-- [ ] mount the SOK — floor, passenger-side corner, parallel to the front wall, closest to the multiplus (a planned second SOK extends along the front wall toward the driver side)
-- [ ] mount the positive and negative busbars near the SOK — exact placement still open within that area, but keep them near the SOK (passenger-side corner, closest to the multiplus) rather than shifted driver-side: the high-current 2/0 connections matter far more for being short than the meanwell's 6 AWG runs do for being shortened (voltage drop on those is under 1% even at 9ft)
-- [ ] cut, crimp, pull-test, and heat-shrink the negative-side 2/0 cables now that both ends (SOK, negative bar, multiplus) are in place to measure against — pacer 8ft black reel, shared across both legs; the -bar→multiplus- leg is the long unknown, measure before cutting
-- [ ] wire the negative side first — this is the system's only ground reference, it goes in before anything else: SOK- → negative bar → multiplus-, 2/0 both legs
-- [ ] multiplus's separate exterior grounding point → negative bar, 10 AWG minimum (verify: victron's manual says "at least 4mm²" and "on the product's exterior" but doesn't pin down exactly where — check the unit itself)
-- [ ] single chassis bond off the negative bar → factory stud, 2 AWG (pacer 10ft reel, comfortable slack, 6-8ft to the stud; verify: the stud is 1/4-20, smaller than every other stud in this build — confirm it has enough remaining thread engagement for one more ring terminal without loosening what's already grounded there, and get its actual torque spec rather than reusing this build's 120-140 in-lb, which is sized for 3/8"/M8 hardware)
-- [ ] torque every negative-side stud just landed (egis busbar 120-140 in-lb; SOK terminals 9-11 N·m — different torque, don't reuse the setting)
+- [x] mount the SOK — floor, passenger-side corner, parallel to the front wall, closest to the multiplus (a planned second SOK extends along the front wall toward the driver side) — mounted 2026-10-16
+- [x] mount the positive and negative busbars tight against the SOK, passenger-side corner, same area as the multiplus and class T block — decided 2026-10-14, not left open: the high-current 2/0 connections (SOK, class T, multiplus) matter far more for being short than the meanwell's 6 AWG runs do for being shortened (under 1% voltage drop even stretched to 9ft). when the second SOK is added later (driver-side along the front wall), expect to replace SOK1's direct negative-bar cable with a SOK1→SOK2 jumper plus a new, longer SOK2→bar cable — SOK's own manual (parallel installation diagrams) taps the system's negative from whichever battery ends up *last* in the chain, not a fixed point, so this is a planned future rewire, not a sign the placement was wrong. both bars mounted and bolted down 2026-10-16
+- [x] cut, crimp, pull-test, and heat-shrink the negative-side 2/0 cables — pacer 8ft black reel, both legs — confirmed pull-tested and heat-shrunk, 2026-10-16
+- [x] wire the negative side first — this is the system's only ground reference, it goes in before anything else: SOK- → negative bar → multiplus-, 2/0 both legs — landed 2026-10-16
+- [x] multiplus's separate exterior grounding point → negative bar — item F in Victron's Appendix A diagram, "primary ground connection M6 (PE)". upsized to 8 AWG (10 AWG called for, couldn't source it — fine, exceeds both the plan's spec and victron's own 4mm² minimum). landed 2026-10-16
+- [x] single chassis bond off the negative bar → the official Mercedes M6 ground bolt at the crossmember in front of the rear axle (undercarriage), 2 AWG, pacer 10ft reel — routed and landed at both ends 2026-10-16 (busbar end: 2 AWG/3/8" lug sourced from west marine; ground-bolt end: seafit "#2-1/4" lug), replacing the originally-planned ceiling stud, which turned out not to be one of Mercedes' approved upfitter ground points at all. [reference/factory-chasis-ground.png](../reference/factory-chasis-ground.png) (Mercedes upfitter manual, §8.4.12): torque for M6 is **8 N·m ± 0.8 N·m** (about 64-78 in-lb — not the 120-140 in-lb figure used elsewhere in this build, which is sized for 3/8"/M8 hardware); maintain at least 3 full thread turns of protrusion; max 4 cable lug connections per bolt, radially distributed if more than one — not a concern here with a single lug
+- [x] torque every negative-side stud just landed (egis busbar 120-140 in-lb; SOK terminals 9-11 N·m; chassis bond M6 ground bolt 8 N·m ± 0.8 N·m — three different torques, don't reuse settings between them) — 2026-10-16
 
 ### supplies
 
@@ -98,7 +98,8 @@ flowchart TB
 - [x] pacer marine tinned copper battery cable, 15ft #6 black — negative-side runs
 - [x] pacer marine tinned copper battery cable, 10ft #2 black — chassis bond
 - [x] pacer marine tinned copper battery cable, 8ft #2/0 black — negative 2/0 runs
-- [x] [seafit "#2-1/4" lug 5-pack](https://www.westmarine.com/seafit-heavy-duty-tinned-lugs-22320485.html) — chassis bond (1 needed, 4 spare)
+- [x] [seafit "#2-1/4" lug 5-pack](https://www.westmarine.com/seafit-heavy-duty-tinned-lugs-22320485.html) — chassis bond, ground-bolt end (1 needed, 4 spare)
+- [x] 2 AWG, 3/8" hole lug — chassis bond, negative-bar end, sourced from west marine 2026-10-16
 - [ ] 10 AWG single-conductor cable — multiplus exterior grounding point to negative bar
 - [ ] 2/0 lug, M8 hole, x2 — SOK-, multiplus- (plan: drill from seafit "#2/0-5/16" lugs, see dc positive and alternator)
 - [ ] 2/0 lug, 3/8" hole, x2 — SOK-→-bar and -bar→multiplus- busbar ends (shares the seafit "#2/0-3/8" 5-pack tracked under dc positive and alternator)
@@ -125,13 +126,13 @@ flowchart LR
 
 ### installation
 
-- [ ] continuity check: no continuity between the + and - bars (negative side wired already, above)
-- [ ] mount the class T fuse block near the busbars (fuse not inserted yet)
-- [ ] cut, crimp, pull-test, and heat-shrink the positive-side 2/0 cables now that all ends are in place — pacer 8ft red reel, shared across all three legs; the +bar→multiplus+ leg is the long unknown, measure before cutting
-- [ ] wire the positive side: SOK+ → class T fuse block → positive bar → multiplus+, 2/0 throughout
-- [ ] torque every positive-side stud just landed (egis busbar 120-140 in-lb; class T block 190 in-lb max; SOK terminals 9-11 N·m)
+- [x] continuity check: no continuity between the + and - bars — run 2026-10-16. result needs a caveat, not a flat pass/fail: bar-to-bar reads diode-like (continuity one polarity, open the other) with the multiplus connected — confirmed, by temporarily disconnecting multiplus- and re-testing (clean open both directions with it isolated), that this comes from the multiplus's own internal DC-input protection circuitry, not a wiring fault. the class T fuse isn't inserted yet, so SOK+ has no path to the positive bar at all right now and was never a factor. expect this same asymmetric reading on future bar-to-bar checks as long as the multiplus is connected — it's normal, not a regression
+- [x] mount the class T fuse block near the busbars (fuse not inserted yet) — in place 2026-10-16
+- [x] cut, crimp, pull-test, and heat-shrink the positive-side 2/0 cables — pacer 8ft red reel, all three legs — confirmed pull-tested and heat-shrunk, 2026-10-16
+- [x] wire the positive side: SOK+ → class T fuse block → positive bar → multiplus+, 2/0 throughout — landed 2026-10-16, fuse itself correctly not yet inserted
+- [x] torque every positive-side stud just landed (egis busbar 120-140 in-lb; class T block 190 in-lb max; SOK terminals 9-11 N·m) — 2026-10-16
 - [ ] install the class T fuse last; turn on the SOK (a small spark on connection is normal)
-- [ ] set the multiplus's battery profile to lithium, absorption ≤27.6V, via VictronConnect (now possible — the multiplus is powered from the DC backbone just finished; no cerbo/DVCC yet to do this automatically)
+- [ ] set the multiplus's battery profile to lithium, absorption ≤27.6V, via VictronConnect — **this unit has no built-in Bluetooth**, confirmed from the manual's configuration chapter (§5.3): it requires a Victron MK3-USB (VE.Bus to USB) interface plugged into one of its VE.Bus RJ45 ports, connected via USB to a computer running the VictronConnect desktop app, not the phone app over Bluetooth. use the VE.Bus port temporarily (the cerbo isn't wired to it yet). float voltage not yet decided — the SOK's own manual lists 27.6V as its float spec, same figure chosen here for absorption; confirm the intended float value before saving the profile rather than reusing the absorption number by default
 - [ ] plug in shore power; verify with a multimeter (120V hot-neutral, 120V hot-ground, 0V neutral-ground); confirm the reverse-polarity LED is off before energizing any branch circuit; continue with the alternator steps below next — ac input's AC-out-1-to-8027 step comes after those, not before
 - [ ] pull the AEP fuse on the van feed (or disconnect the starter battery terminal) before touching any alternator wiring — the short segment between battery and fuse holder stays live even with the fuse pulled (this area shares the under-seat cavity with an existing audiocontrol LE5-1300 amplifier — route new DC cables clear of its wiring)
 - [x] mount battery selector 1
@@ -285,6 +286,7 @@ flowchart LR
 ### supplies
 
 - [x] victron cerbo GX MK2 (PN BPP900450110) — system monitor, CAN/DVCC hub
+- [ ] [victron interface MK3-USB (VE.Bus to USB), ASS030140000](https://www.fisheriessupply.com/victron-energy-interface-mk3-usb/ass030140000) — required to configure the multiplus at all; this unit has no built-in Bluetooth
 - [x] victron VE.direct cable, 2.95ft — orion XS to cerbo
 - [x] victron RJ45 UTP cable, 0.9m — multiplus to cerbo
 
