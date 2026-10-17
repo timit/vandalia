@@ -139,12 +139,12 @@ flowchart LR
 - [x] mount battery selector 1
 - [x] mount the orion XS — 2026-10-16
 - [x] land the van feed (already run) on selector 1's "OUTPUT" terminal, M10 stud (as installed, under 15ft, confirmed marked 6 AWG; selector end is M10 — the "5/16"" lug size recorded for this run elsewhere was stale, left over from before the M10 correction) — 2026-10-16
-- [ ] selector 1 terminal "2" → XS IN, 6 AWG (position 2, victron leg; pacer 15ft red reel, shared across all 4 red 6 AWG runs in this section — this leg is under 6ft, under-bed run; XS's own terminal is a screw type, no lug)
+- [x] selector 1 terminal "2" → XS IN, 6 AWG (position 2, victron leg; pacer 15ft red reel, shared across all 4 red 6 AWG runs in this section — this leg is under 6ft, under-bed run; XS's own terminal is a screw type, no lug) — landed 2026-10-17. **no separate input-side fuse, decided 2026-10-16**: the orion XS's manual shows fuses on both input and output sides as its generic recommended diagram, but this specific run is under 3ft, routed protected, and terminates directly into the XS's own built-in overload/short-circuit protection — a defensible short-tap exception under both NEC and ABYC rules rather than a strict requirement. relies on the van feed's upstream 100A AEP fuse instead; a known, accepted tradeoff, not an oversight
 - [ ] leave terminal "1" unconnected for now (DJI charger leg, deferred)
-- [ ] XS OUT → 6 AWG → 60A ANL (5123) → positive bar (same 15ft red reel, under 6ft)
-- [ ] XS GND → 6 AWG → negative bar (pacer 15ft black reel, shared with meanwell -V below, under 6ft) — **not the same ground as the DJI charger's, see below**; the orion XS's output lands on the SOK's own positive bar, so its return has to close the loop at the SOK's negative bar specifically, not chassis or any other ground point
+- [x] XS OUT → 6 AWG → 60A ANL (5123) → positive bar (same 15ft red reel, under 6ft) — cable run and ANL block in place 2026-10-17. **fuse element itself not yet sourced/seated** (blue sea 5123, 60A — still unchecked in supplies below) — this leg is not yet protected; don't energize the XS output until it's in
+- [x] XS GND → 6 AWG → negative bar (pacer 15ft black reel, shared with meanwell -V below, under 6ft) — landed 2026-10-17. **not the same ground as the DJI charger's, see below**; the orion XS's output lands on the SOK's own positive bar, so its return has to close the loop at the SOK's negative bar specifically, not chassis or any other ground point
 - [x] front ground run (already pulled from the starter battery area to the switch box, 6 AWG) lands directly on the **DJI car charger's own ground terminal** — decided 2026-10-16, replacing an earlier plan to cap it off unused. the DJI charger's output goes to DJI power 2000, a completely separate system from the SOK, so its return belongs there, not on the SOK's negative bar — landing it on the SOK bus instead would bridge two systems this build otherwise keeps independent except through the selector switches themselves. the two chargers now share only the common + feed through selector 1; each keeps its own separate ground
-- [ ] continuity check with selector 1 OFF: confirm position 2 connects OUTPUT to "2" and nothing else, before reinserting the fuse
+- [x] continuity check with selector 1 OFF: confirm position 2 connects OUTPUT to "2" and nothing else, before reinserting the fuse — confirmed 2026-10-17: OUTPUT-to-"2" open, OUTPUT-to-"1" open, XS IN-to-negative-bar open — all clean with the selector off, as expected
 - [ ] reinsert the AEP fuse; switch selector 1 to position 2
 - [ ] configure the XS via VictronConnect: lithium profile, absorption ≤27.6V, input current limit ~60A (verify: the alternator is rated 180A or 220A depending on build variant, printed on its own back cover — either option clears this 60A setting with headroom, but worth a physical check for certainty), engine-running detection on
 
@@ -280,7 +280,7 @@ flowchart LR
 - [ ] dedicate one of the cerbo's 2 VE.Can ports to the SOK; set the port profile to BMS-Can (500kbit/s); terminate with one of the 2 included VE.Can terminators
 - [ ] SOK → cerbo, CAN, SOK's own supplied cable
 - [x] multiplus → cerbo, VE.bus RJ45, 0.9m supplied — pulled forward early, 2026-10-16, same reason as above
-- [ ] orion XS → cerbo, VE.direct, 2.95ft supplied
+- [x] orion XS → cerbo, VE.direct, 2.95ft supplied — landed 2026-10-17 (pulled forward early, alongside the multiplus VE.Bus and cerbo power connections already done; the XS itself isn't powered yet, still waiting on its output-side 60A ANL fuse)
 - [ ] power the cerbo only from "Power in V+" (8-70VDC) — never from a multiplus AC-out
 - [ ] turn DVCC on
 - [ ] confirm the SOK auto-detects as a "Pylontech" device in the cerbo's device list
