@@ -190,9 +190,9 @@ the alternator branch above is done. the rest of this section (velit, below) hap
 
 ```mermaid
 flowchart LR
-  p8027a["blue sea 8027<br/>existing 15A branch"] -->|"terminals 3/7, 14 AWG"| b1["BAOMAIN 3 - fridge/receptacle AC source switch"]
+  p8027a["blue sea 8027<br/>new 20A breaker<br/>(upsized 2026-10-18 from the panel's pre-installed 15A branch, for headroom on this shared circuit)"] -->|"terminals 3/7, 12 AWG"| b1["BAOMAIN 3 - fridge/receptacle AC source switch"]
   djiout1["DJI AC output port (1 of 2)"] -->|"terminals 1/5, iron forge cord"| b1
-  b1 -->|"terminals 2+4/6+8 (jumpered common), 14 AWG, 14 AWG jumper"| kfu["fridge + USB outlet<br/>120VAC"]
+  b1 -->|"terminals 2+4/6+8 (jumpered common), 12 AWG, 12 AWG jumper"| kfu["fridge + USB outlet<br/>120VAC"]
   p8027b["blue sea 8027<br/>new 20A breaker"] -->|"terminals 3/7, 12 AWG"| b2["BAOMAIN 2 - oven/cooktop AC source switch"]
   djiout2b["DJI AC output port (2 of 2)"] -->|"terminals 1/5, iron forge cord"| b2
   b2 -->|"terminals 2+4/6+8 (jumpered common), 12 AWG, 12 AWG jumper"| b4["BAOMAIN 4 - oven/cooktop AC destination switch<br/>load interlock, not source"]
@@ -203,9 +203,10 @@ flowchart LR
 ### installation
 
 - [x] mount BAOMAIN 3 and BAOMAIN 2 (BAOMAIN 4 not yet mounted — it goes in the kitchen cabinet, see below)
-- [ ] 8027's existing 15A branch → BAOMAIN 3 terminal 3/7, 14 AWG (position 2)
-- [ ] install BAOMAIN 3's jumpers (terminal 2→4, 6→8), 14 AWG. pos 1 (terminal 1/5) = DJI AC output port, deferred. pos 2 (terminal 3/7) = 8027's existing 15A branch. common = the 15A fridge+USB circuit
-- [ ] BAOMAIN 3 common → fridge and USB-charging receptacles, 14 AWG (receptacle products: TBD)
+- [x] upsized the fridge+USB circuit from 15A to 20A, 2026-10-18 — a deliberate ceiling increase for headroom on this shared branch, not driven by the actual loads (fridge + USB outlet together are nowhere near 15A). wire from the kitchen to the rear already pulled for both kitchen circuits, 12 AWG
+- [ ] install a new 20A breaker in one of the 8027's open positions (not the panel's pre-installed 15A branch position, which this circuit no longer uses — that position is now free for something else, e.g. the still-undesigned water heater circuit) → BAOMAIN 3 terminal 3/7, 12 AWG (position 2)
+- [ ] install BAOMAIN 3's jumpers (terminal 2→4, 6→8), 12 AWG. pos 1 (terminal 1/5) = DJI AC output port, deferred. pos 2 (terminal 3/7) = 8027's new 20A breaker. common = the 20A fridge+USB circuit
+- [ ] BAOMAIN 3 common → fridge and USB-charging receptacles, 12 AWG (receptacle products: TBD)
 - [ ] install a new 20A breaker in one of the 8027's open positions → BAOMAIN 2 terminal 3/7, 12 AWG (position 2)
 - [ ] install BAOMAIN 2's jumpers, 12 AWG. pos 1 (terminal 1/5) = DJI AC output port, deferred. pos 2 (terminal 3/7) = 8027's new 20A breaker. common = feeds BAOMAIN 4's common
 - [ ] mount BAOMAIN 4 and install its jumpers, 12 AWG. common = BAOMAIN 2's output. pos 1 (terminal 1/5) = oven's receptacle. pos 2 (terminal 3/7) = cooktop, hardwired direct, no receptacle (BAOMAIN 4 mounts in the kitchen cabinet, ~4ft forward of the cargo area's front wall — outside the cargo area entirely)
@@ -215,6 +216,7 @@ flowchart LR
 - [ ] leave BAOMAIN 3 and BAOMAIN 2 terminal 1/5 unconnected (DJI AC-output-port taps, deferred)
 - [ ] continuity check: no continuity hot-neutral or either to ground on both kitchen branches; confirm BAOMAIN 4 position 1 energizes only the oven's receptacle and position 2 only the cooktop's hardwired leads, never both
 - [ ] 8027 backlight board → its own fused (1.0-2.0A) DC feed and ground, separate from everything in the AC schedule above (verify: voltage compatibility, 12V vs 24V, isn't stated in blue sea's instructions; source of the DC feed not yet picked)
+- [x] confirmed 2026-10-18: the panel's 3 originally pre-installed 15A branches are now all free — the fridge/USB circuit moved off its 15A branch to a new 20A position, and the other 2 pre-installed 15A branches were never used. a real candidate for the still-undesigned water heater circuit (TBD throughout this file and README.md), once its actual wattage is known
 
 **AC wiring is the dangerous part of this build — have it inspected before energizing.**
 
@@ -225,9 +227,9 @@ flowchart LR
 - [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 3, fridge/receptacle AC source
 - [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 2, oven/cooktop AC source
 - [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 4, oven/cooktop AC destination
-- [x] 2x blue sea 7214, 20A toggle breaker — oven/cooktop circuit (1 spare)
+- [x] 2x blue sea 7214, 20A toggle breaker — 1 for the oven/cooktop circuit, 1 (the former spare) now used for the upsized fridge+USB circuit, 2026-10-18 — no spare remains
 - [x] 12 AWG 12/3 triplex marine wire, 20ft — oven/cooktop circuit (verify: marine/UL rating — labeled "marine grade" with no UL/ABYC rating given)
-- [x] 14 AWG 14/3 triplex marine wire, 20ft — fridge+USB circuit
+- [x] 12 AWG 12/3 triplex marine wire — fridge+USB circuit, upsized from 14 AWG 2026-10-18, confirmed 3-conductor triplex matching the oven/cooktop circuit's wire type. pulled from the kitchen to the rear of the vehicle for both kitchen circuits
 - [x] [iron forge 12/3 SJTW molded-plug cord, 15ft](https://www.amazon.com/clp/B0C5KHWHMT) — DJI AC-output tap, fridge/USB leg
 - [x] [iron forge 12/3 SJTW molded-plug cord, 6ft](https://www.amazon.com/clp/B0B8DPVW57) — DJI AC-output tap, oven/cooktop leg
 - [x] typhur CV03 sync oven, 1750W — kitchen oven
@@ -236,7 +238,7 @@ flowchart LR
 - [ ] USB charging outlet, 120VAC w/ USB-A/USB-C — kitchen, specific product TBD
 - [ ] receptacles x3 — fridge, USB outlet, oven
 - [ ] GFCI breaker, blue sea 309x/310x series — 8027 AC-out-1
-- [ ] jumper wire pair, 14 AWG — BAOMAIN 3's common
+- [ ] jumper wire pair, 12 AWG — BAOMAIN 3's common (upsized from 14 AWG 2026-10-18)
 - [ ] jumper wire pair, 12 AWG — BAOMAIN 2's common
 - [ ] jumper wire pair, 12 AWG — BAOMAIN 4's common
 
