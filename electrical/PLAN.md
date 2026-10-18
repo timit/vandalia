@@ -170,7 +170,7 @@ the alternator branch above is done. the rest of this section (velit, below) hap
 - [x] egis mobile electric 3912B class T fuse block, M8 studs — battery main fuse holder. [west marine](https://www.westmarine.com/egis-mobile-electric-class-t-fuse-block-225---400-a-sealed-21481650.html)
 - [x] eaton/bussmann JJN-300 limitron class T fuse, 300A — battery main fuse. [west marine](https://www.westmarine.com/eaton-limitron-fast-acting-class-t-fuse-22185755.html)
 - [x] 2x blue sea 5005 ANL fuse block, 5/16" studs — XS output fuse, velit direct-DC tap fuse
-- [ ] blue sea 5005 ANL fuse block, 5/16" studs — XS **input** fuse, added 2026-10-18 (3rd block total; see installation above for why)
+- [ ] blue sea 5005 ANL fuse block, 5/16" studs — XS **input** fuse — **ordered from amazon 2026-10-18**, not yet in hand
 - [ ] blue sea 5123, 60A ANL fuse — XS output
 - [ ] blue sea 5123, 60A ANL fuse — XS input, added 2026-10-18 (2nd one, same part as output)
 - [ ] blue sea 5165, 40A ANL fuse — velit direct-DC tap
@@ -267,8 +267,8 @@ flowchart LR
 - [ ] blue sea 5065 holder + 10-15A ATC fuse — DJI SDC to 5026 feed (verify: confirm the fuse states a real AIC rating when bought — ABYC E-11 table V isn't freely published and doesn't apply cleanly here anyway, since this feed's actual source is DJI's own 10A-current-limited, BMS-protected battery, not a raw bank; standard ATC/ATO fuses, typically 1000-6000A AIC at 32V, are almost certainly adequate)
 - [ ] blue sea 5026 branch fuses, 4x 10A ATC — USB panels
 - [ ] 10 AWG lug, 3/8" hole, x3 — selector 3 connections
-- [ ] ANL fuse block + 30A fuse — orion-tr 24V input side (bank to converter)
-- [ ] ANL fuse block + 60A fuse — orion-tr 12V output side (converter to selector 3)
+- [ ] blue sea 5005 ANL fuse block + 35A ANL fuse (5164, nearest standard size above the manual's 30A spec) — orion-tr 24V input side (bank to converter). block **ordered from amazon 2026-10-18**, not yet in hand; fuse itself still needs sourcing (generic ANL fuses, car-audio section at AutoZone/O'Reilly/Walmart, fit the same block — verify a stated AIC rating if not Blue Sea branded)
+- [ ] blue sea 5005 ANL fuse block + 60A ANL fuse (5123) — orion-tr 12V output side (converter to selector 3). block **ordered from amazon 2026-10-18**, not yet in hand; fuse itself still needs sourcing
 - [ ] 10 AWG cable — orion-tr input and output legs, both sides (confirm actual run lengths before cutting; 10 AWG covers both at ~1m per the manual's own table, see installation above)
 
 ## data cables
