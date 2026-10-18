@@ -32,13 +32,14 @@ have:
 - [ATOTO_AC-FCR04W.pdf](ATOTO_AC-FCR04W.pdf) (front camera manual, from the [product page](https://www.eproductcare.com/w545))
 - [factory-chasis-ground.png](factory-chasis-ground.png) (Mercedes upfitter manual, section 8.4.12 "Ground bolts" — the only Mercedes-approved ground points for upfitter electrical consumers: 3x M6 in the driver seat box, 1x M8 in the front passenger seat box (explicitly for auxiliary battery/camper van fuses), 1x M6 at the crossmember in front of the rear axle, 1x M6 at the rear longitudinal member. supersedes the undocumented ceiling stud originally planned for the chassis bond — see electrical/PLAN.md's dc negative and ground section)
 - [2026-10-09_18.49.20.heic](2026-10-09_18.49.20.heic) (driver-seat-base fuse box interior, showing a clip-on accessory fuse module mounted along the box's edge rail) and [2026-10-09_19.04.07.heic](2026-10-09_19.04.07.heic) (close-up of that module's part number, Delphi/Mercedes A 006 545 06 01) — see audio/PLAN.md's "head unit power source" section for why this wasn't the part ultimately used
+- [IMG_1751.heic](IMG_1751.heic) (interior of the blue sea 8027, showing the 30A main breaker and bus bar layout — used to confirm the AC-out-1 landing point against the panel's own wiring diagram, see electrical/PLAN.md's ac input section)
+- [34439-Orion-Tr_Smart_DC-DC_Charger-pdf-en.pdf](34439-Orion-Tr_Smart_DC-DC_Charger-pdf-en.pdf) (orion-tr smart 24/12-30 isolated manual — replaces the earlier reasoned estimates in electrical/PLAN.md's 12V bus section with real fuse/cable figures from the manufacturer's own table: 30A fuse on the 24V input side, 60A on the 12V output side, 10 AWG cable at ~1m runs, 1.6 Nm terminal torque. also carries a real safety warning: not reverse-polarity protected, damage voids warranty and cannot be repaired)
 
 note: the BAOMAIN transfer-switch terminal wiring (jumper 2-4 and 6-8, common vs position legs) isn't spelled out in the real manual either, but it's consistent with that manual's own truth table (page 3). the specific transfer-switch application came from a web search — a wiring tutorial and RV/van forum threads for this switch family. it's in electrical/PLAN.md, not here, since it's not a PDF to file.
 
 wanted (electrical):
 - blue sea instructions: 8077, 3131, 7210, 5005, 5502 (or egis class T block)
 - egis powerbar 6600-404 spec sheet (both busbars are now this model, 2026-10-03 — the 6600-804 spec sheet is no longer needed)
-- victron orion-tr smart 24/12-30 isolated manual — not bought yet (12V bus redundancy, adopted 2026-10-03); its own wire/fuse sizing in electrical/PLAN.md is a reasoned estimate until this is on hand
 
 wanted (plumbing): none yet.
 

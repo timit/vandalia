@@ -47,8 +47,8 @@ flowchart LR
 - [x] install BAOMAIN 1's jumpers (terminal 2→4 hot, 6→8 neutral), 10 AWG, twisted together with the incoming hot/neutral from the 8077 and seated together in each clamp terminal — confirmed solid, 2026-10-14
 - [x] land BAOMAIN 1 pos 2 (terminal 3/7) → multiplus AC-in, 10 AWG 3-conductor, ferruled into its spring-loaded push-in terminals (L/N/PE) — confirmed seated securely, 2026-10-15. pos 1 (terminal 1/5) = 3131/DJI branch, wired later
 - [x] continuity check: no hot-neutral or hot-neutral-ground continuity anywhere wired so far; confirmed position 2 connects it and position 0 opens it — 2026-10-15
-- [ ] **hold here** — do not plug in shore power yet. go wire the DC backbone (dc negative and ground, then dc positive and alternator below) first; that section ends with the multiplus profile set and shore power plugged in, then comes back to finish this list
-- [ ] multiplus AC-out-1 → 8027, 10 AWG 3-conductor, landing on the 8027's 30A main (do this after dc positive and alternator's alternator steps are done — it's next chronologically, before ac loads)
+- [x] **hold here** — do not plug in shore power yet. go wire the DC backbone (dc negative and ground, then dc positive and alternator below) first; that section ends with the multiplus profile set and shore power plugged in, then comes back to finish this list — resolved, shore power plugged in and confirmed working 2026-10-17 (see dc positive and alternator)
+- [x] multiplus AC-out-1 → 8027, 10 AWG 3-conductor, landing on the 8027's 30A main — landed 2026-10-18, confirmed against [blue sea's own 8027 wiring diagram](../reference/bluesea8027-instructions.pdf) (p.2): hot → the 30A breaker's line-in terminal, neutral → the AC neutral bus, ground → the AC safety ground bus (confirmed physically labeled, two separate bars, left=ground/right=neutral on this panel). **multimeter verification not yet done** (hot-neutral, hot-ground, neutral-ground, reverse-polarity LED check) — paused mid-step, 2026-10-18, to work on the 12V bus instead; come back to this before trusting or energizing any 8027 branch circuit
 - [ ] wire the DJI AC-input branch (deferred): BAOMAIN 1 pos 1 → 3131 box → 7210 15A breaker → receptacle → DJI AC in, 12 AWG 3-conductor (verify: 3131 gland size and how its grounds connect, that the 7210 is single-pole, and the marine/UL rating of this triplex — labeled "marine grade" with no UL/ABYC rating given)
 - [ ] continuity check on the DJI AC-input branch before energizing it
 
@@ -111,7 +111,7 @@ flowchart TB
 flowchart LR
   vf["van 12V feed<br/>starter battery +"] -->|"AEP 100A 65VDC fuse, 6 AWG, to OUTPUT terminal"| s1["battery selector 1"]
   s1 -->|"pos 1, terminal 1, 6 AWG"| djic["DJI car charger"]
-  s1 -->|"pos 2, terminal 2, 6 AWG"| xs["orion XS 1400"]
+  s1 -->|"pos 2, terminal 2, 6 AWG, 60A ANL, blue sea 5123"| xs["orion XS 1400"]
   fgnd["front ground run<br/>(starter battery area, already pulled)"] -->|"6 AWG, direct"| djic
   djic --> djip["DJI power 2000"]
   xs -->|"60A ANL, 6 AWG"| pbar["+ bar<br/>egis 6600-404"]
@@ -139,8 +139,9 @@ flowchart LR
 - [x] mount battery selector 1
 - [x] mount the orion XS — 2026-10-16
 - [x] land the van feed (already run) on selector 1's "OUTPUT" terminal, M10 stud (as installed, under 15ft, confirmed marked 6 AWG; selector end is M10 — the "5/16"" lug size recorded for this run elsewhere was stale, left over from before the M10 correction) — 2026-10-16
-- [x] selector 1 terminal "2" → XS IN, 6 AWG (position 2, victron leg; pacer 15ft red reel, shared across all 4 red 6 AWG runs in this section — this leg is under 6ft, under-bed run; XS's own terminal is a screw type, no lug) — landed 2026-10-17. **no separate input-side fuse, decided 2026-10-16**: the orion XS's manual shows fuses on both input and output sides as its generic recommended diagram, but this specific run is under 3ft, routed protected, and terminates directly into the XS's own built-in overload/short-circuit protection — a defensible short-tap exception under both NEC and ABYC rules rather than a strict requirement. relies on the van feed's upstream 100A AEP fuse instead; a known, accepted tradeoff, not an oversight
-- [ ] leave terminal "1" unconnected for now (DJI charger leg, deferred)
+- [x] selector 1 terminal "2" → XS IN, 6 AWG (position 2, victron leg; pacer 15ft red reel, shared across all 4 red 6 AWG runs in this section — this leg is under 6ft, under-bed run; XS's own terminal is a screw type, no lug) — landed 2026-10-17
+- [ ] **add a dedicated 60A ANL fuse on this leg, close to selector 1's terminal "2"** — reverses the earlier "no separate input-side fuse" decision, 2026-10-18: the van feed's 100A AEP fuse upstream is correctly sized for the DJI charger leg (DJI's own documentation calls for up to 70A draw with a 100A fuse) but is genuinely mismatched for this 6 AWG XS leg — the orion XS's own cable/fuse table recommends 60-70A for 6AWG, not 100A. since selector 1's two legs have different real current needs, one shared upstream fuse can't correctly protect both; each leg needs its own match. same part as the XS output fuse (blue sea 5123, 60A) — see supplies
+- [ ] leave terminal "1" unconnected for now (DJI charger leg, deferred) — **no separate fuse needed here when it's eventually wired**: the van feed's existing 100A AEP fuse already matches DJI's own documented requirement for their charger (up to 70A draw, 100A fuse per DJI's own spec) — considered and rejected adding a redundant fuse here, 2026-10-18, since it would duplicate the same protection already in place with no added safety margin, and a lower value (e.g. 70A, right at the charger's rated max with no headroom) would actually risk nuisance tripping during normal full-power charging
 - [x] XS OUT → 6 AWG → 60A ANL (5123) → positive bar (same 15ft red reel, under 6ft) — cable run and ANL block in place 2026-10-17. **fuse element itself not yet sourced/seated** (blue sea 5123, 60A — still unchecked in supplies below) — this leg is not yet protected; don't energize the XS output until it's in
 - [x] XS GND → 6 AWG → negative bar (pacer 15ft black reel, shared with meanwell -V below, under 6ft) — landed 2026-10-17. **not the same ground as the DJI charger's, see below**; the orion XS's output lands on the SOK's own positive bar, so its return has to close the loop at the SOK's negative bar specifically, not chassis or any other ground point
 - [x] front ground run (already pulled from the starter battery area to the switch box, 6 AWG) lands directly on the **DJI car charger's own ground terminal** — decided 2026-10-16, replacing an earlier plan to cap it off unused. the DJI charger's output goes to DJI power 2000, a completely separate system from the SOK, so its return belongs there, not on the SOK's negative bar — landing it on the SOK bus instead would bridge two systems this build otherwise keeps independent except through the selector switches themselves. the two chargers now share only the common + feed through selector 1; each keeps its own separate ground
@@ -169,7 +170,9 @@ the alternator branch above is done. the rest of this section (velit, below) hap
 - [x] egis mobile electric 3912B class T fuse block, M8 studs — battery main fuse holder. [west marine](https://www.westmarine.com/egis-mobile-electric-class-t-fuse-block-225---400-a-sealed-21481650.html)
 - [x] eaton/bussmann JJN-300 limitron class T fuse, 300A — battery main fuse. [west marine](https://www.westmarine.com/eaton-limitron-fast-acting-class-t-fuse-22185755.html)
 - [x] 2x blue sea 5005 ANL fuse block, 5/16" studs — XS output fuse, velit direct-DC tap fuse
+- [ ] blue sea 5005 ANL fuse block, 5/16" studs — XS **input** fuse, added 2026-10-18 (3rd block total; see installation above for why)
 - [ ] blue sea 5123, 60A ANL fuse — XS output
+- [ ] blue sea 5123, 60A ANL fuse — XS input, added 2026-10-18 (2nd one, same part as output)
 - [ ] blue sea 5165, 40A ANL fuse — velit direct-DC tap
 - [x] pacer marine tinned copper battery cable, 15ft #6 red — selector/XS/busbar positive runs
 - [x] pacer marine tinned copper battery cable, 8ft #2/0 red — positive 2/0 runs
@@ -242,8 +245,8 @@ flowchart LR
 ```mermaid
 flowchart LR
   djisdc["DJI SDC 12V feed<br/>XT60, 13.6V/10A max"] -->|"10-15A ATC/ATO fuse"| s3["battery selector 3<br/>obtained, not yet installed"]
-  bank["24V bank (+ bar)"] -->|"~20A fuse, ~12 AWG (estimate)"| conv["orion-tr smart 24/12-30<br/>isolated, 30A/360W out"]
-  conv -->|"10 AWG, 30A-class fuse (estimate)"| s3
+  bank["24V bank (+ bar)"] -->|"30A fuse, 10 AWG"| conv["orion-tr smart 24/12-30<br/>isolated, 30A/360W out"]
+  conv -->|"60A fuse, 10 AWG"| s3
   s3 -->|"10 AWG, 30A-class fuse"| fb["blue sea 5026<br/>12V fuse block"]
 ```
 
@@ -254,7 +257,7 @@ flowchart LR
 - [ ] wire the USB panel branches, 10A ATC fuse each
 - [ ] hold the LED puck and starlink branches until their actual watts are known — don't guess a fuse size
 - [ ] voltage check: confirm the 5026 reads close to 13.6V at a populated branch position
-- [ ] once selector 3 and the orion-tr converter are installed: insert selector 3 between the DJI SDC feed and the 5026 main input; wire the orion-tr's 24V input and 12V output per its own manual (not yet on hand — the figures in the diagram above are reasoned estimates); upsize the main-input fuse to 30A-class to match the new victron leg
+- [ ] once selector 3 and the orion-tr converter are installed: insert selector 3 between the DJI SDC feed and the 5026 main input; wire the orion-tr's 24V input and 12V output; upsize the main-input fuse to 30A-class to match the new victron leg. real specs now confirmed from [the orion-tr's own manual](../reference/34439-Orion-Tr_Smart_DC-DC_Charger-pdf-en.pdf) (added 2026-10-18, replacing earlier reasoned estimates): 24V input side — 30A fuse, 10 AWG (per the manual's own fuse/cable table, p.5, at ~1m run length; measure actual distance before cutting, per convention); 12V output side — 60A fuse, 10 AWG at ~1m (this model's continuous output is 30A/45A burst, and 60A matches Victron's calibrated figure for this current class in the same product family, not an arbitrary oversized number — deferred to their own table rather than a smaller derived estimate). DC connection is screw terminals, torque **1.6 Nm**, max cable size 6AWG (this build's 10AWG is well within that). **ships with a remote on/off wire loop pre-installed (always-on when powered)** — leave as-is, since battery selector 3 is this leg's actual on/off control. **not reverse-polarity protected — damage from reverse polarity voids warranty and cannot be repaired; verify polarity carefully before connecting.** engine shutdown detection (the manual's section 5) does not apply to this installation — that feature is for alternator/starter-battery inputs, not relevant since this unit's input here is the 24V house bank
 
 ### supplies
 
@@ -264,6 +267,9 @@ flowchart LR
 - [ ] blue sea 5065 holder + 10-15A ATC fuse — DJI SDC to 5026 feed (verify: confirm the fuse states a real AIC rating when bought — ABYC E-11 table V isn't freely published and doesn't apply cleanly here anyway, since this feed's actual source is DJI's own 10A-current-limited, BMS-protected battery, not a raw bank; standard ATC/ATO fuses, typically 1000-6000A AIC at 32V, are almost certainly adequate)
 - [ ] blue sea 5026 branch fuses, 4x 10A ATC — USB panels
 - [ ] 10 AWG lug, 3/8" hole, x3 — selector 3 connections
+- [ ] ANL fuse block + 30A fuse — orion-tr 24V input side (bank to converter)
+- [ ] ANL fuse block + 60A fuse — orion-tr 12V output side (converter to selector 3)
+- [ ] 10 AWG cable — orion-tr input and output legs, both sides (confirm actual run lengths before cutting; 10 AWG covers both at ~1m per the manual's own table, see installation above)
 
 ## data cables
 
