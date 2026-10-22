@@ -1,18 +1,30 @@
 # electrical: as-built
 
-last updated: 2026-10-03
+last updated: 2026-10-22
 
 this file only records what's actually true of the physical system — confirmed installed, or a permanent fact about a part already in hand (nameplate/datasheet specs, which don't change based on install status). it grows as PLAN.md's checklists get checked off. for the design and the plan to get there, see PLAN.md, which also carries open questions and settled design decisions at its end.
 
 ## install progress
 
-mounted: the shore inlet (driver-side wall, rear/top), blue sea 8077, BAOMAIN 1, BAOMAIN 3, BAOMAIN 2, battery selector 1, and battery selector 2 (all in the switch row along the front wall, top — the left-to-right order among them wasn't recorded, see PLAN.md's open questions), and the multiplus (passenger-side wall, rear). that's the mounting half of ac input's first install step — none of the actual wiring has been pulled yet, and nothing is energized.
+organized to match PLAN.md's sections. "wired" means landed and connected; "energized"/"live" means confirmed with a meter under power, not just connected.
 
-the DJI power 2000 and its super fast charger pre-date this install (existing equipment, already in place) — floor, driver side, rear of the cargo area.
+**ac input**: shore inlet, blue sea 8077, BAOMAIN 1, and the multiplus mounted. inlet → 8077 → BAOMAIN 1 wired (10 AWG, jumpers installed), BAOMAIN 1 position 2 landed to the multiplus's AC-in, continuity-checked clean. multiplus AC-out-1 landed to the 8027's 30A main, multimeter-verified the same day (2026-10-18). shore power connected and live-confirmed (first energization, 2026-10-17: ~112V hot-neutral, ~112V hot-ground, <1V neutral-ground, reverse-polarity LED off, multiplus entered bulk charging). DJI AC-input branch (BAOMAIN 1 position 1 → 3131 box → 7210 breaker → DJI) not yet wired.
 
-separately, the van feed's 6 AWG wire has been run from the starter battery (under the driver seat) to the rear, with its AEP 100A fuse inline — not yet landed on anything. this is ahead of sequence (it's a dc positive and alternator step) but doesn't need rework; it just waits for the DC backbone to be wired first.
+**dc negative and ground**: fully wired. SOK-, multiplus-, and the negative busbar landed (2/0); multiplus's exterior grounding point landed (upsized to 8 AWG); chassis bond landed to the Mercedes-approved M6 ground bolt at the crossmember (2 AWG); every stud torqued to its own spec (busbar 120-140 in-lb, SOK 9-11 N·m, chassis M6 8 N·m ± 0.8 N·m).
 
-not yet mounted: the busbars (placement still open, see PLAN.md's dc negative and ground installation), the orion XS, the class T fuse block, BAOMAIN 4, and battery selector 3.
+**dc positive and alternator**: positive side fully wired and energized — SOK+ → class T fuse block (300A fuse installed) → positive bar → multiplus+, 2/0 throughout, all studs torqued, SOK powered on cleanly (RUN flashing, no faults). multiplus's battery profile set to lithium (absorption 27.60V, float 26.40V) via MK3-USB-C. alternator branch: battery selector 1 and the orion XS mounted; van feed landed on selector 1's OUTPUT; selector 1 terminal "2" → XS IN landed; XS OUT → 60A ANL block → positive bar landed (fuse element itself not yet seated — not protected yet); XS GND → negative bar landed; the front ground run landed on the DJI car charger's own ground terminal; continuity-checked clean with selector 1 off. still open: a dedicated 60A input-side fuse for this leg, reinserting the AEP fuse, flipping selector 1 to position 2, and configuring the XS via VictronConnect. velit/meanwell branch: only battery selector 2 is mounted so far — nothing else on that branch is wired yet.
+
+**ac loads**: BAOMAIN 3 and BAOMAIN 2 mounted (BAOMAIN 4 not yet — it goes in the kitchen cabinet). **fridge/USB circuit (BAOMAIN 3) fully wired and live, 2026-10-22**: 8027's new 20A breaker landed on terminal 3/7, jumpers installed, common run to the [leviton GFTR2-KW GFCI duplex](https://www.homedepot.com/p/Leviton-20-Amp-125-Volt-Duplex-SmarTest-Self-Test-SmartlockPro-Tamper-Resistant-GFCI-Outlet-White-GFTR2-KW-R92-GFTR2-0KW/205999867)'s LINE terminals, continuity-checked, then live-verified off the multiplus inverting from the SOK bank (no shore power connected) — 120V hot-neutral, 120V hot-ground, ~0V neutral-ground, reverse-polarity LED off, GFCI test/reset both confirmed working. DJI AC-output tap (position 1) still deferred. oven/cooktop circuit (BAOMAIN 2/4) not yet wired.
+
+**12V bus**: nothing wired yet. the blue sea 5026 and the orion-tr smart 24/12-30 are on hand; battery selector 3 is obtained but not installed.
+
+**data cables**: cerbo powered (Power in V+ → busbars, inline 3.15A fuse built into its supplied cable) and VE.Bus-connected to the multiplus; orion XS → cerbo VE.Direct landed (the XS itself isn't powered yet, still waiting on its output fuse). SOK → cerbo CAN connection not yet made; DVCC not yet turned on.
+
+existing equipment, pre-dating this install: the DJI power 2000 + expansion battery and its super fast charger, floor, driver side, rear of the cargo area.
+
+still unmounted: the orion-tr smart 24/12-30 and battery selector 3 (12V bus), and BAOMAIN 4 (ac loads).
+
+still unrecorded: the physical left-to-right order of the switch row (8077, BAOMAIN 1, BAOMAIN 3, BAOMAIN 2 are all mounted there) — see PLAN.md's open questions.
 
 ## confirmed part specs
 
@@ -35,9 +47,10 @@ facts below are from the part's own manual, nameplate, or a photo of the actual 
 
 **ac input**
 - multiplus-ii 24/3000/70: 3000VA, ~2,400W continuous. 2 AC outputs — AC-out-1 (uninterruptible, 50A rated), AC-out-2 (32A, not used in this build). AC-in/AC-out are spring-loaded push-in terminal blocks (N/PE/L, left to right) — physically confirmed 2026-10-15, contradicting the manual's own spec table, which describes "screw terminals, 13mm² (6 AWG)" for this model; likely a hardware revision after the manual was written. no documented gauge range exists for the push-in terminals actually installed; confirmed by ferruling the 10 AWG conductors (18mm strip, per the manual's ferrule-pin spec) and tug-testing after insertion — seated securely. the 6 AWG figure in the manual sizes for this unit's own max 50A draw, not this circuit: the 8077 main breaker upstream caps this whole AC input at 30A (matching the 30A shore inlet), and 10 AWG is the correct, standard gauge for a 30A circuit — the same gauge already used on the inlet-to-8077 run. wire is sized to the breaker protecting it, not the unit's theoretical maximum, which the manual itself endorses ("if the input AC supply is rated at a lower value, the fuse or circuit breaker should be downsized accordingly"). [reference/32424-MultiPlus-II___Quattro-II-pdf-en.pdf](../reference/32424-MultiPlus-II___Quattro-II-pdf-en.pdf)
-- blue sea 8077: on LED and reverse-polarity LED, panel footprint about 2.63 x 3.75in. no official blue sea manual on file for this unit; footprint sourced from the [fisheries supply listing](https://www.fisheriessupply.com/blue-sea-systems-120-volt-ac-main-circuit-breaker-panel/8077) (and matched by multiple other retailers) — treat as well-sourced but not manual-verified
-- BAOMAIN cam switch (all 4 units): Ith 32A confirmed on the nameplate, 660V rating. M4 terminal screw, accepts 2.5-6.0mm² wire, torque 1.2 N·m. [reference/baomain-operating-intructions.pdf](../reference/baomain-operating-intructions.pdf), nameplate confirmed by [reference/baomain-interior-photo.heic](../reference/baomain-interior-photo.heic)
-- blue sea 7210: terminal torque 14 in-lb, mounting-screw torque 6 in-lb. source: a general blue sea torque chart found via web search early in this project, not saved to reference/ — no 7210-specific manual on file (it's on the "wanted" list in reference/README.md); treat this torque figure as sourced but not independently verifiable right now
+- blue sea 8077: on LED and reverse-polarity LED, panel footprint about 2.63 x 3.75in, weight 0.51lb. confirmed via Blue Sea's own product page (2026-10-21) that the panel must sit within 10ft of the shore power inlet, measured along the conductors, or an additional fuse/breaker is needed within that 10ft — [bluesea.com/products/8077](https://www.bluesea.com/products/8077/AC_Main_30A). still no official PDF manual on file for this unit; footprint also matched by the [fisheries supply listing](https://www.fisheriessupply.com/blue-sea-systems-120-volt-ac-main-circuit-breaker-panel/8077)
+- BAOMAIN cam switch (all 4 units): Ith 32A confirmed on the nameplate, 660V rating. M4 terminal screw, accepts 2.5-6.0mm² wire, torque 1.2 N·m — confirmed directly against the switch's own manual (SZW26-32/40 row). [reference/baomain-operating-intructions.pdf](../reference/baomain-operating-intructions.pdf), nameplate confirmed by [reference/baomain-interior-photo.heic](../reference/baomain-interior-photo.heic)
+- blue sea 7210: confirmed single-pole, 15A AC/DC, terminal torque 14 in-lb, mounting-screw torque 6 in-lb — confirmed directly from [bluesea.com/products/7210](https://www.bluesea.com/products/7210/A-Series_White_Toggle_Circuit_Breaker_-_Single_Pole_15A) (2026-10-21), no longer just a web-search torque chart
+- blue sea 3131 circuit breaker enclosure: no threaded gland — cable enters through 2 snap-in ratcheting strain reliefs sized by a 1-1/8" drilled hole; both the breaker and grounding connections require ring terminals, not bare wire under a screw. confirmed from its own [installation instructions](https://defender.com/assets/pdf/blue-sea-systems/980014250.pdf) (2026-10-21)
 
 **ac loads**
 - blue sea 8027: main + 6, 30A main, three 15A branches pre-installed, three positions open. neutral bus and ground bus physically separate inside the panel (confirmed via blue sea's own wiring diagram). [reference/bluesea8027-instructions.pdf](../reference/bluesea8027-instructions.pdf)
