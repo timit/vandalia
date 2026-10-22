@@ -198,8 +198,10 @@ flowchart LR
   p8027b["blue sea 8027<br/>new 20A breaker"] -->|"terminals 3/7, 12 AWG"| b2["BAOMAIN 2 - oven/cooktop AC source switch"]
   djiout2b["DJI AC output port (2 of 2)"] -->|"terminals 1/5, iron forge cord"| b2
   b2 -->|"terminals 2+4/6+8 (jumpered common), 12 AWG, 12 AWG jumper"| b4["BAOMAIN 4 - oven/cooktop AC destination switch<br/>load interlock, not source"]
-  b4 -->|"terminals 1/5, 12 AWG"| oven["oven<br/>typhur CV03, 1750W"]
-  b4 -->|"terminals 3/7, 12 AWG"| cooktop["cooktop<br/>empava EMPV-12EC07, 1800W, 20A min"]
+  b4 -->|"terminals 1/5, 12 AWG"| cooktoprec["leviton T5020-WS 20A single receptacle<br/>(both receptacles in a shared carlon 2-gang FS box, corrected 2026-10-22 —<br/>the EMPV-12EC07 in hand ships with a cord and plug, despite its manual's hardwire-only instructions)"]
+  cooktoprec --> cooktop["cooktop<br/>empava EMPV-12EC07, 1800W, 20A min"]
+  b4 -->|"terminals 3/7, 12 AWG"| ovenrec["leviton T5020-WS 20A single receptacle<br/>(shared carlon 2-gang FS box with the cooktop's)"]
+  ovenrec --> oven["oven<br/>typhur CV03, 1750W"]
 ```
 
 ### installation
@@ -213,12 +215,13 @@ flowchart LR
 - [x] live verification, fridge/USB branch: multiplus switched on (inverting off the SOK bank, no shore power connected — confirmed AC-out-1 passes through on multiplus state alone, so this validated the battery-inverter path specifically), 8027's new 20A breaker closed, BAOMAIN 3 to position 2 — hot-neutral ≈120V, hot-ground ≈120V, neutral-ground ≈0V, reverse-polarity LED off, GFCI test/reset confirmed working — passed 2026-10-22. **note for the oven/cooktop branch later**: shore power, if connected, passes through AC-out-1 regardless of the multiplus's on/off state — don't assume the multiplus being off means this panel is dead
 - [ ] install a new 20A breaker in one of the 8027's open positions → BAOMAIN 2 terminal 3/7, 12 AWG (position 2)
 - [ ] install BAOMAIN 2's jumpers, 12 AWG. pos 1 (terminal 1/5) = DJI AC output port, deferred. pos 2 (terminal 3/7) = 8027's new 20A breaker. common = feeds BAOMAIN 4's common
-- [ ] mount BAOMAIN 4 and install its jumpers, 12 AWG. common = BAOMAIN 2's output. pos 1 (terminal 1/5) = oven's receptacle. pos 2 (terminal 3/7) = cooktop, hardwired direct, no receptacle (BAOMAIN 4 mounts in the kitchen cabinet, ~4ft forward of the cargo area's front wall — outside the cargo area entirely)
+- [ ] mount BAOMAIN 4 and install its jumpers, 12 AWG. common = BAOMAIN 2's output. pos 1 (terminal 1/5) = cooktop's receptacle. pos 2 (terminal 3/7) = oven's receptacle (swapped from the original oven-pos1/cooktop-pos2 assignment, 2026-10-22, per preference — arbitrary either way, see the switch position convention note above) (BAOMAIN 4 mounts in the kitchen cabinet, ~4ft forward of the cargo area's front wall — outside the cargo area entirely)
+- [ ] mount the carlon E9802E-5-HD 2-gang FS box in the kitchen cabinet near BAOMAIN 4; install both leviton T5020-WS single receptacles into it — one for the oven, one for the cooktop (corrected 2026-10-22: the cooktop was originally planned as hardwired direct, no receptacle, per its manual's own "requires hardwiring by a qualified technician — no plug" instruction, but the actual EMPV-12EC07 unit in hand ships with a cord and plug — going with the physical part in hand over the manual's generic text)
 - [ ] BAOMAIN 2 common → BAOMAIN 4 common, 12 AWG
-- [ ] BAOMAIN 4 terminal 1/5 → oven's receptacle, 12 AWG (product: TBD)
-- [ ] BAOMAIN 4 terminal 3/7 → cooktop, hardwired direct, 12 AWG
+- [x] BAOMAIN 4 terminal 1/5 → cooktop's receptacle, 12 AWG — landed 2026-10-22
+- [ ] BAOMAIN 4 terminal 3/7 → oven's receptacle, 12 AWG — **on hold, 2026-10-22: out of 12 AWG wire for this leg**, need more before finishing
 - [ ] leave BAOMAIN 3 and BAOMAIN 2 terminal 1/5 unconnected (DJI AC-output-port taps, deferred)
-- [ ] continuity check, oven/cooktop branch (BAOMAIN 2/4): no continuity hot-neutral or either to ground; confirm BAOMAIN 4 position 1 energizes only the oven's receptacle and position 2 only the cooktop's hardwired leads, never both
+- [ ] continuity check, oven/cooktop branch (BAOMAIN 2/4): no continuity hot-neutral or either to ground; confirm BAOMAIN 4 position 1 energizes only the cooktop's receptacle and position 2 only the oven's receptacle, never both
 - [ ] 8027 backlight board → its own fused (1.0-2.0A) DC feed and ground, separate from everything in the AC schedule above (likely fine at 24V: the 8027's own instructions don't state a voltage, but blue sea's standalone backlight systems for other panels are rated 12-24V DC nominal, 32V DC max — [bluesea.com/products/8383](https://www.bluesea.com/products/8383/Backlight_System_13_pos_12-24V) — not a confirmed match to the 8027's specific built-in board, so still worth a multimeter check before connecting; source of the DC feed not yet picked)
 - [x] confirmed 2026-10-18: the panel's 3 originally pre-installed 15A branches are now all free — the fridge/USB circuit moved off its 15A branch to a new 20A position, and the other 2 pre-installed 15A branches were never used. a real candidate for the still-undesigned water heater circuit (TBD throughout this file and README.md), once its actual wattage is known
 
@@ -233,15 +236,17 @@ flowchart LR
 - [x] [BAOMAIN 32A cam changeover switch](https://www.amazon.com/Baomain-Universal-Changeover-SZW26-32-D202-2D/dp/B09MMQPQQH) — BAOMAIN 4, oven/cooktop AC destination
 - [x] 2x blue sea 7214, 20A toggle breaker — 1 for the oven/cooktop circuit, 1 (the former spare) now used for the upsized fridge+USB circuit, 2026-10-18 — no spare remains
 - [x] 12 AWG 12/3 triplex marine wire, 20ft — oven/cooktop circuit (verify: marine/UL rating — labeled "marine grade" with no UL/ABYC rating given)
+- [ ] more 12 AWG wire — ran out partway through the BAOMAIN 4-to-oven-receptacle leg, 2026-10-22 (work paused here). same open UL-rating question as the spool above applies to whatever's bought; consider the [UL 1426-rated triplex](https://www.amazon.com/10-AWG-Triplex-Marine-Wire/dp/B06X6L6W2C) sourced earlier for the interior AC runs, in 12 AWG if available, to actually close that question instead of extending it
 - [x] 12 AWG 12/3 triplex marine wire — fridge+USB circuit, upsized from 14 AWG 2026-10-18, confirmed 3-conductor triplex matching the oven/cooktop circuit's wire type. pulled from the kitchen to the rear of the vehicle for both kitchen circuits
 - [x] [iron forge 12/3 SJTW molded-plug cord, 15ft](https://www.amazon.com/clp/B0C5KHWHMT) — DJI AC-output tap, fridge/USB leg
 - [x] [iron forge 12/3 SJTW molded-plug cord, 6ft](https://www.amazon.com/clp/B0B8DPVW57) — DJI AC-output tap, oven/cooktop leg
 - [x] typhur CV03 sync oven, 1750W — kitchen oven
-- [x] empava EMPV-12EC07 induction cooktop, 1800W — kitchen cooktop, hardwired
+- [x] empava EMPV-12EC07 induction cooktop, 1800W — kitchen cooktop. corrected 2026-10-22: planned as hardwired per the manual, but the unit in hand ships with a cord and plug — now receptacle-fed like the oven
 - [x] deaprull D31A fridge, 35-45W, 120VAC — kitchen fridge
 - [x] [leviton GFTR2-KW 20A/125V GFCI duplex receptacle](https://www.homedepot.com/p/Leviton-20-Amp-125-Volt-Duplex-SmarTest-Self-Test-SmartlockPro-Tamper-Resistant-GFCI-Outlet-White-GFTR2-KW-R92-GFTR2-0KW/205999867) — fridge + USB circuit, 2026-10-18. one duplex outlet serves both: fridge plugs into one side, a plug-in USB hub/outlet (not a dedicated wall receptacle) into the other — resolves the separate "USB charging outlet" line below, no dedicated USB wall outlet needed
 - [ ] plug-in USB hub/outlet, e.g. [this one](https://www.amazon.com/dp/B0FBWCR2Y7) — plugs into the GFCI duplex's second socket, not hardwired
-- [ ] [leviton CR020-W NEMA 5-20R 20A/125V commercial duplex receptacle](https://www.amazon.com/Leviton-CR020-W-Receptacle-Commercial-Grounding/dp/B003ATTR8Y) — oven. the oven's own cord uses a standard 5-15P plug (confirmed: typhur's manual calls for a 15A circuit, [m.media-amazon.com Typhur Sync Oven manual](https://m.media-amazon.com/images/I/91G513N7BnL.pdf)), but this branch (BAOMAIN 4, shared with the cooktop) is wired as 20A — a 5-20R is the NEC-correct receptacle for a 20A branch and still accepts the oven's 5-15P plug
+- [x] 2x [leviton T5020-WS 20A/125V single tamper-resistant receptacle](https://www.homedepot.com/p/Leviton-20-Amp-125-V-Tamper-Resistant-Single-Outlet-Receptacle-White-1-Pack-T5020-WS-R52-T5020-0WS/202066676) — one for the oven, one for the cooktop, 2026-10-22. replaces the earlier CR020-W duplex plan: separate single receptacles instead, for a clean split between the two appliances coming out of BAOMAIN 4
+- [x] [carlon E9802E-5-HD 2-gang FS box](https://www.homedepot.com/p/Carlon-2-Gang-32-cu-in-3-4-in-Electrical-PVC-Type-FSE-FS-Box-E9802E-5-HD-E9802E-5-HD/100404110) — houses both T5020-WS receptacles
 - [ ] [blue sea 3102100, A-series ELCI/GFCI double-pole 120V 30A breaker](https://www.amazon.com/Blue-Sea-Systems-3102100-Circuit/dp/B00H2BY3FI) — 8027 AC-out-1, matches the 30A main breaker position's rating
 - [x] jumper wire pair, 12 AWG — BAOMAIN 3's common (upsized from 14 AWG 2026-10-18). no separate purchase — cut from the already-owned 12 AWG 12/3 triplex reels above
 - [x] jumper wire pair, 12 AWG — BAOMAIN 2's common. no separate purchase — cut from the already-owned 12 AWG 12/3 triplex reels above
