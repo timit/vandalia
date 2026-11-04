@@ -66,7 +66,7 @@ nameplate watts only. replace TBD with the number from the label or manual, and 
 | honda EU2200i | 1,800W continuous | plugs into the shore inlet |
 | shore power | 30A | about 3,600W at 120V |
 | orion XS 1400 | 50A at 24V (about 1,200W) | set the input limit, about 60A; alternator rating verify |
-| orion-tr smart 24/12-30 isolated (adopted and obtained 2026-10-03, not yet installed) | 30A at 12V, 360W rated | DC-DC step-down for the 5026 bus's victron leg (battery selector 3, position 2); input-side current/fuse sizing not yet verified against its own manual — see electrical/PLAN.md's 12V bus section |
+| orion-tr smart 24/12-30 isolated (adopted 2026-10-03, mounted 2026-10-22, not yet wired) | 30A at 12V, 360W rated | DC-DC step-down for the 5026 bus's victron leg (battery selector 3, position 2); input/output fuse and cable gauge now confirmed from its own manual — 30A fuse/6AWG input, 60A fuse/6AWG output — see electrical/PLAN.md's 12V bus section |
 
 | load | system | voltage | watts | notes |
 |---|---|---|---|---|
