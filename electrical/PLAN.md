@@ -313,7 +313,8 @@ flowchart LR
 
 - [x] cerbo power (Power in V+) → + and - bars, supplied cable with an inline 3.15A slow-blow fuse already built in — pulled forward early, 2026-10-16, to unblock configuring the multiplus without needing an MK3-USB (see "dc positive and alternator" above and "set the multiplus's battery profile" there). the M8 ring eyes fit the 3/8" bar studs fine, despite the size mismatch flagged earlier — confirmed by direct test, not worth re-terminating
 - [ ] dedicate one of the cerbo's 2 VE.Can ports to the SOK; set the port profile to BMS-Can (500kbit/s); terminate with one of the 2 included VE.Can terminators
-- [ ] SOK → cerbo, CAN, SOK's own supplied cable
+- [ ] SOK → cerbo, CAN, SOK's own supplied "GX devices to Battery BMS communication cable" (2000mm, RJ45 one end, SOK's 8-pin circular connector the other) — identified 2026-11-12 from the SOK's own manual (§3.2.2): RJ45 end → cerbo's VE.Can port; circular end → SOK's **Link IN** port (not Link OUT — the manual's own parallel-install diagrams confirm "IN" is the GX-device-facing port)
+- [ ] plug the SOK's included "communication resistance" terminator (an RS485/CAN termination resistor built into a connector stub, not a spare/dust cap as first guessed) into the SOK's **Link OUT** port — per the SOK manual's own instruction, this goes on whichever battery sits at the farthest end of the chain from the GX device; with only one SOK installed, that's this one. **when the second SOK is added later**: move this resistor to the new battery's Link OUT, and connect this battery's OUT to the new battery's IN with the included "Line of Parallel" cable (750mm) instead. **note**: this item doesn't appear on the corresponding page of the V-2.0 PDF manual on file ([reference/SK24V150PH.pdf](../reference/SK24V150PH.pdf)) — confirmed from the physical V-1.0 printed manual instead, a real discrepancy between manual revisions worth knowing about
 - [x] multiplus → cerbo, VE.bus RJ45, 0.9m supplied — pulled forward early, 2026-10-16, same reason as above
 - [x] orion XS → cerbo, VE.direct, 2.95ft supplied — landed 2026-10-17 (pulled forward early, alongside the multiplus VE.Bus and cerbo power connections already done; the XS itself isn't powered yet, still waiting on its output-side 60A ANL fuse)
 - [ ] power the cerbo only from "Power in V+" (8-70VDC) — never from a multiplus AC-out
@@ -326,6 +327,9 @@ flowchart LR
 - [x] [victron interface MK3-USB-C (VE.Bus to USB-C)](https://www.amazon.com/gp/product/B0BNBVKSTH) — used to set the multiplus's lithium battery profile via VictronConnect on a mac, 2026-10-17. uses a standard straight-through RJ45 patch cable (confirmed, not a proprietary Victron pinout) — borrowed the cerbo's cable for this since a dedicated second one wasn't on hand
 - [x] victron VE.direct cable, 2.95ft — orion XS to cerbo
 - [x] victron RJ45 UTP cable, 0.9m — multiplus to cerbo
+- [x] SOK's included "GX devices to Battery BMS communication cable," 2000mm — SOK Link IN to cerbo VE.Can, identified 2026-11-12
+- [x] SOK's included "communication resistance" terminator — SOK Link OUT, identified 2026-11-12 (see installation note on manual-revision discrepancy)
+- [x] SOK's included "Line of Parallel" battery-to-battery communication cable, 750mm — spare for the planned second SOK, not needed yet
 
 ## open questions
 
