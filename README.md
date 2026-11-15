@@ -79,7 +79,7 @@ nameplate watts only. replace TBD with the number from the label or manual, and 
 | autoterm air 2D | 24V (not designed) | 24V DC | TBD | |
 | USB panels (4 x 108W) | 12V, blue sea 5026 | 12V DC | up to 432W | rarely all at once |
 | LED pucks and strips | 12V, blue sea 5026 | 12V DC | TBD | |
-| starlink mini | 12V, blue sea 5026 | 12-48V DC | TBD | continuous |
+| starlink mini | 12V, blue sea 5026 | 12-48V DC | typical 15-40W, peak/snow-melt up to 60W (confirmed via manufacturer/field data, 2026-11-15 — not a nameplate spec, see electrical/PLAN.md's 12V bus section) | continuous, wired and operational |
 | water pump (shurflo 4008) | TBD | TBD | TBD | intermittent |
 | cerbo GX MK2 | 24V bank | 24V DC | TBD | continuous |
 | raspberry pi 5 and home assistant gear | TBD | TBD | TBD | continuous |
@@ -90,7 +90,7 @@ checks to run once the watts are filled in:
 2. the same worst case against the honda's 1,800W and the DJI's AC output when running on a backup source. **kitchen note**: oven and cooktop are victron/8027-sourced on their victron leg but can also take the DJI leg via BAOMAIN 2 - oven/cooktop AC source switch — ~1905W worst-case is only marginally over the honda's 1800W (~105W, essentially the fridge+USB draw) if cooking on generator power, a small and likely tolerable overage compared to the ~1795W overage the un-interlocked single-branch design would have had. DJI's AC output (confirmed 2026-10-02: ~3000W continuous) clears this worst case comfortably. the velit's DJI leg (position 1, via the meanwell) is still AC and still counts here too.
 2a. the velit's direct-DC leg (33A max) against the 24V bus's actual capacity alongside everything else already drawing from it (XS charging, cerbo, the multiplus itself) — not yet checked.
 3. daily energy use in Wh against the SOK's 3,840Wh.
-4. the 12V bus load against its source. **adopted 2026-10-03**: the DJI SDC-to-XT60 feed alone (13.6V default, 10A max, about 136W) was a real ceiling against the USB panels' 432W rated draw — resolved by adding battery selector 3 and an orion-tr smart 24/12-30 converter (30A/360W at 12V) as a second, higher-capacity source. real continuous load (LED pucks + starlink, both still TBD) against either leg individually is still worth checking once those watts are known.
+4. the 12V bus load against its source. **adopted 2026-10-03**: the DJI SDC-to-XT60 feed alone (13.6V default, 10A max, about 136W) was a real ceiling against the USB panels' 432W rated draw — resolved by adding battery selector 3 and an orion-tr smart 24/12-30 converter (30A/360W at 12V) as a second, higher-capacity source. **starlink's real watts now known (2026-11-15)**: 5A worst case (60W peak/snow-melt at 12V) against the orion-tr's 30A/360W capacity is trivial — comfortably clears this check on its own. real continuous load against either leg, once the USB panels (currently 2, not 4, ~18A combined worst case) and starlink are both actually drawing together, plus the LED puck branch (still TBD, held), is still worth a final tally once the LED pucks are known.
 
 ## interfaces between subsystems
 
