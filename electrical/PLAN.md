@@ -78,7 +78,7 @@ flowchart TB
   cerbon["cerbo -"] -->|"supplied cable, M8 ring"| nbar
   mpg["multiplus exterior grounding point"] -->|"10 AWG min, separate from DC- and AC ground"| nbar
   mwn["meanwell RSP-1000-24 -V"] -->|"6 AWG, permanently bonded here — safe, galvanically isolated"| nbar
-  veln["velit 2000R -"] -->|"velit's own 6 AWG cable, fused at the velit end"| nbar
+  veln["velit 2000R -"] -->|"velit's own 8 AWG cable (corrected 2026-11-16, physically measured — not 6 AWG as originally assumed)"| nbar
   nbar -->|"2 AWG, one point only, to the factory undercarriage ground bolt"| chassis["chassis bond<br/>(crossmember, front of rear axle — official Mercedes ground bolt)"]
 ```
 
@@ -124,7 +124,7 @@ flowchart LR
   pbar -->|"pos 2, terminal 2, 6 AWG, 40A ANL, blue sea 5165"| s2["battery selector 2<br/>velit source"]
   mw["meanwell RSP-1000-24 +V"] -->|"pos 1, terminal 1, 6 AWG"| s2
   djiout2["DJI power 2000 AC out"] -->|"14 AWG, molded-plug cord"| mw
-  s2 -->|"OUTPUT, velit's own 6 AWG cable, fused both ends"| velit["velit 2000R"]
+  s2 -->|"OUTPUT, velit's own 8 AWG cable (corrected 2026-11-16), fused via a separate ANL block (50A) at the source end"| velit["velit 2000R"]
 ```
 
 ### installation
@@ -158,8 +158,9 @@ the alternator branch above is done. the rest of this section (velit, below) hap
 - [ ] meanwell +V output → selector 2 terminal "1" (position 1, DJI leg), 6 AWG (pacer 15ft red reel, same as above — **this leg is longer than the rest of this reel's runs**: the meanwell is driver-side near the DJI, selector 2 is passenger-side above the SOK, so this crosses most of the 5.5ft front wall plus the height change — realistically 6-9ft, not under 6ft; measure before cutting)
 - [x] + bar → 40A ANL (blue sea 5165) → selector 2 terminal "2" (position 2, victron leg), 6 AWG (same reel — this leg is confirmed short, selector 2 sits directly above the SOK/busbars) — mounted, wired, and fused 2026-11-16: the velit tap's ANL block (the 2nd of the 2 blue sea 5005 blocks obtained alongside the XS output's) is now mounted near the positive bar, 6 AWG landed from the bar through the block to selector 2 terminal "2", 40A fuse seated
 - [ ] meanwell -V output → negative bar, 6 AWG (pacer 15ft black reel, same as XS GND — **also longer than assumed**, same driver-to-passenger crossing as the meanwell +V leg above, realistically 6-9ft; measure before cutting) — still deferred with the rest of the DJI/meanwell leg
-- [x] selector 2 OUTPUT → velit, 2026-11-16: **corrected architecture** — not a cable with fuses built into its own ends as earlier assumed. a separate ANL fuse block (included with the velit, 50A fuse) is mounted alongside selector 2, wired OUTPUT → block → the velit's own supplied cable → the unit. confirm the meanwell's output is set within its 20-26.4V range first before ever using position 1 (DJI leg) — not relevant yet, that leg is still fully deferred
+- [x] selector 2 OUTPUT → velit, 2026-11-16: **corrected architecture** — not a cable with fuses built into its own ends as earlier assumed. a separate ANL fuse block (included with the velit, 50A fuse) is mounted alongside selector 2, wired OUTPUT → block → the velit's own supplied cable (**8 AWG, physically measured — corrects an earlier unverified assumption of 6 AWG**) → the unit. **why 50A here but only 40A on the bar-to-selector leg above, explained 2026-11-16**: these are two separately-chosen fuses on two different wire segments — the 40A fuse is this build's own choice for the 6 AWG bar-to-selector wire it built; the 50A fuse is Velit's own choice for the cable they supply. in position 2 (wired now), both sit in series and the smaller 40A fuse is the one that actually trips first on a fault, so the 50A fuse never has to act on this leg. once position 1 (meanwell, 40A rated output) is eventually wired, the 40A fuse plays no role in that path at all — the 50A fuse becomes the *only* protection downstream of the switch, and sitting above the meanwell's own 40A rating avoids nuisance-tripping under its normal output. **the unit end's second fuse, per the velit's own manual (§3.5), is resolved 2026-11-16**: this cable connects to the unit through a sealed, factory-molded male/female harness connector — there's no accessible splice point or anything custom to install there. whatever fusing the manual describes at that end is built into the sealed harness itself, not something the installer can see, verify, or service; the ANL block at the source end is the only fuse point actually accessible or actionable in this install. confirm the meanwell's output is set within its 20-26.4V range first before ever using position 1 (DJI leg) — not relevant yet, that leg is still fully deferred
 - [x] **partial continuity check, victron leg only, 2026-11-16**: selector 2 off — no continuity anywhere on this leg; selector 2 in position 2 — continuous from the positive bar through to the velit's input, and the velit's negative reads continuous back to the negative bar. passed clean. **full check still pending**: confirming position 1 connects OUTPUT to the meanwell leg only (not this leg) can't be done until the meanwell leg itself is wired — revisit then, along with confirming the meanwell -V reads continuous to the negative bar regardless of position
+- [x] **functional test, velit on the victron leg, 2026-11-16**: unit powered on and actually ran its AC (air conditioning) function off the direct 24V bus tap — working as expected. first confirmation this isn't just electrically sound but that the rooftop AC itself operates correctly on this source
 - [ ] selector 1 pos 1 → DJI charger leg (deferred)
 
 ### supplies
