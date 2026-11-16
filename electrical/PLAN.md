@@ -156,10 +156,10 @@ the alternator branch above is done. the rest of this section (velit, below) hap
 - [ ] DJI AC out → meanwell AC input: molded-plug cord, 14 AWG minimum (no separate breaker needed — DJI's own output protection plus the meanwell's internal AC-input protection cover it; meanwell mounts driver-side wall, near the DJI, making this tap short)
 - [x] mount battery selector 2 near the DC busbars (both battery selectors are already mounted, in the switch row, far passenger end, directly above the SOK)
 - [ ] meanwell +V output → selector 2 terminal "1" (position 1, DJI leg), 6 AWG (pacer 15ft red reel, same as above — **this leg is longer than the rest of this reel's runs**: the meanwell is driver-side near the DJI, selector 2 is passenger-side above the SOK, so this crosses most of the 5.5ft front wall plus the height change — realistically 6-9ft, not under 6ft; measure before cutting)
-- [ ] + bar → 40A ANL (blue sea 5165) → selector 2 terminal "2" (position 2, victron leg), 6 AWG (same reel — this leg is confirmed short, selector 2 sits directly above the SOK/busbars)
-- [ ] meanwell -V output → negative bar, 6 AWG (pacer 15ft black reel, same as XS GND — **also longer than assumed**, same driver-to-passenger crossing as the meanwell +V leg above, realistically 6-9ft; measure before cutting)
-- [ ] selector 2 OUTPUT → velit: velit's own supplied 6 AWG cable, already fused both ends; confirm the meanwell's output is set within its 20-26.4V range first
-- [ ] continuity check with selector 2 OFF: no continuity anywhere; position 1 connects OUTPUT to the meanwell leg only, position 2 to the direct bus tap only; confirm the meanwell -V and velit cable negative both read continuous to the negative bar regardless of position
+- [x] + bar → 40A ANL (blue sea 5165) → selector 2 terminal "2" (position 2, victron leg), 6 AWG (same reel — this leg is confirmed short, selector 2 sits directly above the SOK/busbars) — mounted, wired, and fused 2026-11-16: the velit tap's ANL block (the 2nd of the 2 blue sea 5005 blocks obtained alongside the XS output's) is now mounted near the positive bar, 6 AWG landed from the bar through the block to selector 2 terminal "2", 40A fuse seated
+- [ ] meanwell -V output → negative bar, 6 AWG (pacer 15ft black reel, same as XS GND — **also longer than assumed**, same driver-to-passenger crossing as the meanwell +V leg above, realistically 6-9ft; measure before cutting) — still deferred with the rest of the DJI/meanwell leg
+- [x] selector 2 OUTPUT → velit, 2026-11-16: **corrected architecture** — not a cable with fuses built into its own ends as earlier assumed. a separate ANL fuse block (included with the velit, 50A fuse) is mounted alongside selector 2, wired OUTPUT → block → the velit's own supplied cable → the unit. confirm the meanwell's output is set within its 20-26.4V range first before ever using position 1 (DJI leg) — not relevant yet, that leg is still fully deferred
+- [x] **partial continuity check, victron leg only, 2026-11-16**: selector 2 off — no continuity anywhere on this leg; selector 2 in position 2 — continuous from the positive bar through to the velit's input, and the velit's negative reads continuous back to the negative bar. passed clean. **full check still pending**: confirming position 1 connects OUTPUT to the meanwell leg only (not this leg) can't be done until the meanwell leg itself is wired — revisit then, along with confirming the meanwell -V reads continuous to the negative bar regardless of position
 - [ ] selector 1 pos 1 → DJI charger leg (deferred)
 
 ### supplies
@@ -175,7 +175,7 @@ the alternator branch above is done. the rest of this section (velit, below) hap
 - [x] blue sea 5005 ANL fuse block, 5/16" studs — XS **input** fuse — ordered 2026-10-18, arrived and mounted 2026-10-22 (fuse element itself still needed — see supplies above)
 - [x] [blue sea 5123, 60A ANL fuse](https://www.amazon.com/Blue-Sea-Systems-5123-Fuse/dp/B06XFFKD67) — XS output, seated 2026-11-05
 - [x] [blue sea 5123, 60A ANL fuse](https://www.amazon.com/Blue-Sea-Systems-5123-Fuse/dp/B06XFFKD67) — XS input, added 2026-10-18 (2nd one, same part as output — need 2 total), seated 2026-11-05
-- [x] [blue sea 5165, 40A ANL fuse](https://www.amazon.com/Blue-Sea-5165-40A-Fuse/dp/B008GLEMMW) — velit direct-DC tap, in hand 2026-11-04, not yet seated
+- [x] [blue sea 5165, 40A ANL fuse](https://www.amazon.com/Blue-Sea-5165-40A-Fuse/dp/B008GLEMMW) — velit direct-DC tap, seated 2026-11-16
 - [x] pacer marine tinned copper battery cable, 15ft #6 red — selector/XS/busbar positive runs
 - [x] pacer marine tinned copper battery cable, 8ft #2/0 red — positive 2/0 runs
 - [x] meanwell RSP-1000-24 — AC-to-24VDC supply for the velit, DJI leg
